@@ -1,8 +1,8 @@
 import random
 
-from frontend.api.game_classes.creatures.statistics import Statistics
-from frontend.api.game_classes.objects.items.item import ItemBuilder, Item
-from frontend.api.web.WebService import connect_to_db, disconnect_from_db
+from api.game_classes.creatures.statistics import Statistics
+from api.game_classes.objects.items.item import ItemBuilder, Item
+from api.web.WebService import connect_to_db, disconnect_from_db
 
 
 class Eq:

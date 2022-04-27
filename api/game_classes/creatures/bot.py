@@ -1,4 +1,4 @@
-from frontend.api.game_classes.creatures.creature import Creature
+from api.game_classes.creatures.creature import Creature
 
 
 class Bot(Creature):

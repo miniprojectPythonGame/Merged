@@ -1,4 +1,4 @@
-from frontend.api.game_classes.creatures.statistics import Statistics
+from api.game_classes.creatures.statistics import Statistics
 
 
 class Specialist:

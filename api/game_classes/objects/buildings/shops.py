@@ -1,8 +1,8 @@
 from abc import ABC
 from enum import Enum
 
-from frontend.api.game_classes.objects.items.item import ItemBuilder
-from frontend.api.web.WebService import connect_to_db, disconnect_from_db
+from api.game_classes.objects.items.item import ItemBuilder
+from api.web.WebService import connect_to_db, disconnect_from_db
 
 
 class Shop(ABC):

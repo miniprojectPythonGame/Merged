@@ -1,8 +1,8 @@
 from math import floor
 from random import randint
 
-from frontend.api.game_classes.creatures.creature import Creature
-from frontend.api.web.WebService import connect_to_db, disconnect_from_db
+from api.game_classes.creatures.creature import Creature
+from api.web.WebService import connect_to_db, disconnect_from_db
 
 
 class Battle(object):

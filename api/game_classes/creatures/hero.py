@@ -1,16 +1,16 @@
 from math import floor
 from random import randint
 
-from frontend.api.game_classes.creatures.creature import Creature
-from frontend.api.game_classes.events.battle import Battle
-from frontend.api.game_classes.objects.buildings.cityGuilds import CityGuilds
-from frontend.api.game_classes.objects.buildings.guild import Guild
-from frontend.api.game_classes.objects.buildings.market import Market
-from frontend.api.game_classes.objects.buildings.shops import ArmourShop, Stable, WeaponShop, MagicShop, MercenaryShop, ShopType
+from api.game_classes.creatures.creature import Creature
+from api.game_classes.events.battle import Battle
+from api.game_classes.objects.buildings.cityGuilds import CityGuilds
+from api.game_classes.objects.buildings.guild import Guild
+from api.game_classes.objects.buildings.market import Market
+from api.game_classes.objects.buildings.shops import ArmourShop, Stable, WeaponShop, MagicShop, MercenaryShop, ShopType
 
-from frontend.api.game_classes.objects.items.eq import Eq
+from api.game_classes.objects.items.eq import Eq
 
-from frontend.api.web.WebService import *
+from api.web.WebService import *
 
 
 class Hero(Creature):

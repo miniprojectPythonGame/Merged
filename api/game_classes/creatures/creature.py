@@ -1,5 +1,5 @@
 
-from frontend.api.game_classes.creatures.fightClasses import choseClass
+from api.game_classes.creatures.fightClasses import choseClass
 
 
 class Creature:

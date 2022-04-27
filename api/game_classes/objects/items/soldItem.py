@@ -1,4 +1,4 @@
-from frontend.api.game_classes.objects.items.item import Item
+from api.game_classes.objects.items.item import Item
 
 
 class SoldItem(Item):

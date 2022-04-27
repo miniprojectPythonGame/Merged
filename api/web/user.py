@@ -1,5 +1,5 @@
-from frontend.api.game_classes.creatures.hero import Hero
-from frontend.api.web.WebService import *
+from api.game_classes.creatures.hero import Hero
+from api.web.WebService import *
 
 
 class User:
@@ -37,8 +37,8 @@ class User:
         try:
             auth.create_user_with_email_and_password(email, password)
             self.authUser = auth.sign_in_with_email_and_password(email, password)
-            # TODO maybe unnecessary logout
-            self.logout()
+            # # TODO maybe unnecessary logout
+            # self.logout()
             conn, cursor = connect_to_db()
 
             cursor.execute("CALL add_player(%s ,%s , %s, %s, %s)", (nick, email, sex, age, self.authUser['localId']))
@@ -143,8 +143,8 @@ if __name__ == "__main__":
     tmp.chooseHero(20)
     # tmp.currentHero.add_to_statistics('dexterity')
     # tmp.currentHero.add_to_statistics('luck')
-    print(tmp.currentHero)
-    tmp.currentHero.init_fight_with_other_hero(tmp.Heroes.get(19))
+    # print(tmp.currentHero)
+    # tmp.currentHero.init_fight_with_other_hero(tmp.Heroes.get(19))
     # tmp.currentHero.armourShop.print()
     # tmp.currentHero.buy_from_shop(0, 0)
     # tmp.currentHero.buy_from_shop(0, 1)
