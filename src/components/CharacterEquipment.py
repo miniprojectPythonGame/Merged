@@ -63,14 +63,15 @@ class CharacterEquipment:
 
         pb_level = PropertyBar(x + itembox_size + itembox_padding,  # x
                                y + itembox_padding + avatar_height,  # y
-                               avatar_width, property_bar_height, 0.85,
+                               avatar_width, property_bar_height,
+                               self.character_ref['exp'] / self.character_ref['expToNextLvl'],
                                "Level " + str(self.character_ref['level']),
                                self.font, self.color.primary, self.color.level, self.screen)
 
         pb_health = PropertyBar(x + itembox_size + itembox_padding,  # x
                                 y + itembox_padding + avatar_height + property_bar_height,  # y
-                                avatar_width, property_bar_height, 0.54,
-                                str(round(self.character_ref['health'] * 0.54)) + " HP",
+                                avatar_width, property_bar_height, 1,
+                                str(self.character_ref['health']) + " HP",
                                 self.font, self.color.primary, self.color.health, self.screen)
 
         ib_helmet = ItemBox(x,

@@ -5,7 +5,7 @@ from src.globals.const_values import *
 
 def setPath(path):
     if path is None:
-        return '../images/icons/add_item.png'
+        return "../images/icons/add_item.png"
     else:
         return path
 

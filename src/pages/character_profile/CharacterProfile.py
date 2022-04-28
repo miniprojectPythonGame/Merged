@@ -14,12 +14,11 @@ from .Measurements import Measurements as meas
 
 from src.globals.mock_data import character_2
 
+def CharacterProfile(screen, mainClock, user):
 
-def CharacterProfile(screen, mainClock):
-    running = True
-    curr_item_in_popup = ''
-    backpack_active = 0
-    active_item = -1
+    def getPath(type):
+        if type == "Belt":
+            return '../images/items/armor/belt.png'
 
     def reloadButtons(buttons_list, current_active):
         newButtons = []
@@ -48,7 +47,71 @@ def CharacterProfile(screen, mainClock):
         return ItemGrid(meas.ig_backpack['x'], meas.ig_backpack['y'],
                         meas.ig_backpack['item_size'], meas.ig_backpack['item_padding'],
                         meas.ig_backpack['cols'], meas.ig_backpack['amount'], screen,
-                        meas.ig_backpack['backpack_ref'][backpack_active], active=active_item)
+                        character['backpacks'][backpack_active], active=active_item)
+
+    running = True
+    curr_item_in_popup = ''
+    backpack_active = 0
+    active_item = -1
+    statistics = user.currentHero.heroClass.statistics
+
+    for item in user.currentHero.eq.itemSlots:
+        if item:
+            print("he: ", item.name, getPath(type(item).__name__), item.description)
+
+    backpack = []
+    for i in range(meas.ig_amount):
+        if user.currentHero.eq.itemSlots[i]:
+            backpack.append(
+                {
+                    "name": user.currentHero.eq.itemSlots[i].name,
+                    "img_path": getPath(type(user.currentHero.eq.itemSlots[i]).__name__),
+                    "type": 'common',
+                }
+            )
+
+    character = {
+        'name': str(user.currentHero.name),
+        'spec': str(user.currentHero.heroClass),
+        'level': str(user.currentHero.lvl),
+        'img_full': '../images/characters/' + str(user.currentHero.heroClass).lower() + '_' + str(
+                            user.currentHero.avatar_id) + '.jpg',
+        "health": str(statistics.hp),
+        "gold": str(user.currentHero.eq.gold),
+        "exp": user.currentHero.exp,
+        "expToNextLvl": user.currentHero.expToNextLvl,
+        "eq": {
+            "helmet": None,
+            "chestplate": None,
+            "gloves": None,
+            "boots": None,
+            "necklace": None,
+            "belt": {
+                "name": 'Leather Belt',
+                "img_path": '../images/items/armor/belt.png',
+                "type": 'common',
+            },
+            "ring": None,
+            "artefact": None,
+        },
+        "backpacks": [
+            backpack
+        ],
+        "statistics": {
+            "strength": statistics.strength,
+            "intelligence": statistics.intelligence,
+            "dexterity": statistics.dexterity,
+            "constitution": statistics.constitution,
+            "luck": statistics.luck,
+            "protection": statistics.protection,
+            "persuasion": statistics.persuasion,
+            "trade": statistics.trade,
+            "leadership": statistics.leadership,
+            "initiative": statistics.initiative,
+        }
+    }
+
+
 
     label_page = Label(meas.label_page['text'], meas.label_page['font'], meas.label_page['color'],
                        screen, meas.label_page['x'], meas.label_page['y'], meas.label_page['anchor'])
@@ -61,13 +124,13 @@ def CharacterProfile(screen, mainClock):
                                                meas.ce_characterEqPreview['y'],
                                                meas.ce_characterEqPreview['font'],
                                                meas.ce_characterEqPreview['colors'],
-                                               meas.ce_characterEqPreview['character_ref'],
+                                               character,
                                                screen)
 
     ig_backpack = ItemGrid(meas.ig_backpack['x'], meas.ig_backpack['y'],
                            meas.ig_backpack['item_size'], meas.ig_backpack['item_padding'],
                            meas.ig_backpack['cols'], meas.ig_backpack['amount'], screen,
-                           meas.ig_backpack['backpack_ref'][backpack_active], active=active_item)
+                           character['backpacks'][backpack_active], active=active_item)
 
     buttons_backpack = [Button(meas.bt_class_active['color'],
                                meas.buttons_backpack['x'], meas.buttons_backpack['y'] +
@@ -76,7 +139,7 @@ def CharacterProfile(screen, mainClock):
                                path=meas.buttons_backpack['path_gray'],
                                image_ofset=meas.bt_class_active['image_offset'],
                                border_radius=meas.bt_class_active['border_radius'])
-                        for i in range(len(meas.ig_backpack['backpack_ref']))]
+                        for i in range(len(character['backpacks']))]
 
     c_backpack = Container(meas.c_backpack['x'], meas.c_backpack['y'], meas.c_backpack['width'],
                            meas.c_backpack['height'], buttons_backpack + [ig_backpack])
@@ -89,7 +152,7 @@ def CharacterProfile(screen, mainClock):
               meas.label_stat_header['anchor'])
         for i in range(len(meas.labels_stats))]
 
-    stats_values = [Label(str(character_2['statistics'][meas.labels_stats[i]]), meas.label_stat_values['font'],
+    stats_values = [Label(str(character['statistics'][meas.labels_stats[i]]), meas.label_stat_values['font'],
                           meas.label_stat_values['color'], screen, meas.label_stat_values['x'],
                           meas.label_stat_values['y'] + i * (
                                   meas.label_stat_values['height'] + meas.label_stat_values['padding']),

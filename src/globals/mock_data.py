@@ -75,7 +75,6 @@ character_2 = {
         "constitution": 4,
         "luck": 21,
         "protection": 40,
-        "hp": 400,
         "persuasion": 64,
         "trade": 39,
         "leadership": 100,

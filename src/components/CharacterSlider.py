@@ -64,13 +64,11 @@ class CharacterSlider:
             self.curr_right.draw()
 
     def swipeLeft(self):
-        print('Prev')
         if self.curr_index > 0:
             self.curr_index -= 1
             self.loadVisible()
 
     def swipeRight(self):
-        print('Next')
         if self.curr_index < len(self.characters) - 1:
             self.curr_index += 1
             self.loadVisible()

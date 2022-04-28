@@ -11,7 +11,13 @@ from src.components.CharacterPreview import CharacterPreview
 from .Measurements import Measurements as meas
 from src.globals.mock_data import warrior_avatars, mage_avatars, archer_avatars
 
-def CreateCharacter(screen, mainClock):
+def CreateCharacter(screen, mainClock, user):
+
+    # Function to validate input on Login
+    def validate():
+        if len(input_name.text) < 5:
+            return False
+        return True
 
     def generateAvatarsOfCurrentClass(currentClass):
         temp = []
@@ -44,7 +50,8 @@ def CreateCharacter(screen, mainClock):
 
     running = True
     curr_active = 'warrior'
-    curr_avatarImage = warrior_avatars[0]['rect']
+    cur_avatar_id = 0
+    curr_avatarImage = warrior_avatars[cur_avatar_id]['rect']
 
     label_page = Label(meas.label_page['text'], meas.label_page['font'], meas.label_page['color'], screen,
                        meas.label_page['x'], meas.label_page['y'], meas.label_page['anchor'])
@@ -180,28 +187,37 @@ def CreateCharacter(screen, mainClock):
                 # Pick 'warrior' class
                 if bt_warrior_inactive.rect.collidepoint(event.pos):
                     curr_active = 'warrior'
-                    curr_avatarImage = warrior_avatars[0]['rect']
+                    cur_avatar_id = 0
+                    curr_avatarImage = warrior_avatars[cur_avatar_id]['rect']
                     print(curr_active)
 
                 # Pick 'mage' class
                 if bt_mage_inactive.rect.collidepoint(event.pos):
                     curr_active = 'mage'
-                    curr_avatarImage = mage_avatars[0]['rect']
+                    cur_avatar_id = 0
+                    curr_avatarImage = mage_avatars[cur_avatar_id]['rect']
                     print(curr_active)
 
                 # Pick 'archer' class
                 if bt_archer_inactive.rect.collidepoint(event.pos):
                     curr_active = 'archer'
-                    curr_avatarImage = archer_avatars[0]['rect']
+                    cur_avatar_id = 0
+                    curr_avatarImage = archer_avatars[cur_avatar_id]['rect']
                     print(curr_active)
 
-                for image in images:
-                    if image.rect.collidepoint(event.pos):
-                        curr_avatarImage = image.path
+                for i in range(len(images)):
+                    if images[i].rect.collidepoint(event.pos):
+                        curr_avatarImage = images[i].path
+                        cur_avatar_id = i
 
                 if bt_create.rect.collidepoint(event.pos):
-                    running = False
-                    print("Redirecting: CreateCharacter.py -> ChooseCharacter.py")
+                    if validate():
+                        user.createHero(cur_avatar_id+1, input_name.text, curr_active[0], 1, 1, 1, 1, 1, 1, 1, 1, 1, 1)
+                        running = False
+                        print("Redirecting: CreateCharacter.py -> ChooseCharacter.py")
+
+                    else:
+                        print("Validation fail")
 
                 # HANDLE RETURN BUTTON
                 if bt_return.rect.collidepoint(event.pos):

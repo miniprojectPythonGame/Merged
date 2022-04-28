@@ -7,20 +7,29 @@ from src.components.ImageField import ImageField
 from src.components.Label import Label
 from src.components.MultilineText import MultilineText
 from src.components.Button import Button
+from src.components.Checkbox import Checkbox
+
+from src.pages.choose_character.ChooseCharacter import ChooseCharacter
 
 from .Measurements import Measurements as meas
 
 
-def RegisterScreen(screen, mainClock):
-    # Function to validate input on Register
+def RegisterScreen(screen, mainClock, user):
+
+    # Function to validate input on Login
     def validate():
-        if len(input_nickname.text) < 8:
+        if len(input_nickname.text) < 4:
+            return False
+        if len(input_email.text) < 8:
             return False
         if len(input_password.text) < 8:
             return False
+        if len(input_age.text) < 1:
+            return False
         return True
 
-    isRunning = True
+    running = True
+
     image = ImageField(meas.graphic['x'], meas.graphic['y'],
                        meas.graphic['width'], meas.graphic['height'],
                        '../images/pages/register_screen/image_1.png', screen)
@@ -86,7 +95,7 @@ def RegisterScreen(screen, mainClock):
     label_signin = Label(meas.label_signup['text'], meas.header_tertiary_font, meas.text_color, screen,
                          meas.label_signup['x'], meas.label_signup['y'], meas.label_signup['anchor'])
 
-    while isRunning:
+    while running:
         screen.fill((255, 255, 255))
 
         logo.draw()
@@ -213,16 +222,22 @@ def RegisterScreen(screen, mainClock):
 
                 # 'Login' button
                 if bt_register.rect.collidepoint(event.pos):
-                    print("Register: ", input_nickname.text, input_email.text, input_password.text)
+                    sex = 'm' if cb_male.isSelected else 'f'
+                    print("Register: ", input_nickname.text, input_email.text, input_password.text, sex, input_age.text)
 
                     # Tutaj będzie wysyłanie requesta w celu zarejestrowania
                     if validate():
-                        pass
+                        if user.signup(input_email.text, input_password.text, input_nickname.text, sex, input_age.text):
+                            print("Redirect-> ChooseCharacter.py")
+                            ChooseCharacter(screen, mainClock, user)
+                            running = False
 
+                    else:
+                        print("Validation fail")
                 # 'Sign in' button
                 if bt_signin.rect.collidepoint(event.pos):
                     print("Redirect-> Login")
-                    isRunning = False
+                    running = False
 
         pygame.display.update()
         mainClock.tick(60)

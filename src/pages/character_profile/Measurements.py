@@ -117,7 +117,7 @@ class Measurements:
 
     labels_stats = [
         'strength', "intelligence", "dexterity", "constitution", "luck",
-        "protection", "hp", "persuasion", "trade", "leadership", "initiative"
+        "protection", "persuasion", "trade", "leadership", "initiative"
     ]
 
     label_stat_header = {
