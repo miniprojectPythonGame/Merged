@@ -4,13 +4,14 @@ from api.game_classes.creatures.statistics import Statistics
 
 
 class Item:
-    def __init__(self, name, price, description, statistics, for_class, item_id):
+    def __init__(self, name, price, description, statistics, for_class, item_id, available):
         self.price = price
         self.name = name
         self.description = description
         self.statistics = statistics
         self.for_class = for_class
         self.item_id = item_id
+        self.available = available
 
     def __str__(self):
         return '----------------------\nName: ' + self.name + '\nprice: ' + \
@@ -35,8 +36,8 @@ class ItemType(Enum):
 
 
 class Belt(Item):
-    def __init__(self, statistics: Statistics, name, price, description, for_class, item_id):
-        Item.__init__(self, name, price, description, statistics, for_class, item_id)
+    def __init__(self, statistics: Statistics, name, price, description, for_class, item_id, available):
+        Item.__init__(self, name, price, description, statistics, for_class, item_id, available)
 
     @classmethod
     def get_code(cls):
@@ -44,8 +45,8 @@ class Belt(Item):
 
 
 class Boots(Item):
-    def __init__(self, statistics: Statistics, name, price, description, for_class, item_id):
-        Item.__init__(self, name, price, description, statistics, for_class, item_id)
+    def __init__(self, statistics: Statistics, name, price, description, for_class, item_id, available):
+        Item.__init__(self, name, price, description, statistics, for_class, item_id, available)
 
     @classmethod
     def get_code(cls):
@@ -53,8 +54,8 @@ class Boots(Item):
 
 
 class Breastplate(Item):
-    def __init__(self, statistics: Statistics, name, price, description, for_class, item_id):
-        Item.__init__(self, name, price, description, statistics, for_class, item_id)
+    def __init__(self, statistics: Statistics, name, price, description, for_class, item_id, available):
+        Item.__init__(self, name, price, description, statistics, for_class, item_id, available)
 
     @classmethod
     def get_code(cls):
@@ -62,8 +63,8 @@ class Breastplate(Item):
 
 
 class Gloves(Item):
-    def __init__(self, statistics: Statistics, name, price, description, for_class, item_id):
-        Item.__init__(self, name, price, description, statistics, for_class, item_id)
+    def __init__(self, statistics: Statistics, name, price, description, for_class, item_id, available):
+        Item.__init__(self, name, price, description, statistics, for_class, item_id, available)
 
     @classmethod
     def get_code(cls):
@@ -71,8 +72,8 @@ class Gloves(Item):
 
 
 class Headgear(Item):
-    def __init__(self, statistics: Statistics, name, price, description, for_class, item_id):
-        Item.__init__(self, name, price, description, statistics, for_class, item_id)
+    def __init__(self, statistics: Statistics, name, price, description, for_class, item_id, available):
+        Item.__init__(self, name, price, description, statistics, for_class, item_id, available)
 
     @classmethod
     def get_code(cls):
@@ -80,8 +81,8 @@ class Headgear(Item):
 
 
 class LuckyItem(Item):
-    def __init__(self, statistics: Statistics, name, price, description, for_class, item_id):
-        Item.__init__(self, name, price, description, statistics, for_class, item_id)
+    def __init__(self, statistics: Statistics, name, price, description, for_class, item_id, available):
+        Item.__init__(self, name, price, description, statistics, for_class, item_id, available)
 
     @classmethod
     def get_code(cls):
@@ -89,8 +90,8 @@ class LuckyItem(Item):
 
 
 class Necklace(Item):
-    def __init__(self, statistics: Statistics, name, price, description, for_class, item_id):
-        Item.__init__(self, name, price, description, statistics, for_class, item_id)
+    def __init__(self, statistics: Statistics, name, price, description, for_class, item_id, available):
+        Item.__init__(self, name, price, description, statistics, for_class, item_id, available)
 
     @classmethod
     def get_code(cls):
@@ -98,8 +99,8 @@ class Necklace(Item):
 
 
 class Ring(Item):
-    def __init__(self, statistics: Statistics, name, price, description, for_class, item_id):
-        Item.__init__(self, name, price, description, statistics, for_class, item_id)
+    def __init__(self, statistics: Statistics, name, price, description, for_class, item_id, available):
+        Item.__init__(self, name, price, description, statistics, for_class, item_id, available)
 
     @classmethod
     def get_code(cls):
@@ -107,8 +108,9 @@ class Ring(Item):
 
 
 class Steed(Item):
-    def __init__(self, statistics: Statistics, name, price, description, for_class, item_id, additionalStorage=0):
-        Item.__init__(self, name, price, description, statistics, for_class, item_id)
+    def __init__(self, statistics: Statistics, name, price, description, for_class, item_id, available,
+                 additionalStorage=0):
+        Item.__init__(self, name, price, description, statistics, for_class, item_id, available)
         self.additionalStorage = additionalStorage  # in slots
 
     @classmethod
@@ -117,16 +119,16 @@ class Steed(Item):
 
 
 class PrimaryWeapon(Item):
-    def __init__(self, statistics: Statistics, name, price, description, for_class, item_id):
-        Item.__init__(self, name, price, description, statistics, for_class, item_id)
+    def __init__(self, statistics: Statistics, name, price, description, for_class, item_id, available):
+        Item.__init__(self, name, price, description, statistics, for_class, item_id, available)
         if for_class == "w":
-            self.min_dmg = statistics.strength*15
+            self.min_dmg = statistics.strength * 15
         elif for_class == "a":
-            self.min_dmg = statistics.dexterity*15
+            self.min_dmg = statistics.dexterity * 15
         elif for_class == "m":
-            self.min_dmg = statistics.intelligence*15
+            self.min_dmg = statistics.intelligence * 15
         else:
-            self.min_dmg = statistics.strength*5 + statistics.dexterity*5 + statistics.intelligence*5
+            self.min_dmg = statistics.strength * 5 + statistics.dexterity * 5 + statistics.intelligence * 5
 
         self.max_dmg = self.min_dmg * 10 * statistics.luck
 
@@ -136,8 +138,8 @@ class PrimaryWeapon(Item):
 
 
 class SecondaryWeapon(Item):
-    def __init__(self, statistics: Statistics, name, price, description, for_class, item_id):
-        Item.__init__(self, name, price, description, statistics, for_class, item_id)
+    def __init__(self, statistics: Statistics, name, price, description, for_class, item_id, available):
+        Item.__init__(self, name, price, description, statistics, for_class, item_id, available)
 
     @classmethod
     def get_code(cls):
@@ -145,8 +147,8 @@ class SecondaryWeapon(Item):
 
 
 class PotionPeriod(Item):
-    def __init__(self, statistics: Statistics, name, price, description, for_class, item_id, periodInDays=7):
-        Item.__init__(self, name, price, description, statistics, for_class, item_id)
+    def __init__(self, statistics: Statistics, name, price, description, for_class, item_id, available, periodInDays=7):
+        Item.__init__(self, name, price, description, statistics, for_class, item_id, available)
         self.periodInDays = periodInDays
 
     def use(self):
@@ -158,8 +160,8 @@ class PotionPeriod(Item):
 
 
 class PotionPermanent(Item):
-    def __init__(self, statistics: Statistics, name, price, description, for_class, item_id):
-        Item.__init__(self, name, price, description, statistics, for_class, item_id)
+    def __init__(self, statistics: Statistics, name, price, description, for_class, item_id, available):
+        Item.__init__(self, name, price, description, statistics, for_class, item_id, available)
 
     def use(self):
         pass
@@ -171,7 +173,7 @@ class PotionPermanent(Item):
 
 class ItemBuilder(object):
     @classmethod
-    def build_item(cls, item_id, item_info):
+    def build_item(cls, item_id, item_info, available=1):
         newStats = Statistics(item_info[7],
                               item_info[8],
                               item_info[9],
@@ -188,68 +190,68 @@ class ItemBuilder(object):
             newItem = Belt(newStats,
                            item_info[0],
                            item_info[1],
-                           item_info[2], item_info[6], item_id)
+                           item_info[2], item_info[6], item_id, available)
 
         elif item_info[4] == ItemType.Boots.value:
             newItem = Boots(newStats,
                             item_info[0],
                             item_info[1],
-                            item_info[2], item_info[6], item_id)
+                            item_info[2], item_info[6], item_id, available)
         elif item_info[4] == ItemType.Breastplate.value:
             newItem = Breastplate(newStats,
                                   item_info[0],
                                   item_info[1],
-                                  item_info[2], item_info[6], item_id)
+                                  item_info[2], item_info[6], item_id, available)
         elif item_info[4] == ItemType.Gloves.value:
             newItem = Gloves(newStats,
                              item_info[0],
                              item_info[1],
-                             item_info[2], item_info[6], item_id)
+                             item_info[2], item_info[6], item_id, available)
         elif item_info[4] == ItemType.Headgear.value:
             newItem = Headgear(newStats,
                                item_info[0],
                                item_info[1],
-                               item_info[2], item_info[6], item_id)
+                               item_info[2], item_info[6], item_id, available)
         elif item_info[4] == ItemType.LuckyItem.value:
             newItem = LuckyItem(newStats,
                                 item_info[0],
                                 item_info[1],
-                                item_info[2], item_info[6], item_id)
+                                item_info[2], item_info[6], item_id, available)
         elif item_info[4] == ItemType.Necklace.value:
             newItem = Necklace(newStats,
                                item_info[0],
                                item_info[1],
-                               item_info[2], item_info[6], item_id)
+                               item_info[2], item_info[6], item_id, available)
         elif item_info[4] == ItemType.Ring.value:
             newItem = Ring(newStats,
                            item_info[0],
                            item_info[1],
-                           item_info[2], item_info[6], item_id)
+                           item_info[2], item_info[6], item_id, available)
         elif item_info[4] == ItemType.Steed.value:
             newItem = Steed(newStats,
                             item_info[0],
                             item_info[1],
-                            item_info[2], item_info[6], item_id)
+                            item_info[2], item_info[6], item_id, available)
         elif item_info[4] == ItemType.PrimaryWeapon.value:
             newItem = PrimaryWeapon(newStats,
                                     item_info[0],
                                     item_info[1],
-                                    item_info[2], item_info[6], item_id)
+                                    item_info[2], item_info[6], item_id, available)
         elif item_info[4] == ItemType.SecondaryWeapon.value:
             newItem = SecondaryWeapon(newStats,
                                       item_info[0],
                                       item_info[1],
-                                      item_info[2], item_info[6], item_id)
+                                      item_info[2], item_info[6], item_id, available)
         elif item_info[4] == ItemType.PotionPeriod.value:
             newItem = PotionPeriod(newStats,
                                    item_info[0],
                                    item_info[1],
-                                   item_info[2], item_info[6], item_id)
+                                   item_info[2], item_info[6], item_id, available)
         elif item_info[4] == ItemType.PotionPermanent.value:
             newItem = PotionPermanent(newStats,
                                       item_info[0],
                                       item_info[1],
-                                      item_info[2], item_info[6], item_id)
+                                      item_info[2], item_info[6], item_id, available)
         else:
             newItem = -1
 

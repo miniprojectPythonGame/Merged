@@ -26,19 +26,20 @@ class Eq:
         try:
             conn, cursor = connect_to_db()
             cursor.execute(
-                "SELECT i.item_id, i.item_type_id, s.item_slot_id,s.amount,s.available,i.for_class "
+                "SELECT i.item_id,s.available,s.item_slot_id "
                 "FROM storage s join items i on s.item_id = i.item_id where hero_id = %s;",
                 (self.hero_id,))
             storage = cursor.fetchall()
             for item in storage:
                 item_id = item[0]
+                available = item[1]
                 cursor.execute(
                     "SELECT I.name,I.price,I.description,I.only_treasure,I.item_type_id,I.min_lvl,I.for_class,s.strength,"
                     "s.intelligence,s.dexterity,s.constitution,s.luck,s.persuasion,s.trade,s.leadership,s.protection,s.initiative"
                     " FROM items I JOIN statistics s on s.statistics_id = I.statistics_id WHERE I.item_id = %s;",
                     (item_id,))
 
-                self.itemSlots[item[2]] = ItemBuilder.build_item(item_id, cursor.fetchall()[0])
+                self.itemSlots[item[2]] = ItemBuilder.build_item(item_id, cursor.fetchall()[0], available)
             disconnect_from_db(conn, cursor)
         except Exception as error:
             print(error)
@@ -99,7 +100,7 @@ class Eq:
             print(error)
             return False
 
-    def sell_item(self, itemSlots_id):
+    def sell_item_to_shop(self, itemSlots_id):
         earned_money = self.itemSlots[itemSlots_id].price
         if self.__remove_from_storage(itemSlots_id):
             try:
@@ -114,7 +115,7 @@ class Eq:
                 return False
         return False
 
-    def add_item(self, item: Item):
+    def add_item(self, item: Item): #todo wtf is that
         if item is not False:
             try:
                 conn, cursor = connect_to_db()
