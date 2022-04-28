@@ -63,7 +63,7 @@ class User:
             for i in from_heroes:
                 cursor.execute("SELECT * FROM STATISTICS WHERE STATISTICS_ID = %s", (i[7],))
                 s = cursor.fetchall()[0]
-                self.Heroes[i[2]] = Hero(i[0], i[6], i[3], s[1], s[2], s[3], s[4], s[5], s[6], s[7], s[8], s[9],
+                self.Heroes[i[2]] = Hero(i[11], i[0], i[6], i[3], s[1], s[2], s[3], s[4], s[5], s[6], s[7], s[8], s[9],
                                          s[10], i[4], i[5], i[10], i[9], i[2], i[7])
             disconnect_from_db(conn, cursor)
         except Exception as error:
@@ -99,20 +99,20 @@ class User:
         else:
             print("User not logged in - nothing to remove")
 
-    def createHero(self, name, className, strength, intelligence, dexterity, constitution,
+    def createHero(self, avatar_id, name, className, strength, intelligence, dexterity, constitution,
                    luck, persuasion, trade, leadership, protection, initiative):
         # className in ('a','w','m')
-
-        newHero = Hero(name, className, 0, strength, intelligence, dexterity, constitution,
-                       luck, persuasion, trade, leadership, protection, initiative)
         try:
             conn, cursor = connect_to_db()
-            cursor.execute("SELECT add_hero(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",
-                           (name, self.UID, className, strength, intelligence, dexterity, constitution,
+            cursor.execute("SELECT add_hero(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",
+                           (avatar_id, name, self.UID, className, strength, intelligence, dexterity, constitution,
                             luck, persuasion, trade, leadership, protection, initiative))
             conn.commit()
-            self.Heroes[int(cursor.fetchall()[0])] = newHero
             disconnect_from_db(conn, cursor)
+            newHero = Hero(avatar_id, name, className, 0, strength, intelligence, dexterity, constitution,
+                           luck, persuasion, trade, leadership, protection, initiative)
+            self.Heroes[int(cursor.fetchall()[0])] = newHero
+
         except Exception as error:
             print(error)
 
@@ -126,7 +126,8 @@ class User:
             for i in from_heroes:
                 cursor.execute("SELECT * FROM STATISTICS WHERE STATISTICS_ID = %s", (i[7],))
                 s = cursor.fetchall()[0]
-                all_existing_heroes[i[2]] = Hero(i[0], i[6], i[3], s[1], s[2], s[3], s[4], s[5], s[6], s[7], s[8], s[9],
+                all_existing_heroes[i[2]] = Hero(i[11], i[0], i[6], i[3], s[1], s[2], s[3], s[4], s[5], s[6], s[7],
+                                                 s[8], s[9],
                                                  s[10], i[4], i[5], i[10], i[9], i[2], i[7])
             disconnect_from_db(conn, cursor)
             return all_existing_heroes
@@ -139,8 +140,8 @@ if __name__ == "__main__":
     tmp = User()
     # tmp.signup('test@gmail.com', 'alamakota', 'Viciooo', 'm', 21)
     tmp.login('konto@gmail.com', 'alamakota')
-    # tmp.createHero('testx', 'w', 1, 1, 1, 1, 1, 1, 1, 1, 1, 1)
-    tmp.chooseHero(20)
+    # tmp.createHero(2,'test_avatar_id', 'w', 1, 1, 1, 1, 1, 1, 1, 1, 1, 1)
+    # tmp.chooseHero(20)
     # tmp.currentHero.add_to_statistics('dexterity')
     # tmp.currentHero.add_to_statistics('luck')
     # print(tmp.currentHero)
@@ -151,5 +152,5 @@ if __name__ == "__main__":
     # tmp.currentHero.buy_from_shop(0, 2)
     # tmp.currentHero.buy_from_shop(0, 3)
     # tmp.currentHero.buy_from_shop(0, 4)
-    # for i in User.getAllExistingHeroes().values():
-    #     print(i)
+    for i in User.getAllExistingHeroes().values():
+        print(i)

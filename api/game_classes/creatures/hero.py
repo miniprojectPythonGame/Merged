@@ -14,7 +14,7 @@ from api.web.WebService import *
 
 
 class Hero(Creature):
-    def __init__(self, name, className, gold=0, strength=None, intelligence=None,
+    def __init__(self, avatar_id, name, className, gold=0, strength=None, intelligence=None,
                  dexterity=None,
                  constitution=None, luck=None, persuasion=None, trade=None, leadership=None, protection=None,
                  initiative=None, lvl=None, exp=None, expToNextLvl=None, freeDevelopmentPts=None, hero_id=None,
@@ -23,6 +23,7 @@ class Hero(Creature):
         Creature.__init__(self, name, className, lvl, strength, intelligence, dexterity,
                           constitution, luck, persuasion, trade, leadership, protection,
                           initiative, freeDevelopmentPts)
+        self.avatar_id = avatar_id
         self.hero_id = hero_id
         self.eq = Eq(hero_id, className, gold)
         self.statistics_id = statistics_id
@@ -43,7 +44,8 @@ class Hero(Creature):
         self.mercenaryShop = MercenaryShop(hero_id)  # TODO to be done in the future
 
     def __str__(self):
-        return "| hero_id: " + str(self.hero_id) + "| Hero name: " + self.name + "| exp: " + str(self.exp) + \
+        return "| avatar_id: " + str(self.avatar_id) + "| hero_id: " + str(
+            self.hero_id) + "| Hero name: " + self.name + "| exp: " + str(self.exp) + \
                "| exp to next lvl: " + str(self.expToNextLvl) + "| lvl: " + str(self.lvl) + " | class: " + \
                str(self.heroClass) + " |\n-----------------------\n" + \
                str(self.heroClass.statistics) + "\n-----------------------\n"
