@@ -12,10 +12,10 @@ class Item:
         self.for_class = for_class
         self.item_id = item_id
 
-    def __str__(self):
-        return '----------------------\nName: ' + self.name + '\nprice: ' + \
-               str(self.price) + '\ndescription: ' + self.description + \
-               '\nitem_id: ' + str(self.item_id) + '\n----------------------'
+    # def __str__(self):
+    #     return '----------------------\nName: ' + self.name + '\nprice: ' + \
+    #            str(self.price) + '\ndescription: ' + self.description + \
+    #            '\nitem_id: ' + str(self.item_id) + '\n----------------------'
 
 
 class ItemType(Enum):

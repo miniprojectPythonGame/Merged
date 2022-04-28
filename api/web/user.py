@@ -135,7 +135,6 @@ class User:
             print(error)
             return -1
 
-
 if __name__ == "__main__":
     tmp = User()
     # tmp.signup('test@gmail.com', 'alamakota', 'Viciooo', 'm', 21)

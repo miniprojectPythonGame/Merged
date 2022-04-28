@@ -62,6 +62,11 @@ class InputField:
             self.isEmpty = True
             self.visibleText = self.placeholder
 
+    def reset(self):
+        self.text = ''
+        self.visibleText = self.placeholder
+        self.isEmpty = True
+
     def activate(self):
         self.active = True
         self.color = self.color_active

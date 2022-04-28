@@ -37,13 +37,13 @@ class Statistics:
         self.protection = randint(0, 50)
         self.hp = self.constitution * 100
 
-    def __str__(self):
-        return 'strength: ' + str(self.strength) + '\n' + 'intelligence: ' + str(self.intelligence) + \
-               '\n' + 'dexterity: ' + str(self.dexterity) + '\n' + 'constitution: ' + str(self.constitution) + \
-               '\n' + 'luck: ' + str(self.luck) + '\n' + 'persuasion: ' + str(self.persuasion) + \
-               '\n' + 'trade: ' + str(self.trade) + '\n' + 'leadership: ' + str(self.leadership) + \
-               '\n' + 'protection: ' + str(self.protection) + '\n' + 'initiative: ' + str(self.initiative) + \
-               '\n' + 'hp: ' + str(self.hp)
+    # def __str__(self):
+    #     return 'strength: ' + str(self.strength) + '\n' + 'intelligence: ' + str(self.intelligence) + \
+    #            '\n' + 'dexterity: ' + str(self.dexterity) + '\n' + 'constitution: ' + str(self.constitution) + \
+    #            '\n' + 'luck: ' + str(self.luck) + '\n' + 'persuasion: ' + str(self.persuasion) + \
+    #            '\n' + 'trade: ' + str(self.trade) + '\n' + 'leadership: ' + str(self.leadership) + \
+    #            '\n' + 'protection: ' + str(self.protection) + '\n' + 'initiative: ' + str(self.initiative) + \
+    #            '\n' + 'hp: ' + str(self.hp)
 
     def __add__(self, other):
         strength = self.strength + other.strength

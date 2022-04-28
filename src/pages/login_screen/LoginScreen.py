@@ -2,6 +2,7 @@ import pygame
 import sys
 from pygame.locals import *
 
+from api.web.user import User
 from src.components.InputField import InputField
 from src.components.ImageField import ImageField
 from src.components.Label import Label
@@ -11,22 +12,20 @@ from src.components.Checkbox import Checkbox
 
 from src.pages.register_screen.RegisterScreen import RegisterScreen
 from src.pages.choose_character.ChooseCharacter import ChooseCharacter
-#
-# from src.web.WebService import *
 
 from .Measurements import Measurements as meas
 
 def LoginScreen(screen, mainClock):
-    #
-    # user = User()
+
+    user = User()
 
     # Function to validate input on Login
-    # def validate():
-    #     if len(input_nickname.text) < 8:
-    #         return False
-    #     if len(input_password.text) < 8:
-    #         return False
-    #     return True
+    def validate():
+        if len(input_nickname.text) < 8:
+            return False
+        if len(input_password.text) < 8:
+            return False
+        return True
 
     image = ImageField(meas.graphic['x'], meas.graphic['y'],
                        meas.graphic['width'], meas.graphic['height'],
@@ -153,16 +152,21 @@ def LoginScreen(screen, mainClock):
                 if bt_login.rect.collidepoint(event.pos):
                     print("Login: ", input_nickname.text, input_password.text, cb_remember.isSelected)
                     # For tests use:
-                    # login: konto@gmail.com
-                    # password: alamakota
-                    # if validate() and user.login(input_nickname.text,input_password.text):
-                    ChooseCharacter(screen, mainClock)
+                    if validate():
+                        if user.login(input_nickname.text, input_password.text):
+                            input_nickname.reset()
+                            input_password.reset()
+                            ChooseCharacter(screen, mainClock, user)
+                        else:
+                            print("Login fail")
+                    else:
+                        print("Validation fail")
 
 
                  # 'Sign up' button
                 if bt_signup.rect.collidepoint(event.pos):
                     print("Redirect-> Register")
-                    RegisterScreen(screen, mainClock)
+                    RegisterScreen(screen, mainClock, user)
 
 
         pygame.display.update()

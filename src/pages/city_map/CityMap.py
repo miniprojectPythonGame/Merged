@@ -15,7 +15,7 @@ from src.pages.weapon_shop.WeaponShop import WeaponShop
 from src.pages.quests.Tavern import Tavern
 
 
-def CityMap(screen, mainClock):
+def CityMap(screen, mainClock, user):
 
     showHand = False
     running = True
@@ -124,7 +124,7 @@ def CityMap(screen, mainClock):
                     # CHARACTER PROFILE
                     if navbar.bt_profile.rect.collidepoint(event.pos):
                         print("Redirecting: CityMap.py -> Character Profile.py")
-                        CharacterProfile(screen, mainClock)
+                        CharacterProfile(screen, mainClock, user)
 
                     # SETTINGS
                     if navbar.bt_settings.rect.collidepoint(event.pos):
@@ -134,6 +134,7 @@ def CityMap(screen, mainClock):
                     # LOGOUT
                     if navbar.bt_logout.rect.collidepoint(event.pos):
                         print("Logout: CityMap.py -> ChooseCharacter.py")
+                        user.logout()
                         running = False
 
 
