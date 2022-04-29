@@ -56,6 +56,8 @@ class Eq:
                     self.__changeEqItem(a, b)
                 elif b <= 10:
                     self.__changeEqItem(b, a)
+                else:
+                    self.itemSlots[a], self.itemSlots[b] = self.itemSlots[b], self.itemSlots[a]
 
                 disconnect_from_db(conn, cursor)
         except Exception as error:
@@ -115,7 +117,7 @@ class Eq:
                 return False
         return False
 
-    def add_item(self, item: Item): #todo wtf is that
+    def add_item(self, item: Item):  # todo wtf is that
         if item is not False:
             try:
                 conn, cursor = connect_to_db()

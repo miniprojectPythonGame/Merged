@@ -186,6 +186,9 @@ class ItemBuilder(object):
                               item_info[16],
                               )
 
+        # dict_ = {}
+        # dict to rozwiąrze
+
         if item_info[4] == ItemType.Belt.value:
             newItem = Belt(newStats,
                            item_info[0],
