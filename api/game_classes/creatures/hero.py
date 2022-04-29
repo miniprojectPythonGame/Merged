@@ -177,3 +177,6 @@ class Hero(Creature):
 
     def init_fight_with_other_hero(self, enemy):
         Battle.hero_vs_hero(self, enemy)
+
+    def get_statistics(self):
+        return self.heroClass.statistics + self.eq.gearStatistics

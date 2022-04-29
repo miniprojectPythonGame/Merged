@@ -9,7 +9,7 @@ class Eq:
     def __init__(self, hero_id, className, gold):
         self.hero_id = hero_id
         self.itemSlots = [None] * 31
-        self.gearStatistics = Statistics()
+        self.gearStatistics = Statistics() # dodawanie gear_statistics do statistics
         self.className = className
         self.gold = gold
         self.get_storage()
