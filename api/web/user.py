@@ -72,6 +72,9 @@ class User:
     def chooseHero(self, hero_id):
         self.currentHero = self.Heroes[hero_id]
 
+    def deselectHero(self):
+        self.currentHero = None
+
     def removeHero(self, hero_id):
         try:
             conn, cursor = connect_to_db()

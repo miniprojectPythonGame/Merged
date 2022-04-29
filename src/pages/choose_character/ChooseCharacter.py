@@ -135,9 +135,10 @@ def ChooseCharacter(screen, mainClock, user):
                         curr_key = characters[curr_index]['key']
                     else:
                         user.chooseHero(characters[curr_index]['key'])
-                        CityMap(screen, mainClock, user)
+                        # if swap -> true, so it goes on
+                        # if logout -> false, so will stop
+                        running = CityMap(screen, mainClock, user)
                         print("Logout: ChooseCharacter.py -> LoginPage.py")
-                        running = False
 
         pygame.display.update()
         mainClock.tick(60)

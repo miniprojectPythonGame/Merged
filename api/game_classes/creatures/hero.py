@@ -43,12 +43,12 @@ class Hero(Creature):
         self.market = Market(hero_id)  # TODO to be done in the future
         self.mercenaryShop = MercenaryShop(hero_id)  # TODO to be done in the future
 
-    # def __str__(self):
-    #     return "| avatar_id: " + str(self.avatar_id) + "| hero_id: " + str(
-    #         self.hero_id) + "| Hero name: " + self.name + "| exp: " + str(self.exp) + \
-    #            "| exp to next lvl: " + str(self.expToNextLvl) + "| lvl: " + str(self.lvl) + " | class: " + \
-    #            str(self.heroClass) + " |\n-----------------------\n" + \
-    #            str(self.heroClass.statistics) + "\n-----------------------\n"
+    def __str__(self):
+        return "| avatar_id: " + str(self.avatar_id) + "| hero_id: " + str(
+            self.hero_id) + "| Hero name: " + self.name + "| exp: " + str(self.exp) + \
+               "| exp to next lvl: " + str(self.expToNextLvl) + "| lvl: " + str(self.lvl) + " | class: " + \
+               str(self.heroClass) + " |\n-----------------------\n" + \
+               str(self.heroClass.statistics) + "\n-----------------------\n"
 
     def addExp(self, expOfOther):
         exp_to_add = floor(expOfOther * randint(1, 26) / 100)

@@ -19,6 +19,7 @@ def CityMap(screen, mainClock, user):
 
     showHand = False
     running = True
+    swapHero = False
 
     img_map = ImageField(meas.img_map['x'], meas.img_map['y'],
                          meas.img_map['width'], meas.img_map['height'],
@@ -131,6 +132,13 @@ def CityMap(screen, mainClock, user):
                         print("Redirecting: CityMap.py -> Settings.py")
                         Settings(screen, mainClock)
 
+                    # SWAP HERO
+                    if navbar.bt_swap_hero.rect.collidepoint(event.pos):
+                        print("Swap Hero: CityMap.py -> ChooseCharacter.py")
+                        user.deselectHero()
+                        running = False
+                        swapHero = True
+
                     # LOGOUT
                     if navbar.bt_logout.rect.collidepoint(event.pos):
                         print("Logout: CityMap.py -> ChooseCharacter.py")
@@ -159,3 +167,5 @@ def CityMap(screen, mainClock, user):
 
         pygame.display.update()
         mainClock.tick(60)
+
+    return swapHero

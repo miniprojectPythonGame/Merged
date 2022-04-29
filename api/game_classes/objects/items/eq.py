@@ -8,7 +8,7 @@ from api.web.WebService import connect_to_db, disconnect_from_db
 class Eq:
     def __init__(self, hero_id, className, gold):
         self.hero_id = hero_id
-        self.itemSlots = [None] * 31
+        self.itemSlots = [None] * 31 # od 0 do 10 to itemy w eq według itemtype'u
         self.gearStatistics = Statistics() # dodawanie gear_statistics do statistics
         self.className = className
         self.gold = gold

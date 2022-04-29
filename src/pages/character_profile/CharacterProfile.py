@@ -10,9 +10,9 @@ from src.components.PopupItem import PopupItem
 from src.components.SwitchCards import SwitchCards
 from src.components.Container import Container
 
-from .Measurements import Measurements as meas
+from api.game_classes.objects.items.item import ItemType
 
-from src.globals.mock_data import character_2
+from .Measurements import Measurements as meas
 
 def CharacterProfile(screen, mainClock, user):
 
@@ -49,11 +49,45 @@ def CharacterProfile(screen, mainClock, user):
                         meas.ig_backpack['cols'], meas.ig_backpack['amount'], screen,
                         character['backpacks'][backpack_active], active=active_item)
 
+    def getItemCategory(item_type):
+        armors = ['belt', 'boots', 'breastplate', 'gloves', 'headgear']
+        magic = ['luckyitem', 'necklace', 'ring', 'sceptre']
+
+        if item_type in armors:
+            return "armor"
+
+        if item_type in magic:
+            return "magic"
+
+        return "weapon"
+
+    def getEqItem(items, type):
+        result = {}
+        item_type = str(type(items[type]).__name__).lower()
+
+        if items[type]:
+            result = {
+                "name": 'Leather Belt',
+                "img_path": '../images/items/' + getItemCategory(item_type) + '/' + item_type + '.png',
+                "type": 'common',
+            }
+        else:
+            result = {
+                "name": "empty",
+                "img_path": '../images/items/armor/belt.png',
+                "type": "empty",
+            }
+
+        return result
+
     running = True
     curr_item_in_popup = ''
     backpack_active = 0
-    active_item = -1
-    statistics = user.currentHero.heroClass.statistics
+    active_item = {
+        "from": -1,
+        "to": -1
+    }
+    statistics = user.currentHero.get_statistics()
 
     for item in user.currentHero.eq.itemSlots:
         if item:
@@ -81,18 +115,18 @@ def CharacterProfile(screen, mainClock, user):
         "exp": user.currentHero.exp,
         "expToNextLvl": user.currentHero.expToNextLvl,
         "eq": {
-            "helmet": None,
-            "chestplate": None,
-            "gloves": None,
-            "boots": None,
-            "necklace": None,
+            "helmet": getEqItem(user.currentHero.eq.itemSlots, ItemType.Headgear),
+            "chestplate": getEqItem(user.currentHero.eq.itemSlots, ItemType.Headgear),
+            "gloves": getEqItem(user.currentHero.eq.itemSlots, ItemType.Headgear),
+            "boots": getEqItem(user.currentHero.eq.itemSlots, ItemType.Headgear),
+            "necklace": getEqItem(user.currentHero.eq.itemSlots, ItemType.Headgear),
             "belt": {
                 "name": 'Leather Belt',
                 "img_path": '../images/items/armor/belt.png',
                 "type": 'common',
             },
-            "ring": None,
-            "artefact": None,
+            "ring": getEqItem(user.currentHero.eq.itemSlots, ItemType.Headgear),
+            "artefact": getEqItem(user.currentHero.eq.itemSlots, ItemType.Headgear),
         },
         "backpacks": [
             backpack
@@ -110,8 +144,6 @@ def CharacterProfile(screen, mainClock, user):
             "initiative": statistics.initiative,
         }
     }
-
-
 
     label_page = Label(meas.label_page['text'], meas.label_page['font'], meas.label_page['color'],
                        screen, meas.label_page['x'], meas.label_page['y'], meas.label_page['anchor'])

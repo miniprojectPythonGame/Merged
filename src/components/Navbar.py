@@ -31,7 +31,7 @@ bt_profile = {
     "y": navbar_padding_vert,
     "width": buttons_size,
     "height": buttons_size,
-    "path": '../images/icons/user_white.png',
+    "path": '../images/icons/navbar/user_white.png',
 }
 
 # BUTTON: Settings
@@ -41,7 +41,7 @@ bt_settings = {
     "y": 2 * navbar_padding_vert + buttons_size,
     "width": buttons_size,
     "height": buttons_size,
-    "path": '../images/icons/settings_white.png',
+    "path": '../images/icons/navbar/settings_white.png',
 }
 
 # BUTTON: World map
@@ -51,7 +51,17 @@ bt_world_map = {
     "y": 3 * navbar_padding_vert + 2 * buttons_size,
     "width": buttons_size,
     "height": buttons_size,
-    "path": '../images/icons/map_white.png',
+    "path": '../images/icons/navbar/map_white.png',
+}
+
+# BUTTON: Swap hero
+bt_swap_hero = {
+    "color": ColorSchemes(),
+    "x": navbar_padding_hori,
+    "y": 4 * navbar_padding_vert + 3 * buttons_size,
+    "width": buttons_size,
+    "height": buttons_size,
+    "path": '../images/icons/navbar/swap_hero.png',
 }
 
 # BUTTON: Logout
@@ -61,7 +71,7 @@ bt_logout = {
     "y": navbar_height - (navbar_padding_vert + buttons_size),
     "width": buttons_size,
     "height": buttons_size,
-    "path": '../images/icons/logout.png',
+    "path": '../images/icons/navbar/logout.png',
 }
 
 
@@ -84,6 +94,9 @@ class Navbar():
         self.bt_world_map = Button(bt_world_map['color'], bt_world_map['x'], bt_world_map['y'],
                                    bt_world_map['width'], bt_world_map['height'], self.screen,
                                    path=bt_world_map['path'])
+        self.bt_swap_hero = Button(bt_swap_hero['color'], bt_swap_hero['x'], bt_swap_hero['y'],
+                                   bt_swap_hero['width'], bt_swap_hero['height'], self.screen,
+                                   path=bt_swap_hero['path'])
         self.bt_logout = Button(bt_logout['color'], bt_logout['x'], bt_logout['y'],
                                    bt_logout['width'], bt_logout['height'], self.screen,
                                    path=bt_logout['path'])
@@ -93,4 +106,5 @@ class Navbar():
         self.bt_profile.draw()
         self.bt_settings.draw()
         self.bt_world_map.draw()
+        self.bt_swap_hero.draw()
         self.bt_logout.draw()
