@@ -7,35 +7,38 @@ from src.components.Button import Button
 
 from src.components.CharacterSlider import CharacterSlider
 from .Measurements import Measurements as meas
-from src.globals.mock_data import createNew as createNew
 
 from src.pages.create_character.CreateCharacter import CreateCharacter
 from src.pages.city_map.CityMap import CityMap
 
+from src.globals.const_values import *
+
 
 def ChooseCharacter(screen, mainClock, user):
-    print(user.Heroes)
 
-    for key in user.Heroes.keys():
-        print(user.Heroes[key].heroClass)
+    def getCharacters(heroes):
+        return [{
+                    "key": key,
+                    "name": heroes[key].name,
+                    "spec": str(heroes[key].heroClass),
+                    "level": heroes[key].lvl,
+                    "img": getRectAvatarPath(
+                        str(heroes[key].heroClass).lower(),
+                        str(heroes[key].avatar_id)
+                    ),
+                } for key in heroes.keys()]
 
+    characters = getCharacters(user.Heroes)
     running = True
-
-    label_page = Label(meas.label_page['text'], meas.label_page['font'], meas.label_page['color'], screen,
-                       meas.label_page['x'], meas.label_page['y'], meas.label_page['anchor'])
-
-    characters = [{
-        "key": key,
-        "name": user.Heroes[key].name,
-        "spec": str(user.Heroes[key].heroClass),
-        "level": user.Heroes[key].lvl,
-        "img": '../images/characters/' + str(user.Heroes[key].heroClass).lower() + '_' + str(user.Heroes[key].avatar_id) + '_rect.jpg',
-    } for key in user.Heroes.keys()]
-
     curr_index = 1
     curr_key = characters[curr_index]['key']
 
-    cs_characters = CharacterSlider(characters + [createNew], screen)
+
+    # Components
+    label_page = Label(meas.label_page['text'], meas.label_page['font'], meas.label_page['color'], screen,
+                       meas.label_page['x'], meas.label_page['y'], meas.label_page['anchor'])
+
+    cs_characters = CharacterSlider(characters + [CREATE_NEW_CHARACTER], screen)
 
     bt_prev = Button(meas.bt_prev['color'], meas.bt_prev['x'], meas.bt_prev['y'],
                      meas.bt_prev['width'], meas.bt_prev['height'], screen,
@@ -103,16 +106,9 @@ def ChooseCharacter(screen, mainClock, user):
 
                 if bt_delete.rect.collidepoint(event.pos):
                     user.removeHero(curr_key)
-                    characters = [{
-                        "key": key,
-                        "name": user.Heroes[key].name,
-                        "spec": str(user.Heroes[key].heroClass),
-                        "level": user.Heroes[key].lvl,
-                        "img": '../images/characters/' + str(user.Heroes[key].heroClass).lower() + '_' + str(
-                            user.Heroes[key].avatar_id) + '_rect.jpg',
-                    } for key in user.Heroes.keys()]
+                    characters = getCharacters(user.Heroes)
 
-                    cs_characters = CharacterSlider(characters + [createNew], screen)
+                    cs_characters = CharacterSlider(characters + [CREATE_NEW_CHARACTER], screen)
                     curr_index = 1
                     curr_key = characters[curr_index]['key']
 
@@ -121,24 +117,14 @@ def ChooseCharacter(screen, mainClock, user):
                         CreateCharacter(screen, mainClock, user)
                         user.getHeroes()
 
-                        characters = [{
-                            "key": key,
-                            "name": user.Heroes[key].name,
-                            "spec": str(user.Heroes[key].heroClass),
-                            "level": user.Heroes[key].lvl,
-                            "img": '../images/characters/' + str(user.Heroes[key].heroClass).lower() + '_' + str(
-                                user.Heroes[key].avatar_id) + '_rect.jpg',
-                        } for key in user.Heroes.keys()]
+                        characters = getCharacters(user.Heroes)
 
-                        cs_characters = CharacterSlider(characters + [createNew], screen)
+                        cs_characters = CharacterSlider(characters + [CREATE_NEW_CHARACTER], screen)
                         curr_index = 1
                         curr_key = characters[curr_index]['key']
                     else:
                         user.chooseHero(characters[curr_index]['key'])
-                        # if swap -> true, so it goes on
-                        # if logout -> false, so will stop
                         running = CityMap(screen, mainClock, user)
-                        print("Logout: ChooseCharacter.py -> LoginPage.py")
 
         pygame.display.update()
         mainClock.tick(60)

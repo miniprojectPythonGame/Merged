@@ -20,6 +20,10 @@ class CharacterEquipment:
         for key in self.character:
             self.character[key].draw()
 
+    def reloadCharacter(self, new_ref):
+        self.character_ref = new_ref
+        self.character = self.initateEquipment()
+
     def getColor(self, object):
         fill_colors = ColorSchemes()
 
@@ -74,16 +78,16 @@ class CharacterEquipment:
                                 str(self.character_ref['health']) + " HP",
                                 self.font, self.color.primary, self.color.health, self.screen)
 
-        ib_helmet = ItemBox(x,
+        ib_headgear= ItemBox(x,
                             y + itembox_padding,
                             itembox_size, itembox_size, self.screen,
-                            path=EQ_PLACEHOLDERS['helmet'], offset=itembox_offset,
+                            path=EQ_PLACEHOLDERS['headgear'], offset=itembox_offset,
                             border_radius=itembox_border_radius)
 
-        ib_chestplate = ItemBox(x,  # x
+        ib_breastplate = ItemBox(x,  # x
                                 y + 2 * itembox_padding + itembox_size,  # y
                                 itembox_size, itembox_size, self.screen,
-                                path=EQ_PLACEHOLDERS['chestplate'], offset=itembox_offset,
+                                path=EQ_PLACEHOLDERS['breastplate'], offset=itembox_offset,
                                 border_radius=itembox_border_radius)
 
         ib_gloves = ItemBox(x,  # x
@@ -118,22 +122,22 @@ class CharacterEquipment:
                           path=EQ_PLACEHOLDERS['ring'], offset=itembox_offset,
                           border_radius=itembox_border_radius)
 
-        ib_artefact = ItemBox(x + 2 * itembox_padding + itembox_size + avatar_width,  # x,
+        ib_lucky_item = ItemBox(x + 2 * itembox_padding + itembox_size + avatar_width,  # x,
                               y + 4 * itembox_padding + 3 * itembox_size,  # y,
                               itembox_size, itembox_size, self.screen,
-                              path=EQ_PLACEHOLDERS['artefact'], offset=itembox_offset,
+                              path=EQ_PLACEHOLDERS['lucky_item'], offset=itembox_offset,
                               border_radius=itembox_border_radius)
 
-        ib_sword = ItemBox(x + itembox_size + itembox_padding,  # x
+        ib_primary_weapon = ItemBox(x + itembox_size + itembox_padding,  # x
                            y + avatar_height + 2 * itembox_padding + 2 * property_bar_height,  # y
                            itembox_size, itembox_size, self.screen,
-                           path=EQ_PLACEHOLDERS['sword'], offset=itembox_offset,
+                           path=EQ_PLACEHOLDERS['primary_weapon'], offset=itembox_offset,
                            border_radius=itembox_border_radius)
 
-        ib_shield = ItemBox(x + itembox_padding + avatar_width,  # x
+        ib_secondary_weapon = ItemBox(x + itembox_padding + avatar_width,  # x
                             y + avatar_height + 2 * itembox_padding + 2 * property_bar_height,  # y
                             itembox_size, itembox_size, self.screen,
-                            path=EQ_PLACEHOLDERS['shield'], offset=itembox_offset,
+                            path=EQ_PLACEHOLDERS['secondary_weapon'], offset=itembox_offset,
                             border_radius=itembox_border_radius)
 
         return {
@@ -141,14 +145,14 @@ class CharacterEquipment:
             "img_avatar": img_avatar,
             "pb_level": pb_level,
             "pb_health": pb_health,
-            "ib_helmet": ib_helmet,
-            "ib_chestplate": ib_chestplate,
+            "ib_headgear": ib_headgear,
+            "ib_breastplate": ib_breastplate,
             "ib_gloves": ib_gloves,
             "ib_boots": ib_boots,
             "ib_belt": ib_belt,
             "ib_necklace": ib_necklace,
             "ib_ring": ib_ring,
-            "ib_artefact": ib_artefact,
-            "ib_sword": ib_sword,
-            "ib_shield": ib_shield,
+            "ib_lucky_item": ib_lucky_item,
+            "ib_primary_weapon": ib_primary_weapon,
+            "ib_secondary_weapon": ib_secondary_weapon,
         }

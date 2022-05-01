@@ -32,7 +32,7 @@ class Measurements:
     ig_item_size = 70
     ig_item_padding = 10
     ig_cols = 4
-    ig_amount = 24
+    ig_amount = 20
     ig_rows = round(ig_amount / ig_cols)
     ig_button_height = 25
 

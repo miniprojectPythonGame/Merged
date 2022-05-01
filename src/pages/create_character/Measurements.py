@@ -61,7 +61,6 @@ class Measurements:
         'y': margin,
         'width': preview_size,
         'height': preview_size,
-        "path": warrior_avatars[0]['rect'],
     }
 
     # LABEL: Currently typed name

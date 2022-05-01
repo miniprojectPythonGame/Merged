@@ -54,19 +54,13 @@ class ItemGrid:
                             fill=fill_colors.common, border_radius=5, isActive=isActive)
                 )
 
-            if i % self.cols == self.cols - 1:
-                y += self.item_size + self.item_padding
-                x = self.x
-            else:
-                x += self.item_size + self.item_padding
-
-        for i in range(len(self.backpack_ref), self.amount):
-            backpack.append(
-                ItemBox(x, y, self.item_size, self.item_size, self.screen,
-                        offset=ib_offset_placeholder, fill=pygame.Color('#dddddd'),
-                        border_radius=5
+            if self.backpack_ref[i]['type'] == 'empty':
+                isActive = i == self.active
+                backpack.append(
+                    ItemBox(x, y, self.item_size, self.item_size, self.screen,
+                            path=self.backpack_ref[i]['img_path'], offset=ib_offset_item,
+                            fill=fill_colors.white, border_radius=5, isActive=isActive)
                 )
-            )
 
             if i % self.cols == self.cols - 1:
                 y += self.item_size + self.item_padding

@@ -1,4 +1,5 @@
 import pygame
+
 pygame.init()
 
 from src.components.ColorSchemes import ColorSchemes
@@ -47,14 +48,76 @@ BT_RETURN = {
 }
 
 EQ_PLACEHOLDERS = {
-    "helmet": '../images/icons/helmet_placeholder.png',
-    "chestplate": '../images/icons/chestplate_placeholder.png',
+    "headgear": '../images/icons/headgear_placeholder.png',
+    "breastplate": '../images/icons/breastplate_placeholder.png',
     "gloves": '../images/icons/gloves_placeholder.png',
     "boots": '../images/icons/boots_placeholder.png',
     "belt": '../images/icons/belt_placeholder.png',
     "necklace": '../images/icons/necklace_placeholder.png',
     "ring": '../images/icons/ring_placeholder.png',
-    "artefact": '../images/icons/chestplate_placeholder.png',
-    "sword": '../images/icons/sword_placeholder.png',
-    "shield": '../images/icons/shield_placeholder.png',
+    "lucky_item": '../images/icons/lucky_item_placeholder.png',
+    "primary_weapon": '../images/icons/primary_weapon_placeholder.png',
+    "secondary_weapon": '../images/icons/secondary_weapon_placeholder.png',
 }
+
+AVATARS = {
+    'warrior': [
+        {
+            "full": '../images/characters/warrior_1.jpg',
+            "rect": '../images/characters/warrior_1_rect.jpg',
+        },
+        {
+            "full": '../images/characters/warrior_2.jpg',
+            "rect": '../images/characters/warrior_2_rect.jpg',
+        },
+        {
+            "full": '../images/characters/warrior_3.jpg',
+            "rect": '../images/characters/warrior_3_rect.jpg',
+        },
+    ],
+    'mage': [
+        {
+            "full": '../images/characters/mage_1.jpg',
+            "rect": '../images/characters/mage_1_rect.jpg',
+        },
+        {
+            "full": '../images/characters/mage_2.jpg',
+            "rect": '../images/characters/mage_2_rect.jpg',
+        },
+        {
+            "full": '../images/characters/mage_3.jpg',
+            "rect": '../images/characters/mage_3_rect.jpg',
+        },
+    ],
+    'archer': [
+        {
+            "full": '../images/characters/archer_1.jpg',
+            "rect": '../images/characters/archer_1_rect.jpg',
+        },
+        {
+            "full": '../images/characters/archer_2.jpg',
+            "rect": '../images/characters/archer_2_rect.jpg',
+        },
+        {
+            "full": '../images/characters/archer_3.jpg',
+            "rect": '../images/characters/archer_3_rect.jpg',
+        },
+    ]
+}
+
+CREATE_NEW_CHARACTER = {
+    'name': 'Create',
+    'spec': '',
+    'level': 0,
+    'img': '../images/characters/create_new.png',
+}
+
+INVENTORY_SHIFT = 11
+
+def getFullAvatarPath(className, number):
+    return '../images/characters/' + className + '_' + number + '.jpg'
+
+
+def getRectAvatarPath(className, number):
+    return '../images/characters/' + className + '_' + number + '_rect.jpg'
+

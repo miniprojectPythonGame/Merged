@@ -14,12 +14,10 @@ from api.game_classes.objects.items.item import ItemType
 
 from .Measurements import Measurements as meas
 
+from src.globals.const_values import INVENTORY_SHIFT
+
+
 def CharacterProfile(screen, mainClock, user):
-
-    def getPath(type):
-        if type == "Belt":
-            return '../images/items/armor/belt.png'
-
     def reloadButtons(buttons_list, current_active):
         newButtons = []
 
@@ -43,11 +41,11 @@ def CharacterProfile(screen, mainClock, user):
 
         return newButtons
 
-    def reloadItemGrid(backpack_active):
+    def reloadItemGrid(current_backpack):
         return ItemGrid(meas.ig_backpack['x'], meas.ig_backpack['y'],
                         meas.ig_backpack['item_size'], meas.ig_backpack['item_padding'],
                         meas.ig_backpack['cols'], meas.ig_backpack['amount'], screen,
-                        character['backpacks'][backpack_active], active=active_item)
+                        character['backpacks'][current_backpack], active=active_item['from'] - INVENTORY_SHIFT)
 
     def getItemCategory(item_type):
         armors = ['belt', 'boots', 'breastplate', 'gloves', 'headgear']
@@ -61,75 +59,143 @@ def CharacterProfile(screen, mainClock, user):
 
         return "weapon"
 
-    def getEqItem(items, type):
-        result = {}
-        item_type = str(type(items[type]).__name__).lower()
+    def getEqItem(item):
+        item_type = str(type(item).__name__).lower()
 
-        if items[type]:
+        if item:
             result = {
-                "name": 'Leather Belt',
+                "name": item.name,
                 "img_path": '../images/items/' + getItemCategory(item_type) + '/' + item_type + '.png',
                 "type": 'common',
             }
         else:
             result = {
                 "name": "empty",
-                "img_path": '../images/items/armor/belt.png',
+                "img_path": "../images/icons/add_item.png",
                 "type": "empty",
             }
 
         return result
 
+    def getEqItemByType(items, expected_type):
+        item_type = str(type(items[expected_type]).__name__).lower()
+
+        if items[expected_type]:
+            result = {
+                "name": items[expected_type].name,
+                "img_path": '../images/items/' + getItemCategory(item_type) + '/' + item_type + '.png',
+                "type": 'common',
+            }
+        else:
+            result = {
+                "name": "empty",
+                "img_path": "../images/icons/add_item.png",
+                "type": "empty",
+            }
+
+        return result
+
+    def resetActiveItem():
+        return {
+            "from": -1,
+            "to": -1
+        }
+
+    def setActiveItem(index):
+        if active_item['from'] == -1:
+            active_item['from'] = index
+            return False
+
+        if active_item['to'] == -1:
+            active_item['to'] = index
+            return True
+
+        return None
+
+    def reloadCharacterBackpacks():
+        character['backpacks'] = [
+            [getEqItem(hero.eq.itemSlots[i]) for i in range(INVENTORY_SHIFT, len(hero.eq.itemSlots))]
+        ]
+
+    def reloadCharacterEQ():
+        character['eq'] = {
+            "headgear": getEqItemByType(hero.eq.itemSlots, ItemType.Headgear.value),
+            "breastplate": getEqItemByType(hero.eq.itemSlots, ItemType.Breastplate.value),
+            "gloves": getEqItemByType(hero.eq.itemSlots, ItemType.Gloves.value),
+            "boots": getEqItemByType(hero.eq.itemSlots, ItemType.Boots.value),
+            "necklace": getEqItemByType(hero.eq.itemSlots, ItemType.Necklace.value),
+            "belt": getEqItemByType(hero.eq.itemSlots, ItemType.Belt.value),
+            "ring": getEqItemByType(hero.eq.itemSlots, ItemType.Ring.value),
+            "lucky_item": getEqItemByType(hero.eq.itemSlots, ItemType.LuckyItem.value),
+        }
+
+    def reloadStatistics():
+        statistics = hero.get_statistics()
+        character['statistics'] = {
+            "strength": statistics.strength,
+            "intelligence": statistics.intelligence,
+            "dexterity": statistics.dexterity,
+            "constitution": statistics.constitution,
+            "luck": statistics.luck,
+            "protection": statistics.protection,
+            "persuasion": statistics.persuasion,
+            "trade": statistics.trade,
+            "leadership": statistics.leadership,
+            "initiative": statistics.initiative,
+        }
+        new_stats_values = [Label(str(character['statistics'][meas.labels_stats[i]]), meas.label_stat_values['font'],
+                                  meas.label_stat_values['color'], screen, meas.label_stat_values['x'],
+                                  meas.label_stat_values['y'] + i * (
+                                          meas.label_stat_values['height'] + meas.label_stat_values['padding']),
+                                  meas.label_stat_values['anchor'])
+                            for i in range(len(meas.labels_stats))]
+
+        sc_eq_stat.components[1].components = stats_headers + new_stats_values
+
+    def extractType(name):
+        return ''.join(' '.join(name[3:].split('_')).title().split())
+
+    def handleItemClick(index, current_item):
+        if setActiveItem(index):
+            hero.eq.swap_places(current_item['from'], current_item['to'])
+            reloadCharacterBackpacks()
+            reloadCharacterEQ()
+            reloadStatistics()
+            ce_characterEqPreview.reloadCharacter(character)
+            print(user.currentHero.eq.gearStatistics)
+            return resetActiveItem()
+        else:
+            return current_item
+
     running = True
     curr_item_in_popup = ''
     backpack_active = 0
-    active_item = {
-        "from": -1,
-        "to": -1
-    }
-    statistics = user.currentHero.get_statistics()
-
-    for item in user.currentHero.eq.itemSlots:
-        if item:
-            print("he: ", item.name, getPath(type(item).__name__), item.description)
-
-    backpack = []
-    for i in range(meas.ig_amount):
-        if user.currentHero.eq.itemSlots[i]:
-            backpack.append(
-                {
-                    "name": user.currentHero.eq.itemSlots[i].name,
-                    "img_path": getPath(type(user.currentHero.eq.itemSlots[i]).__name__),
-                    "type": 'common',
-                }
-            )
+    active_item = resetActiveItem()
+    hero = user.currentHero
+    statistics = hero.get_statistics()
 
     character = {
-        'name': str(user.currentHero.name),
-        'spec': str(user.currentHero.heroClass),
-        'level': str(user.currentHero.lvl),
-        'img_full': '../images/characters/' + str(user.currentHero.heroClass).lower() + '_' + str(
-                            user.currentHero.avatar_id) + '.jpg',
+        'name': str(hero.name),
+        'spec': str(hero.heroClass),
+        'level': str(hero.lvl),
+        'img_full': '../images/characters/' + str(hero.heroClass).lower() + '_' + str(
+            hero.avatar_id) + '.jpg',
         "health": str(statistics.hp),
-        "gold": str(user.currentHero.eq.gold),
-        "exp": user.currentHero.exp,
-        "expToNextLvl": user.currentHero.expToNextLvl,
+        "gold": str(hero.eq.gold),
+        "exp": hero.exp,
+        "expToNextLvl": hero.expToNextLvl,
         "eq": {
-            "helmet": getEqItem(user.currentHero.eq.itemSlots, ItemType.Headgear),
-            "chestplate": getEqItem(user.currentHero.eq.itemSlots, ItemType.Headgear),
-            "gloves": getEqItem(user.currentHero.eq.itemSlots, ItemType.Headgear),
-            "boots": getEqItem(user.currentHero.eq.itemSlots, ItemType.Headgear),
-            "necklace": getEqItem(user.currentHero.eq.itemSlots, ItemType.Headgear),
-            "belt": {
-                "name": 'Leather Belt',
-                "img_path": '../images/items/armor/belt.png',
-                "type": 'common',
-            },
-            "ring": getEqItem(user.currentHero.eq.itemSlots, ItemType.Headgear),
-            "artefact": getEqItem(user.currentHero.eq.itemSlots, ItemType.Headgear),
+            "headgear": getEqItemByType(hero.eq.itemSlots, ItemType.Headgear.value),
+            "breastplate": getEqItemByType(hero.eq.itemSlots, ItemType.Breastplate.value),
+            "gloves": getEqItemByType(hero.eq.itemSlots, ItemType.Gloves.value),
+            "boots": getEqItemByType(hero.eq.itemSlots, ItemType.Boots.value),
+            "necklace": getEqItemByType(hero.eq.itemSlots, ItemType.Necklace.value),
+            "belt": getEqItemByType(hero.eq.itemSlots, ItemType.Belt.value),
+            "ring": getEqItemByType(hero.eq.itemSlots, ItemType.Ring.value),
+            "lucky_item": getEqItemByType(hero.eq.itemSlots, ItemType.LuckyItem.value),
         },
         "backpacks": [
-            backpack
+            [getEqItem(hero.eq.itemSlots[i]) for i in range(INVENTORY_SHIFT, len(hero.eq.itemSlots))]
         ],
         "statistics": {
             "strength": statistics.strength,
@@ -162,11 +228,11 @@ def CharacterProfile(screen, mainClock, user):
     ig_backpack = ItemGrid(meas.ig_backpack['x'], meas.ig_backpack['y'],
                            meas.ig_backpack['item_size'], meas.ig_backpack['item_padding'],
                            meas.ig_backpack['cols'], meas.ig_backpack['amount'], screen,
-                           character['backpacks'][backpack_active], active=active_item)
+                           character['backpacks'][backpack_active], active=active_item['from'])
 
     buttons_backpack = [Button(meas.bt_class_active['color'],
                                meas.buttons_backpack['x'], meas.buttons_backpack['y'] +
-                                    i * (meas.buttons_backpack['height'] + meas.buttons_backpack['padding']),
+                               i * (meas.buttons_backpack['height'] + meas.buttons_backpack['padding']),
                                meas.buttons_backpack['width'], meas.buttons_backpack['height'], screen,
                                path=meas.buttons_backpack['path_gray'],
                                image_ofset=meas.bt_class_active['image_offset'],
@@ -245,7 +311,8 @@ def CharacterProfile(screen, mainClock, user):
                     for key in ce_characterEqPreview.character:
                         if type(ce_characterEqPreview.character[key]).__name__ == "ItemBox":
                             if ce_characterEqPreview.character[key].rect.collidepoint(event.pos):
-                                print(key)
+                                active_item = handleItemClick(ItemType[extractType(key)].value, active_item)
+                                break
 
                     # ITEM GRID
                     c_backpack_elem = sc_eq_stat.components[0].components
@@ -254,18 +321,14 @@ def CharacterProfile(screen, mainClock, user):
                         if type(c_backpack_elem[i]).__name__ == "Button":
                             if c_backpack_elem[i].rect.collidepoint(event.pos):
                                 backpack_active = i
-                                active_item = -1
+                                resetActiveItem()
                                 break
 
                         # ACTIVATE ITEMS
                         else:
                             for j in range(len(c_backpack_elem[i].backpack_ref)):
                                 if c_backpack_elem[i].backpack[j].rect.collidepoint(event.pos):
-                                    if active_item == j:
-                                        active_item = -1
-                                    else:
-                                        active_item = j
-                                    # print(c_backpack_elem[i].backpack_ref[j]['name'])
+                                    active_item = handleItemClick(j + INVENTORY_SHIFT, active_item)
                                     break
 
                 # RIGHT CLICK

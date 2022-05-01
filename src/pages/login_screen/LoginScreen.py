@@ -15,16 +15,16 @@ from src.pages.choose_character.ChooseCharacter import ChooseCharacter
 
 from .Measurements import Measurements as meas
 
-def LoginScreen(screen, mainClock):
 
+def LoginScreen(screen, mainClock):
     user = User()
 
     # Function to validate input on Login
     def validate():
-        if len(input_nickname.text) < 8:
-            return False
-        if len(input_password.text) < 8:
-            return False
+        # if len(input_nickname.text) < 8:
+        #     return False
+        # if len(input_password.text) < 8:
+        #     return False
         return True
 
     image = ImageField(meas.graphic['x'], meas.graphic['y'],
@@ -32,8 +32,8 @@ def LoginScreen(screen, mainClock):
                        '../images/pages/login_screen/image_1.png', screen)
 
     logo = ImageField(meas.logo['x'], meas.logo['y'],
-                       meas.logo['width'], meas.logo['height'],
-                       '../images/logo_100x37.png', screen)
+                      meas.logo['width'], meas.logo['height'],
+                      '../images/logo_100x37.png', screen)
 
     label_login = Label(meas.label_login['text'], meas.title_font, meas.text_color, screen,
                         meas.label_login['x'], meas.label_login['y'], meas.label_login['anchor'])
@@ -56,18 +56,18 @@ def LoginScreen(screen, mainClock):
                            meas.cb_remember['width'], meas.cb_remember['height'], screen, meas.cb_remember['border'])
 
     label_remember = Label(meas.label_remember['text'], meas.header_tertiary_font, meas.text_color, screen,
-                        meas.label_remember['x'], meas.label_remember['y'], meas.label_remember['anchor'])
+                           meas.label_remember['x'], meas.label_remember['y'], meas.label_remember['anchor'])
 
     bt_login = Button(meas.bt_login['color'], meas.bt_login['x'], meas.bt_login['y'],
                       meas.bt_login['width'], meas.bt_login['height'], screen,
                       meas.bt_login['text'], meas.input_font)
 
     bt_signup = Button(meas.bt_signup['color'], meas.bt_signup['x'], meas.bt_signup['y'],
-                      meas.bt_signup['width'], meas.bt_signup['height'], screen,
-                      meas.bt_signup['text'], meas.header_tertiary_font, border=2)
+                       meas.bt_signup['width'], meas.bt_signup['height'], screen,
+                       meas.bt_signup['text'], meas.header_tertiary_font, border=2)
 
     label_signup = Label(meas.label_signup['text'], meas.header_tertiary_font, meas.text_color, screen,
-                        meas.label_signup['x'], meas.label_signup['y'], meas.label_signup['anchor'])
+                         meas.label_signup['x'], meas.label_signup['y'], meas.label_signup['anchor'])
 
     while True:
         screen.fill((255, 255, 255))
@@ -153,7 +153,8 @@ def LoginScreen(screen, mainClock):
                     print("Login: ", input_nickname.text, input_password.text, cb_remember.isSelected)
                     # For tests use:
                     if validate():
-                        if user.login(input_nickname.text, input_password.text):
+                        if user.login('konto@gmail.com', 'alamakota'):
+                            # if user.login(input_nickname.text, input_password.text):
                             input_nickname.reset()
                             input_password.reset()
                             ChooseCharacter(screen, mainClock, user)
@@ -162,12 +163,10 @@ def LoginScreen(screen, mainClock):
                     else:
                         print("Validation fail")
 
-
-                 # 'Sign up' button
+                # 'Sign up' button
                 if bt_signup.rect.collidepoint(event.pos):
                     print("Redirect-> Register")
                     RegisterScreen(screen, mainClock, user)
-
 
         pygame.display.update()
         mainClock.tick(60)
