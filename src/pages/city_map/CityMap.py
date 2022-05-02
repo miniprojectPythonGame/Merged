@@ -82,7 +82,7 @@ def CityMap(screen, mainClock, user):
 
         mx, my = pygame.mouse.get_pos()
 
-        # Button login hover
+        # HOVER EVENTS
         if bt_marketplace.rect.collidepoint((mx, my)):
             bt_marketplace.onHoverOn()
             showHand = True
@@ -124,43 +124,35 @@ def CityMap(screen, mainClock, user):
                     # HANDLE NAVBAR BUTTONS
                     # CHARACTER PROFILE
                     if navbar.bt_profile.rect.collidepoint(event.pos):
-                        print("Redirecting: CityMap.py -> Character Profile.py")
                         CharacterProfile(screen, mainClock, user)
 
                     # SETTINGS
                     if navbar.bt_settings.rect.collidepoint(event.pos):
-                        print("Redirecting: CityMap.py -> Settings.py")
                         Settings(screen, mainClock)
 
                     # SWAP HERO
                     if navbar.bt_swap_hero.rect.collidepoint(event.pos):
-                        print("Swap Hero: CityMap.py -> ChooseCharacter.py")
                         user.deselectHero()
                         running = False
                         swapHero = True
 
                     # LOGOUT
                     if navbar.bt_logout.rect.collidepoint(event.pos):
-                        print("Logout: CityMap.py -> ChooseCharacter.py")
                         user.logout()
                         running = False
 
 
                     # HANDLE CITY PLACES
                     if bt_armorShop.rect.collidepoint(event.pos):
-                        print("Redirecting: CityMap.py -> ArmorShop.py")
-                        ArmorShop(screen, mainClock)
+                        ArmorShop(screen, mainClock, user)
 
                     if bt_magicShop.rect.collidepoint(event.pos):
-                        print("Redirecting: CityMap.py -> MagicShop.py")
                         MagicShop(screen, mainClock)
 
                     if bt_weaponShop.rect.collidepoint(event.pos):
-                        print("Redirecting: CityMap.py -> WeaponShop.py")
                         WeaponShop(screen, mainClock)
 
                     if bt_tavern.rect.collidepoint(event.pos):
-                        print("Redirecting: CityMap.py -> Tavern.py")
                         Tavern(screen, mainClock)
 
                 # RIGHT CLICK

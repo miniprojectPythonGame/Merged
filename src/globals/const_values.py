@@ -2,7 +2,10 @@ import pygame
 
 pygame.init()
 
+from src.components.ItemGrid import ItemGrid
 from src.components.ColorSchemes import ColorSchemes
+
+from api.game_classes.objects.items.item import ItemType
 
 # WINDOW SIZE
 SCREEN_WIDTH = 1920
@@ -60,6 +63,38 @@ EQ_PLACEHOLDERS = {
     "secondary_weapon": '../images/icons/secondary_weapon_placeholder.png',
 }
 
+CATEGORY_ICONS = {
+    "armor": {
+        "headgear": {
+            "path_white": '../images/item_type_icons/armor/headgear_white.png',
+            "path_gray": '../images/item_type_icons/armor/headgear_gray.png',
+        },
+        "breastplate": {
+            "path_white": '../images/item_type_icons/armor/breastplate_white.png',
+            "path_gray": '../images/item_type_icons/armor/breastplate_gray.png',
+        },
+        "gloves": {
+            "path_white": '../images/item_type_icons/armor/gloves_white.png',
+            "path_gray": '../images/item_type_icons/armor/gloves_gray.png',
+        },
+        "boots": {
+            "path_white": '../images/item_type_icons/armor/boots_white.png',
+            "path_gray": '../images/item_type_icons/armor/boots_gray.png',
+        },
+        "belt": {
+            "path_white": '../images/item_type_icons/armor/belt_white.png',
+            "path_gray": '../images/item_type_icons/armor/belt_gray.png',
+        }
+    },
+    "weapon": {},
+    "magic": {}
+}
+
+BACKPACK_ICONS = {
+    "path_white": '../images/item_type_icons/backpack/backpack_white.png',
+    "path_gray": '../images/item_type_icons/backpack/backpack_gray.png',
+}
+
 AVATARS = {
     'warrior': [
         {
@@ -114,10 +149,163 @@ CREATE_NEW_CHARACTER = {
 
 INVENTORY_SHIFT = 11
 
+
+def setActiveItem(index, active_item):
+    if active_item['from'] == -1:
+        active_item['from'] = index
+        return False
+
+    if active_item['to'] == -1:
+        active_item['to'] = index
+        return True
+
+    return None
+
+def resetActiveItem():
+    return {
+        "from": -1,
+        "to": -1
+    }
+
+def reloadBackpackButtons(buttons_list, current_active, meas):
+    newButtons = []
+
+    for i in range(len(buttons_list)):
+        if i == current_active:
+            buttons_list[i].colorSchemes = meas.bt_class_active['color']
+            buttons_list[i].color = meas.bt_class_active['color'].inactive
+            buttons_list[i].path = meas.buttons_backpack['path_white']
+            buttons_list[i].image = buttons_list[i].makeImage(meas.buttons_backpack['path_white'],
+                                                              meas.bt_class_active['image_offset'])
+            buttons_list[i].border_radius = meas.bt_class_active['border_radius']
+        else:
+            buttons_list[i].colorSchemes = meas.bt_class_inactive['color']
+            buttons_list[i].color = meas.bt_class_inactive['color'].inactive
+            buttons_list[i].path = meas.buttons_backpack['path_gray']
+            buttons_list[i].image = buttons_list[i].makeImage(meas.buttons_backpack['path_gray'],
+                                                              meas.bt_class_inactive['image_offset'])
+            buttons_list[i].border_radius = meas.bt_class_inactive['border_radius']
+
+        newButtons.append(buttons_list[i])
+
+    return newButtons
+
+def extractType(name):
+    return ''.join(' '.join(name[3:].split('_')).title().split())
+
+def reloadItemGrid(character, backpack_active, meas, active_item, screen):
+    return ItemGrid(meas.ig_backpack['x'], meas.ig_backpack['y'],
+                    meas.ig_backpack['item_size'], meas.ig_backpack['item_padding'],
+                    meas.ig_backpack['cols'], meas.ig_backpack['amount'], screen,
+                    character['backpacks'][backpack_active], active=active_item['from'] - INVENTORY_SHIFT)
+
+def reloadCharacterBackpacks(character, hero):
+    character['backpacks'] = [
+        [getEqItem(hero.eq.itemSlots[i]) for i in range(INVENTORY_SHIFT, len(hero.eq.itemSlots))]
+    ]
+
+def reloadCharacterEQ(character, hero):
+    character['eq'] = {
+        "headgear": getEqItemByType(hero.eq.itemSlots, ItemType.Headgear.value),
+        "breastplate": getEqItemByType(hero.eq.itemSlots, ItemType.Breastplate.value),
+        "gloves": getEqItemByType(hero.eq.itemSlots, ItemType.Gloves.value),
+        "boots": getEqItemByType(hero.eq.itemSlots, ItemType.Boots.value),
+        "necklace": getEqItemByType(hero.eq.itemSlots, ItemType.Necklace.value),
+        "belt": getEqItemByType(hero.eq.itemSlots, ItemType.Belt.value),
+        "ring": getEqItemByType(hero.eq.itemSlots, ItemType.Ring.value),
+        "lucky_item": getEqItemByType(hero.eq.itemSlots, ItemType.LuckyItem.value),
+    }
+
+def getItemCategory(item_type):
+    armors = ['belt', 'boots', 'breastplate', 'gloves', 'headgear']
+    magic = ['luckyitem', 'necklace', 'ring', 'sceptre']
+
+    if item_type in armors:
+        return "armor"
+
+    if item_type in magic:
+        return "magic"
+
+    return "weapon"
+
+def getEqItem(item):
+    item_type = str(type(item).__name__).lower()
+
+    if item:
+        result = {
+            "name": item.name,
+            "img_path": '../images/items/' + getItemCategory(item_type) + '/' + item_type + '.png',
+            "type": 'common',
+        }
+    else:
+        result = {
+            "name": "empty",
+            "img_path": "../images/icons/add_item.png",
+            "type": "empty",
+        }
+
+    return result
+
+def getEqItemByType(items, expected_type):
+    item_type = str(type(items[expected_type]).__name__).lower()
+
+    if items[expected_type]:
+        result = {
+            "name": items[expected_type].name,
+            "img_path": '../images/items/' + getItemCategory(item_type) + '/' + item_type + '.png',
+            "type": 'common',
+        }
+    else:
+        result = {
+            "name": "empty",
+            "img_path": "../images/icons/add_item.png",
+            "type": "empty",
+        }
+
+    return result
+
+def getCharacterForEQPreview(hero):
+    return {
+        'name': str(hero.name),
+        'spec': str(hero.heroClass),
+        'level': str(hero.lvl),
+        'img_full': '../images/characters/' + str(hero.heroClass).lower() + '_' + str(
+            hero.avatar_id) + '.jpg',
+        "health": str(hero.get_statistics().hp),
+        "gold": str(hero.eq.gold),
+        "exp": hero.exp,
+        "expToNextLvl": hero.expToNextLvl,
+        "eq": {
+            "headgear": getEqItemByType(hero.eq.itemSlots, ItemType.Headgear.value),
+            "breastplate": getEqItemByType(hero.eq.itemSlots, ItemType.Breastplate.value),
+            "gloves": getEqItemByType(hero.eq.itemSlots, ItemType.Gloves.value),
+            "boots": getEqItemByType(hero.eq.itemSlots, ItemType.Boots.value),
+            "necklace": getEqItemByType(hero.eq.itemSlots, ItemType.Necklace.value),
+            "belt": getEqItemByType(hero.eq.itemSlots, ItemType.Belt.value),
+            "ring": getEqItemByType(hero.eq.itemSlots, ItemType.Ring.value),
+            "lucky_item": getEqItemByType(hero.eq.itemSlots, ItemType.LuckyItem.value),
+        },
+        "backpacks": [
+            [getEqItem(hero.eq.itemSlots[i]) for i in range(INVENTORY_SHIFT, len(hero.eq.itemSlots))]
+        ],
+        "statistics": {
+            "strength": hero.get_statistics().strength,
+            "intelligence": hero.get_statistics().intelligence,
+            "dexterity": hero.get_statistics().dexterity,
+            "constitution": hero.get_statistics().constitution,
+            "luck": hero.get_statistics().luck,
+            "protection": hero.get_statistics().protection,
+            "persuasion": hero.get_statistics().persuasion,
+            "trade": hero.get_statistics().trade,
+            "leadership": hero.get_statistics().leadership,
+            "initiative": hero.get_statistics().initiative,
+        }
+    }
+
+
+
 def getFullAvatarPath(className, number):
     return '../images/characters/' + className + '_' + number + '.jpg'
 
-
 def getRectAvatarPath(className, number):
     return '../images/characters/' + className + '_' + number + '_rect.jpg'
-

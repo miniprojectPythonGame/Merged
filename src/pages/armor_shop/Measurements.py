@@ -19,6 +19,7 @@ class Measurements:
 
     # FONTS: colors
     text_color = pygame.Color('gray26')
+    stat_color = pygame.Color('#35848f')
     white = pygame.Color('white')
     label_padding = 35
     category_button_size = 60
@@ -26,6 +27,13 @@ class Measurements:
     default_color = ColorSchemes()
 
     bt_return = BT_RETURN
+
+    ig_item_size = 80
+    ig_item_padding = 10
+    ig_cols = 4
+    ig_amount = 20
+    ig_rows = round(ig_amount / ig_cols)
+    ig_button_height = 30
 
     # LABEL: Page
     label_page = {
@@ -37,31 +45,90 @@ class Measurements:
         'color': text_color,
     }
 
-    # CHARACTER_EQUIPMENT: -//-
-    ce_characterEqPreview = {
-        "x": window_width - 510 - margin,
-        "y": margin - 30,
-        "font": header_tertiary_font,
-        "colors": default_color,
+    sc_eq_stat_bp = {
+        "x": window_width - (ig_item_size * (ig_cols + 1) + ig_item_padding * ig_cols) - margin,
+        "y": margin,
+        "width": ig_item_size * (ig_cols + 1) + ig_item_padding * ig_cols,
+        "height": ig_button_height + 10 + ig_item_size * ig_rows + ig_item_padding * (ig_rows - 1),
+        "font": text_font,
+        "color": ColorSchemes(),
+        "switch_height": ig_button_height,
     }
 
-    # SCROLLBAR: Shop offer scrollbar
-    sb_offerScrollbar = {
-        "x": margin,
-        "y": margin + category_button_size + category_button_padding,
-        "width": 15,
-        "height": window_height - (2*margin + category_button_size + category_button_padding),
-        "height_scroll": 200,
-        "border": 0,
-        "border_radius": 5,
+    c_backpack = {
+        "x": window_width - (ig_item_size * (ig_cols + 1) + ig_item_padding * ig_cols) - margin,
+        "y": margin,
+        "width": ig_item_size * (ig_cols + 1) + ig_item_padding * ig_cols,
+        "height": ig_button_height + 10 + ig_item_size * ig_rows + ig_item_padding * (ig_rows - 1),
+    }
+
+    # ITEM_GRID: backpack
+    ig_backpack = {
+        "x": window_width - (ig_item_size * ig_cols + ig_item_padding * (ig_cols - 1)) - margin,
+        "y": margin + sc_eq_stat_bp['switch_height'] + 10,
+        "item_size": ig_item_size,
+        "item_padding": ig_item_padding,
+        "cols": ig_cols,
+        "amount": ig_amount,
+    }
+
+    # BUTTON: backpack
+    buttons_backpack = {
+        "x": window_width - (ig_item_size * (ig_cols + 1) + ig_item_padding * ig_cols) - margin,
+        "y": ig_backpack['y'],
+        "width": ig_item_size,
+        "height": ig_item_size,
+        "padding": ig_item_padding,
+        "path_white": BACKPACK_ICONS["path_white"],
+        "path_gray": BACKPACK_ICONS["path_gray"],
+    }
+
+    c_stats = {
+        "x": window_width - (ig_item_size * (ig_cols + 1) + ig_item_padding * ig_cols) - margin,
+        "y": margin,
+        "width": ig_item_size * (ig_cols + 1) + ig_item_padding * ig_cols,
+        "height": ig_button_height + 10 + ig_item_size * ig_rows + ig_item_padding * (ig_rows - 1),
+    }
+
+    labels_stats = [
+        'strength', "intelligence", "dexterity", "constitution", "luck",
+        "protection", "persuasion", "trade", "leadership", "initiative"
+    ]
+
+    label_stat_header = {
+        "font": header_tertiary_font,
+        "color": text_color,
+        "x": window_width - (ig_item_size * (ig_cols + 1) + ig_item_padding * ig_cols) - margin,
+        "y": round(margin * 1.75),
+        "height": 25,
+        "padding": 15,
+        "anchor": "topleft",
+    }
+
+    label_stat_values = {
+        "font": header_tertiary_font,
+        "color": stat_color,
+        "x": window_width - margin,
+        "y": round(margin * 1.75),
+        "height": 25,
+        "padding": 15,
+        "anchor": "topright",
+    }
+
+    # CHARACTER_EQUIPMENT: -//-
+    ce_characterEqPreview = {
+        "x": window_width - (ig_item_size * (ig_cols + 1) + ig_item_padding * ig_cols) - margin,
+        "y": round(margin * 1.5),
+        "font": text_font,
+        "colors": default_color,
     }
 
     # ITEM_GRID: shop offer
     ig_items = {
-        "x": margin + sb_offerScrollbar['width'] + category_button_padding,
+        "x": margin,
         "y": margin + category_button_padding + category_button_size,
-        "item_size": 80,
-        "item_padding": 8,
+        "item_size": 70,
+        "item_padding": 9,
         "cols": 4,
         "amount": 20,
     }
@@ -81,23 +148,23 @@ class Measurements:
     }
 
     # BUTTON: Show helmets in offer
-    bt_showHelmets = {
+    bt_showHeadgear = {
         "x": margin,
         "y": margin,
         "width": category_button_size,
         "height": category_button_size,
-        "path_white": '../images/item_type_icons/armor/helmet_white.png',
-        "path_gray": '../images/item_type_icons/armor/helmet_gray.png',
+        "path_white": '../images/item_type_icons/armor/headgear_white.png',
+        "path_gray": '../images/item_type_icons/armor/headgear_gray.png',
     }
 
-    # BUTTON: Show chestplates in offer
-    bt_showChestplates = {
+    # BUTTON: Show breastplate in offer
+    bt_showBreastplates = {
         "x": margin + category_button_padding + category_button_size,
         "y": margin,
         "width": category_button_size,
         "height": category_button_size,
-        "path_white": '../images/item_type_icons/armor/chestplate_white.png',
-        "path_gray": '../images/item_type_icons/armor/chestplate_gray.png',
+        "path_white": '../images/item_type_icons/armor/breastplate_white.png',
+        "path_gray": '../images/item_type_icons/armor/breastplate_gray.png',
     }
 
     # BUTTON: Show gloves in offer

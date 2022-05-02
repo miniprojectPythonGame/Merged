@@ -1,7 +1,7 @@
 from src.globals.const_values import *
 from src.components.ColorSchemes import ColorSchemes
 
-from src.globals.mock_data import character_2
+# from src.globals.mock_data import character_2
 
 
 class Measurements:
@@ -34,7 +34,7 @@ class Measurements:
     ig_cols = 4
     ig_amount = 20
     ig_rows = round(ig_amount / ig_cols)
-    ig_button_height = 25
+    ig_button_height = 30
 
     # LABEL: Page
     label_page = {
@@ -52,7 +52,6 @@ class Measurements:
         "y": margin - 30,
         "font": header_tertiary_font,
         "colors": bar_colorScheme,
-        "character_ref": character_2,
     }
 
     sc_eq_stat = {
@@ -80,7 +79,6 @@ class Measurements:
         "item_padding": 10,
         "cols": 4,
         "amount": 24,
-        "backpack_ref": character_2['backpacks'],
     }
 
     # BUTTON (type): class inactive
@@ -104,8 +102,8 @@ class Measurements:
         "width": ig_item_size,
         "height": ig_item_size,
         "padding": ig_item_padding,
-        "path_white": '../images/item_type_icons/backpack/backpack_white.png',
-        "path_gray": '../images/item_type_icons/backpack/backpack_gray.png',
+        "path_white": BACKPACK_ICONS["path_white"],
+        "path_gray": BACKPACK_ICONS["path_gray"],
     }
 
     c_stats = {

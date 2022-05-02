@@ -6,11 +6,10 @@ from src.components.Button import Button
 from src.components.Label import Label
 from src.components.CharacterEquipment import CharacterEquipment
 from src.components.ItemGrid import ItemGrid
-from src.components.Scrollbar import Scrollbar
 
 from .Measurements import Measurements as meas
 
-from frontend.src.globals.mock_data import armor_shop, character_2
+from src.globals.mock_data import armor_shop, character_2
 
 
 def Dialogue(screen, mainClock):
@@ -96,12 +95,6 @@ def Dialogue(screen, mainClock):
                                                character_2,
                                                screen)
 
-    sb_offerScrollbar = Scrollbar(meas.sb_offerScrollbar['x'], meas.sb_offerScrollbar['y'],
-                                  meas.sb_offerScrollbar['width'], meas.sb_offerScrollbar['height'],
-                                  meas.sb_offerScrollbar['height_scroll'], screen,
-                                  border=meas.sb_offerScrollbar['border'],
-                                  border_radius=meas.sb_offerScrollbar['border_radius'])
-
     label_gold = Label("Gold: " + str(character_2['gold']), meas.label_gold['font'],
                        meas.label_gold['color'], screen, meas.label_gold['x'],
                        meas.label_gold['y'], meas.label_gold['anchor'])
@@ -120,7 +113,7 @@ def Dialogue(screen, mainClock):
     ]
 
     displayedContent = [
-        label_page, bt_return, ce_characterEqPreview, sb_offerScrollbar, label_gold
+        label_page, bt_return, ce_characterEqPreview, label_gold
     ]
 
     while isRunning:

@@ -7,21 +7,24 @@ from src.globals.const_values import *
 
 
 class CharacterEquipment:
-    def __init__(self, x, y, font, color, character_ref, screen):
+    def __init__(self, x, y, font, color, character_ref, screen, active=-1, size='big'):
         self.x = x
         self.y = y
         self.font = font
         self.color = color
         self.character_ref = character_ref
         self.screen = screen
+        self.active = active
+        self.size = size
         self.character = self.initateEquipment()
 
     def draw(self):
         for key in self.character:
             self.character[key].draw()
 
-    def reloadCharacter(self, new_ref):
+    def reloadCharacter(self, new_ref, curr_active):
         self.character_ref = new_ref
+        self.active = curr_active
         self.character = self.initateEquipment()
 
     def getColor(self, object):
@@ -41,12 +44,21 @@ class CharacterEquipment:
 
     def initateEquipment(self):
         # CONST SIZE RELATIONS
-        itembox_size = 110
-        itembox_padding = 20
-        itembox_offset = 20
-        itembox_border_radius = 5
-        property_bar_height = 30
-        avatar_size_factor = 0.7
+
+        if self.size == 'big':
+            itembox_size = 110
+            itembox_padding = 20
+            itembox_offset = 20
+            itembox_border_radius = 5
+            property_bar_height = 30
+            avatar_size_factor = 0.7
+        else:
+            itembox_size = 95
+            itembox_padding = 15
+            itembox_offset = 15
+            itembox_border_radius = 5
+            property_bar_height = 20
+            avatar_size_factor = 0.6
 
         avatar_width = round(AVATAR_FULL_WIDTH * avatar_size_factor)
         avatar_height = round(AVATAR_FULL_HEIGHT * avatar_size_factor)
@@ -73,22 +85,23 @@ class CharacterEquipment:
                                self.font, self.color.primary, self.color.level, self.screen)
 
         pb_health = PropertyBar(x + itembox_size + itembox_padding,  # x
-                                y + itembox_padding + avatar_height + property_bar_height,  # y
+                                y + itembox_padding + avatar_height + property_bar_height - 2,  # y
                                 avatar_width, property_bar_height, 1,
                                 str(self.character_ref['health']) + " HP",
                                 self.font, self.color.primary, self.color.health, self.screen)
 
-        ib_headgear= ItemBox(x,
-                            y + itembox_padding,
-                            itembox_size, itembox_size, self.screen,
-                            path=EQ_PLACEHOLDERS['headgear'], offset=itembox_offset,
-                            border_radius=itembox_border_radius)
+        ib_headgear = ItemBox(x,
+                              y + itembox_padding,
+                              itembox_size, itembox_size, self.screen,
+                              path=EQ_PLACEHOLDERS['headgear'], offset=itembox_offset,
+                              border_radius=itembox_border_radius,
+                              isActive=self.active == 4)
 
         ib_breastplate = ItemBox(x,  # x
-                                y + 2 * itembox_padding + itembox_size,  # y
-                                itembox_size, itembox_size, self.screen,
-                                path=EQ_PLACEHOLDERS['breastplate'], offset=itembox_offset,
-                                border_radius=itembox_border_radius)
+                                 y + 2 * itembox_padding + itembox_size,  # y
+                                 itembox_size, itembox_size, self.screen,
+                                 path=EQ_PLACEHOLDERS['breastplate'], offset=itembox_offset,
+                                 border_radius=itembox_border_radius)
 
         ib_gloves = ItemBox(x,  # x
                             y + 3 * itembox_padding + 2 * itembox_size,  # y
@@ -108,7 +121,7 @@ class CharacterEquipment:
                           path=EQ_PLACEHOLDERS['belt'], offset=itembox_offset,
                           fill=self.getColor(self.character_ref['eq']['belt']),
                           border_radius=itembox_border_radius,
-                          isActive=False)
+                          isActive=(self.active == 0))
 
         ib_necklace = ItemBox(x + 2 * itembox_padding + itembox_size + avatar_width,  # x,
                               y + 2 * itembox_padding + itembox_size,  # y
@@ -123,22 +136,22 @@ class CharacterEquipment:
                           border_radius=itembox_border_radius)
 
         ib_lucky_item = ItemBox(x + 2 * itembox_padding + itembox_size + avatar_width,  # x,
-                              y + 4 * itembox_padding + 3 * itembox_size,  # y,
-                              itembox_size, itembox_size, self.screen,
-                              path=EQ_PLACEHOLDERS['lucky_item'], offset=itembox_offset,
-                              border_radius=itembox_border_radius)
+                                y + 4 * itembox_padding + 3 * itembox_size,  # y,
+                                itembox_size, itembox_size, self.screen,
+                                path=EQ_PLACEHOLDERS['lucky_item'], offset=itembox_offset,
+                                border_radius=itembox_border_radius)
 
         ib_primary_weapon = ItemBox(x + itembox_size + itembox_padding,  # x
-                           y + avatar_height + 2 * itembox_padding + 2 * property_bar_height,  # y
-                           itembox_size, itembox_size, self.screen,
-                           path=EQ_PLACEHOLDERS['primary_weapon'], offset=itembox_offset,
-                           border_radius=itembox_border_radius)
+                                    y + avatar_height + 2 * itembox_padding + 2 * property_bar_height,  # y
+                                    itembox_size, itembox_size, self.screen,
+                                    path=EQ_PLACEHOLDERS['primary_weapon'], offset=itembox_offset,
+                                    border_radius=itembox_border_radius)
 
         ib_secondary_weapon = ItemBox(x + itembox_padding + avatar_width,  # x
-                            y + avatar_height + 2 * itembox_padding + 2 * property_bar_height,  # y
-                            itembox_size, itembox_size, self.screen,
-                            path=EQ_PLACEHOLDERS['secondary_weapon'], offset=itembox_offset,
-                            border_radius=itembox_border_radius)
+                                      y + avatar_height + 2 * itembox_padding + 2 * property_bar_height,  # y
+                                      itembox_size, itembox_size, self.screen,
+                                      path=EQ_PLACEHOLDERS['secondary_weapon'], offset=itembox_offset,
+                                      border_radius=itembox_border_radius)
 
         return {
             "label_name": label_name,

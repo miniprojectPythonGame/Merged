@@ -83,7 +83,7 @@ character_2 = {
 }
 
 armor_shop = {
-    "helmets": [
+    "headgear": [
         {
             "name": 'Helmet #1',
             "img_path": '../images/items/armor/helmet.png',
@@ -105,7 +105,7 @@ armor_shop = {
             "type": 'common',
         },
     ],
-    "chestplates": [
+    "breastplate": [
         {
             "name": 'Chestplate #1',
             "img_path": '../images/items/armor/chestplate.png',

@@ -14,120 +14,19 @@ from api.game_classes.objects.items.item import ItemType
 
 from .Measurements import Measurements as meas
 
-from src.globals.const_values import INVENTORY_SHIFT
+from src.globals.const_values import \
+    INVENTORY_SHIFT,\
+    reloadCharacterBackpacks,\
+    reloadCharacterEQ,\
+    getCharacterForEQPreview,\
+    reloadItemGrid,\
+    extractType,\
+    reloadBackpackButtons,\
+    resetActiveItem, \
+    setActiveItem
 
 
 def CharacterProfile(screen, mainClock, user):
-    def reloadButtons(buttons_list, current_active):
-        newButtons = []
-
-        for i in range(len(buttons_list)):
-            if i == current_active:
-                buttons_list[i].colorSchemes = meas.bt_class_active['color']
-                buttons_list[i].color = meas.bt_class_active['color'].inactive
-                buttons_list[i].path = meas.buttons_backpack['path_white']
-                buttons_list[i].image = buttons_list[i].makeImage(meas.buttons_backpack['path_white'],
-                                                                  meas.bt_class_active['image_offset'])
-                buttons_list[i].border_radius = meas.bt_class_active['border_radius']
-            else:
-                buttons_list[i].colorSchemes = meas.bt_class_inactive['color']
-                buttons_list[i].color = meas.bt_class_inactive['color'].inactive
-                buttons_list[i].path = meas.buttons_backpack['path_gray']
-                buttons_list[i].image = buttons_list[i].makeImage(meas.buttons_backpack['path_gray'],
-                                                                  meas.bt_class_inactive['image_offset'])
-                buttons_list[i].border_radius = meas.bt_class_inactive['border_radius']
-
-            newButtons.append(buttons_list[i])
-
-        return newButtons
-
-    def reloadItemGrid(current_backpack):
-        return ItemGrid(meas.ig_backpack['x'], meas.ig_backpack['y'],
-                        meas.ig_backpack['item_size'], meas.ig_backpack['item_padding'],
-                        meas.ig_backpack['cols'], meas.ig_backpack['amount'], screen,
-                        character['backpacks'][current_backpack], active=active_item['from'] - INVENTORY_SHIFT)
-
-    def getItemCategory(item_type):
-        armors = ['belt', 'boots', 'breastplate', 'gloves', 'headgear']
-        magic = ['luckyitem', 'necklace', 'ring', 'sceptre']
-
-        if item_type in armors:
-            return "armor"
-
-        if item_type in magic:
-            return "magic"
-
-        return "weapon"
-
-    def getEqItem(item):
-        item_type = str(type(item).__name__).lower()
-
-        if item:
-            result = {
-                "name": item.name,
-                "img_path": '../images/items/' + getItemCategory(item_type) + '/' + item_type + '.png',
-                "type": 'common',
-            }
-        else:
-            result = {
-                "name": "empty",
-                "img_path": "../images/icons/add_item.png",
-                "type": "empty",
-            }
-
-        return result
-
-    def getEqItemByType(items, expected_type):
-        item_type = str(type(items[expected_type]).__name__).lower()
-
-        if items[expected_type]:
-            result = {
-                "name": items[expected_type].name,
-                "img_path": '../images/items/' + getItemCategory(item_type) + '/' + item_type + '.png',
-                "type": 'common',
-            }
-        else:
-            result = {
-                "name": "empty",
-                "img_path": "../images/icons/add_item.png",
-                "type": "empty",
-            }
-
-        return result
-
-    def resetActiveItem():
-        return {
-            "from": -1,
-            "to": -1
-        }
-
-    def setActiveItem(index):
-        if active_item['from'] == -1:
-            active_item['from'] = index
-            return False
-
-        if active_item['to'] == -1:
-            active_item['to'] = index
-            return True
-
-        return None
-
-    def reloadCharacterBackpacks():
-        character['backpacks'] = [
-            [getEqItem(hero.eq.itemSlots[i]) for i in range(INVENTORY_SHIFT, len(hero.eq.itemSlots))]
-        ]
-
-    def reloadCharacterEQ():
-        character['eq'] = {
-            "headgear": getEqItemByType(hero.eq.itemSlots, ItemType.Headgear.value),
-            "breastplate": getEqItemByType(hero.eq.itemSlots, ItemType.Breastplate.value),
-            "gloves": getEqItemByType(hero.eq.itemSlots, ItemType.Gloves.value),
-            "boots": getEqItemByType(hero.eq.itemSlots, ItemType.Boots.value),
-            "necklace": getEqItemByType(hero.eq.itemSlots, ItemType.Necklace.value),
-            "belt": getEqItemByType(hero.eq.itemSlots, ItemType.Belt.value),
-            "ring": getEqItemByType(hero.eq.itemSlots, ItemType.Ring.value),
-            "lucky_item": getEqItemByType(hero.eq.itemSlots, ItemType.LuckyItem.value),
-        }
 
     def reloadStatistics():
         statistics = hero.get_statistics()
@@ -152,19 +51,16 @@ def CharacterProfile(screen, mainClock, user):
 
         sc_eq_stat.components[1].components = stats_headers + new_stats_values
 
-    def extractType(name):
-        return ''.join(' '.join(name[3:].split('_')).title().split())
-
     def handleItemClick(index, current_item):
-        if setActiveItem(index):
+        if setActiveItem(index, active_item):
             hero.eq.swap_places(current_item['from'], current_item['to'])
-            reloadCharacterBackpacks()
-            reloadCharacterEQ()
+            reloadCharacterBackpacks(character, hero)
+            reloadCharacterEQ(character, hero)
             reloadStatistics()
-            ce_characterEqPreview.reloadCharacter(character)
-            print(user.currentHero.eq.gearStatistics)
+            ce_characterEqPreview.reloadCharacter(character, -1)
             return resetActiveItem()
         else:
+            ce_characterEqPreview.reloadCharacter(character, current_item['from'])
             return current_item
 
     running = True
@@ -172,44 +68,8 @@ def CharacterProfile(screen, mainClock, user):
     backpack_active = 0
     active_item = resetActiveItem()
     hero = user.currentHero
-    statistics = hero.get_statistics()
 
-    character = {
-        'name': str(hero.name),
-        'spec': str(hero.heroClass),
-        'level': str(hero.lvl),
-        'img_full': '../images/characters/' + str(hero.heroClass).lower() + '_' + str(
-            hero.avatar_id) + '.jpg',
-        "health": str(statistics.hp),
-        "gold": str(hero.eq.gold),
-        "exp": hero.exp,
-        "expToNextLvl": hero.expToNextLvl,
-        "eq": {
-            "headgear": getEqItemByType(hero.eq.itemSlots, ItemType.Headgear.value),
-            "breastplate": getEqItemByType(hero.eq.itemSlots, ItemType.Breastplate.value),
-            "gloves": getEqItemByType(hero.eq.itemSlots, ItemType.Gloves.value),
-            "boots": getEqItemByType(hero.eq.itemSlots, ItemType.Boots.value),
-            "necklace": getEqItemByType(hero.eq.itemSlots, ItemType.Necklace.value),
-            "belt": getEqItemByType(hero.eq.itemSlots, ItemType.Belt.value),
-            "ring": getEqItemByType(hero.eq.itemSlots, ItemType.Ring.value),
-            "lucky_item": getEqItemByType(hero.eq.itemSlots, ItemType.LuckyItem.value),
-        },
-        "backpacks": [
-            [getEqItem(hero.eq.itemSlots[i]) for i in range(INVENTORY_SHIFT, len(hero.eq.itemSlots))]
-        ],
-        "statistics": {
-            "strength": statistics.strength,
-            "intelligence": statistics.intelligence,
-            "dexterity": statistics.dexterity,
-            "constitution": statistics.constitution,
-            "luck": statistics.luck,
-            "protection": statistics.protection,
-            "persuasion": statistics.persuasion,
-            "trade": statistics.trade,
-            "leadership": statistics.leadership,
-            "initiative": statistics.initiative,
-        }
-    }
+    character = getCharacterForEQPreview(hero)
 
     label_page = Label(meas.label_page['text'], meas.label_page['font'], meas.label_page['color'],
                        screen, meas.label_page['x'], meas.label_page['y'], meas.label_page['anchor'])
@@ -222,8 +82,8 @@ def CharacterProfile(screen, mainClock, user):
                                                meas.ce_characterEqPreview['y'],
                                                meas.ce_characterEqPreview['font'],
                                                meas.ce_characterEqPreview['colors'],
-                                               character,
-                                               screen)
+                                               character, screen,
+                                               active=active_item['from'])
 
     ig_backpack = ItemGrid(meas.ig_backpack['x'], meas.ig_backpack['y'],
                            meas.ig_backpack['item_size'], meas.ig_backpack['item_padding'],
@@ -271,8 +131,8 @@ def CharacterProfile(screen, mainClock, user):
         screen.fill((255, 255, 255))
         pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
 
-        sc_eq_stat.components[0].components[-1] = reloadItemGrid(backpack_active)
-        buttons_backpack = reloadButtons(buttons_backpack, backpack_active)
+        sc_eq_stat.components[0].components[-1] = reloadItemGrid(character, backpack_active, meas, active_item, screen)
+        buttons_backpack = reloadBackpackButtons(buttons_backpack, backpack_active, meas)
 
         label_page.draw()
         bt_return.draw()
@@ -299,7 +159,6 @@ def CharacterProfile(screen, mainClock, user):
                     # HANDLE RETURN BUTTON
                     if bt_return.rect.collidepoint(event.pos):
                         running = False
-                        print("Redirecting: CharacterProfile.py -> CityMap.py")
 
                     # CARD SWITCH
                     for i in range(len(sc_eq_stat.buttons)):
@@ -339,7 +198,6 @@ def CharacterProfile(screen, mainClock, user):
                                 ppi_itemDescription = PopupItem(0, 0, 200, 80, screen,
                                                                 '', meas.text_font)
                             else:
-                                print('Here: ', ig_backpack.backpack_ref[i]['name'])
                                 x = min(mx, meas.window_width - 200)
                                 y = min(my, meas.window_height - 80)
                                 ppi_itemDescription = PopupItem(x, y, 200, 80, screen,

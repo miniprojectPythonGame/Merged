@@ -46,20 +46,9 @@ class Measurements:
         "colors": default_color,
     }
 
-    # SCROLLBAR: Shop offer scrollbar
-    sb_offerScrollbar = {
-        "x": margin,
-        "y": margin + category_button_size + category_button_padding,
-        "width": 15,
-        "height": window_height - (2*margin + category_button_size + category_button_padding),
-        "height_scroll": 200,
-        "border": 0,
-        "border_radius": 5,
-    }
-
     # ITEM_GRID: shop offer
     ig_items = {
-        "x": margin + sb_offerScrollbar['width'] + category_button_padding,
+        "x": margin + category_button_padding,
         "y": margin + category_button_padding + category_button_size,
         "item_size": 80,
         "item_padding": 8,

@@ -3,7 +3,7 @@ import pygame
 
 class PropertyBar:
     def __init__(self, x, y, width, height, value,
-                 text, font, border_color, fill_color, screen, border=3):
+                 text, font, border_color, fill_color, screen, border=2):
         self.x = x
         self.y = y
         self.width = width
