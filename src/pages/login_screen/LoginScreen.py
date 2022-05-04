@@ -64,7 +64,7 @@ def LoginScreen(screen, mainClock):
 
     bt_signup = Button(meas.bt_signup['color'], meas.bt_signup['x'], meas.bt_signup['y'],
                        meas.bt_signup['width'], meas.bt_signup['height'], screen,
-                       meas.bt_signup['text'], meas.header_tertiary_font, border=2)
+                       meas.bt_signup['text'], meas.header_tertiary_font, border=meas.bt_signup['border'])
 
     label_signup = Label(meas.label_signup['text'], meas.header_tertiary_font, meas.text_color, screen,
                          meas.label_signup['x'], meas.label_signup['y'], meas.label_signup['anchor'])

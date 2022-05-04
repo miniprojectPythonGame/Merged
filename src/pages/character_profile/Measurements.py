@@ -113,10 +113,7 @@ class Measurements:
         "height": ig_button_height + 10 + ig_item_size * ig_rows + ig_item_padding * (ig_rows - 1),
     }
 
-    labels_stats = [
-        'strength', "intelligence", "dexterity", "constitution", "luck",
-        "protection", "persuasion", "trade", "leadership", "initiative"
-    ]
+    labels_stats = STATS_NAMES
 
     label_stat_header = {
         "font": header_tertiary_font,
