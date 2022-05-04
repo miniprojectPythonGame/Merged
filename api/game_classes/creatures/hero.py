@@ -48,7 +48,8 @@ class Hero(Creature):
             self.hero_id) + "| Hero name: " + self.name + "| exp: " + str(self.exp) + \
                "| exp to next lvl: " + str(self.expToNextLvl) + "| lvl: " + str(self.lvl) + " | class: " + \
                str(self.heroClass) + " |\n-----------------------\n" + \
-               str(self.heroClass.statistics) + "\n-----------------------\n"
+               str(self.heroClass.statistics) + "\n-----------------------\n" + \
+               str(self.eq.gearStatistics) + "\n-----------------------\n"
 
     def addExp(self, expOfOther):
         exp_to_add = floor(expOfOther * randint(1, 26) / 100)

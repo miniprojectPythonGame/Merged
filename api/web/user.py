@@ -138,15 +138,17 @@ class User:
             print(error)
             return -1
 
+
 if __name__ == "__main__":
     tmp = User()
     # tmp.signup('test@gmail.com', 'alamakota', 'Viciooo', 'm', 21)
     tmp.login('konto@gmail.com', 'alamakota')
     # tmp.createHero(2,'test_avatar_id', 'w', 1, 1, 1, 1, 1, 1, 1, 1, 1, 1)
-    # tmp.chooseHero(20)
+    tmp.chooseHero(20)
+    # tmp.currentHero.eq.swap_places(13, 0)
     # tmp.currentHero.add_to_statistics('dexterity')
     # tmp.currentHero.add_to_statistics('luck')
-    # print(tmp.currentHero)
+    print(tmp.currentHero)
     # tmp.currentHero.init_fight_with_other_hero(tmp.Heroes.get(19))
     # tmp.currentHero.armourShop.print()
     # tmp.currentHero.buy_from_shop(0, 0)
@@ -154,5 +156,5 @@ if __name__ == "__main__":
     # tmp.currentHero.buy_from_shop(0, 2)
     # tmp.currentHero.buy_from_shop(0, 3)
     # tmp.currentHero.buy_from_shop(0, 4)
-    for i in User.getAllExistingHeroes().values():
-        print(i)
+    # for i in User.getAllExistingHeroes().values():
+    #     print(i)

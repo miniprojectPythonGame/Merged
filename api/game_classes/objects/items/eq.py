@@ -8,8 +8,8 @@ from api.web.WebService import connect_to_db, disconnect_from_db
 class Eq:
     def __init__(self, hero_id, className, gold):
         self.hero_id = hero_id
-        self.itemSlots = [None] * 31 # od 0 do 10 to itemy w eq według itemtype'u
-        self.gearStatistics = Statistics() # dodawanie gear_statistics do statistics
+        self.itemSlots = [None] * 31  # od 0 do 10 to itemy w eq według itemtype'u
+        self.gearStatistics = Statistics()  # dodawanie gear_statistics do statistics
         self.className = className
         self.gold = gold
         self.get_storage()
@@ -33,13 +33,18 @@ class Eq:
             for item in storage:
                 item_id = item[0]
                 available = item[1]
+                item_slot_id = item[2]
                 cursor.execute(
                     "SELECT I.name,I.price,I.description,I.only_treasure,I.item_type_id,I.min_lvl,I.for_class,s.strength,"
                     "s.intelligence,s.dexterity,s.constitution,s.luck,s.persuasion,s.trade,s.leadership,s.protection,s.initiative"
                     " FROM items I JOIN statistics s on s.statistics_id = I.statistics_id WHERE I.item_id = %s;",
                     (item_id,))
 
-                self.itemSlots[item[2]] = ItemBuilder.build_item(item_id, cursor.fetchall()[0], available)
+                self.itemSlots[item_slot_id] = ItemBuilder.build_item(item_id, cursor.fetchall()[0], available)
+
+                if item_slot_id <= 10:
+                    self.gearStatistics += self.itemSlots[item_slot_id].statistics
+
             disconnect_from_db(conn, cursor)
         except Exception as error:
             print(error)
