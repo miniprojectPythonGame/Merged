@@ -13,6 +13,7 @@ from src.pages.armor_shop.ArmorShop import ArmorShop
 from src.pages.magic_shop.MagicShop import MagicShop
 from src.pages.weapon_shop.WeaponShop import WeaponShop
 from src.pages.quests.Tavern import Tavern
+from src.pages.arena.Arena import Arena
 
 
 def CityMap(screen, mainClock, user):
@@ -114,10 +115,12 @@ def CityMap(screen, mainClock, user):
             if event.type == QUIT:
                 pygame.quit()
                 sys.exit()
+
             if event.type == KEYDOWN:
                 if event.key == K_ESCAPE:
                     pygame.quit()
                     sys.exit()
+
             if event.type == MOUSEBUTTONDOWN:
                 # LEFT CLICK
                 if event.button == 1:
@@ -125,37 +128,47 @@ def CityMap(screen, mainClock, user):
                     # CHARACTER PROFILE
                     if navbar.bt_profile.rect.collidepoint(event.pos):
                         CharacterProfile(screen, mainClock, user)
+                        break
 
                     # SETTINGS
                     if navbar.bt_settings.rect.collidepoint(event.pos):
                         Settings(screen, mainClock)
+                        break
 
                     # SWAP HERO
                     if navbar.bt_swap_hero.rect.collidepoint(event.pos):
                         user.deselectHero()
                         running = False
                         swapHero = True
+                        break
 
                     # LOGOUT
                     if navbar.bt_logout.rect.collidepoint(event.pos):
                         user.logout()
                         running = False
+                        break
 
 
                     # HANDLE CITY PLACES
                     if bt_armorShop.rect.collidepoint(event.pos):
                         ArmorShop(screen, mainClock, user)
+                        break
 
                     if bt_magicShop.rect.collidepoint(event.pos):
                         MagicShop(screen, mainClock)
+                        break
 
                     if bt_weaponShop.rect.collidepoint(event.pos):
                         WeaponShop(screen, mainClock)
+                        break
 
                     if bt_tavern.rect.collidepoint(event.pos):
                         Tavern(screen, mainClock)
+                        break
 
-                # RIGHT CLICK
+                    if bt_arena.rect.collidepoint(event.pos):
+                        Arena(screen, mainClock, user)
+                        break
 
         pygame.display.update()
         mainClock.tick(60)

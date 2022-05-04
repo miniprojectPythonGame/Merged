@@ -16,7 +16,6 @@ from src.globals.const_values import INVENTORY_SHIFT
 
 from src.globals.const_values import \
     getCharacterForEQPreview, \
-    resetActiveItem, \
     reloadBackpackButtons
 
 
@@ -52,7 +51,6 @@ def ArmorShop(screen, mainClock, user):
     running = True
     category_active = 'headgear'
     backpack_active = 0
-    active_item = resetActiveItem()
     hero = user.currentHero
 
     # for item in hero.armourShop.itemList:
@@ -129,7 +127,7 @@ def ArmorShop(screen, mainClock, user):
     ig_backpack = ItemGrid(meas.ig_backpack['x'], meas.ig_backpack['y'],
                            meas.ig_backpack['item_size'], meas.ig_backpack['item_padding'],
                            meas.ig_backpack['cols'], meas.ig_backpack['amount'], screen,
-                           character['backpacks'][backpack_active], active=active_item['from'])
+                           character['backpacks'][backpack_active])
 
     buttons_backpack = [Button(meas.bt_class_active['color'],
                                meas.buttons_backpack['x'], meas.buttons_backpack['y'] +

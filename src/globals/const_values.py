@@ -50,6 +50,21 @@ BT_RETURN = {
     "path": '../images/icons/return.png',
 }
 
+CLASS_ICONS = {
+    "warrior": {
+        "gray": '../images/class_icons/warrior_gray.png',
+        "white": '../images/class_icons/warrior_white.png',
+    },
+    "mage": {
+        "gray": '../images/class_icons/mage_gray.png',
+        "white": '../images/class_icons/mage_white.png',
+    },
+    "archer": {
+        "gray": '../images/class_icons/archer_gray.png',
+        "white": '../images/class_icons/archer_white.png',
+    },
+}
+
 EQ_PLACEHOLDERS = {
     "headgear": '../images/icons/headgear_placeholder.png',
     "breastplate": '../images/icons/breastplate_placeholder.png',
@@ -99,29 +114,29 @@ AVATARS = {
     'warrior': [
         {
             "full": '../images/characters/warrior_1.jpg',
-            "rect": '../images/characters/warrior_1_rect.jpg',
+            "rect": '../images/characters/warrior_1_rect.jpg'
         },
         {
             "full": '../images/characters/warrior_2.jpg',
-            "rect": '../images/characters/warrior_2_rect.jpg',
+            "rect": '../images/characters/warrior_2_rect.jpg'
         },
         {
             "full": '../images/characters/warrior_3.jpg',
-            "rect": '../images/characters/warrior_3_rect.jpg',
+            "rect": '../images/characters/warrior_3_rect.jpg'
         },
     ],
     'mage': [
         {
             "full": '../images/characters/mage_1.jpg',
-            "rect": '../images/characters/mage_1_rect.jpg',
+            "rect": '../images/characters/mage_1_rect.jpg'
         },
         {
             "full": '../images/characters/mage_2.jpg',
-            "rect": '../images/characters/mage_2_rect.jpg',
+            "rect": '../images/characters/mage_2_rect.jpg'
         },
         {
             "full": '../images/characters/mage_3.jpg',
-            "rect": '../images/characters/mage_3_rect.jpg',
+            "rect": '../images/characters/mage_3_rect.jpg'
         },
     ],
     'archer': [
@@ -131,11 +146,11 @@ AVATARS = {
         },
         {
             "full": '../images/characters/archer_2.jpg',
-            "rect": '../images/characters/archer_2_rect.jpg',
+            "rect": '../images/characters/archer_2_rect.jpg'
         },
         {
             "full": '../images/characters/archer_3.jpg',
-            "rect": '../images/characters/archer_3_rect.jpg',
+            "rect": '../images/characters/archer_3_rect.jpg'
         },
     ]
 }
@@ -149,6 +164,10 @@ CREATE_NEW_CHARACTER = {
 
 INVENTORY_SHIFT = 11
 
+STATS_NAMES = [
+    'strength', "intelligence", "dexterity", "constitution", "luck",
+    "protection", "persuasion", "trade", "leadership", "initiative"
+]
 
 def setActiveItem(index, active_item):
     if active_item['from'] == -1:

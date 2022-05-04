@@ -48,6 +48,7 @@ def CreateCharacter(screen, mainClock, user):
                                 className.capitalize(), 1, path,
                                 screen, meas.header_secondary_font)
 
+    result = False
     running = True
     curr_active = 'warrior'
     cur_avatar_id = 0
@@ -178,6 +179,12 @@ def CreateCharacter(screen, mainClock, user):
                         input_name.appendText(event.unicode)
 
             if event.type == MOUSEBUTTONDOWN:
+                # HANDLE RETURN BUTTON
+                if bt_return.rect.collidepoint(event.pos):
+                    running = False
+                    result = False
+                    break
+
                 # 'Name' input activate
                 if input_name.rect.collidepoint(event.pos):
                     input_name.activate()
@@ -190,6 +197,7 @@ def CreateCharacter(screen, mainClock, user):
                     cur_avatar_id = 0
                     curr_avatarImage = AVATARS['warrior'][cur_avatar_id]['rect']
                     print(curr_active)
+                    break
 
                 # Pick 'mage' class
                 if bt_mage_inactive.rect.collidepoint(event.pos):
@@ -197,6 +205,7 @@ def CreateCharacter(screen, mainClock, user):
                     cur_avatar_id = 0
                     curr_avatarImage = AVATARS['mage'][cur_avatar_id]['rect']
                     print(curr_active)
+                    break
 
                 # Pick 'archer' class
                 if bt_archer_inactive.rect.collidepoint(event.pos):
@@ -204,26 +213,24 @@ def CreateCharacter(screen, mainClock, user):
                     cur_avatar_id = 0
                     curr_avatarImage = AVATARS['archer'][cur_avatar_id]['rect']
                     print(curr_active)
+                    break
 
                 for i in range(len(images)):
                     if images[i].rect.collidepoint(event.pos):
                         curr_avatarImage = images[i].path
                         cur_avatar_id = i
+                        break
 
                 if bt_create.rect.collidepoint(event.pos):
                     if validate():
                         user.createHero(cur_avatar_id + 1, input_name.text, curr_active[0], 1, 1, 1, 1, 1, 1, 1, 1, 1,
                                         1)
                         running = False
-                        print("Redirecting: CreateCharacter.py -> ChooseCharacter.py")
-
+                        result = True
                     else:
                         print("Validation fail")
 
-                # HANDLE RETURN BUTTON
-                if bt_return.rect.collidepoint(event.pos):
-                    running = False
-                    print("Redirecting: CreateCharacter.py -> ChooseCharacter.py")
-
         pygame.display.update()
         mainClock.tick(60)
+
+    return result

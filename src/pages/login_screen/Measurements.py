@@ -133,5 +133,6 @@ class Measurements:
         "y": window_height - margin,
         "width": 100,
         "height": 35,
-        "text": 'Sign up'
+        "text": 'Sign up',
+        "border": 2,
     }
