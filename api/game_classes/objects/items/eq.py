@@ -26,7 +26,7 @@ class Eq:
         try:
             conn, cursor = connect_to_db()
             cursor.execute(
-                "SELECT i.item_id,s.available,s.item_slot_id "
+                "SELECT i.item_id,s.available,s.item_slot_id,i.quality "
                 "FROM storage s join items i on s.item_id = i.item_id where hero_id = %s;",
                 (self.hero_id,))
             storage = cursor.fetchall()
@@ -36,7 +36,7 @@ class Eq:
                 item_slot_id = item[2]
                 cursor.execute(
                     "SELECT I.name,I.price,I.description,I.only_treasure,I.item_type_id,I.min_lvl,I.for_class,s.strength,"
-                    "s.intelligence,s.dexterity,s.constitution,s.luck,s.persuasion,s.trade,s.leadership,s.protection,s.initiative"
+                    "s.intelligence,s.dexterity,s.constitution,s.luck,s.persuasion,s.trade,s.leadership,s.protection,s.initiative,i.quality "
                     " FROM items I JOIN statistics s on s.statistics_id = I.statistics_id WHERE I.item_id = %s;",
                     (item_id,))
 

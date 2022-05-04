@@ -3,8 +3,24 @@ from enum import Enum
 from api.game_classes.creatures.statistics import Statistics
 
 
+class Quality(Enum):
+    LEGENDARY = 1
+    EPIC = 2
+    COMMON = 3
+
+    @classmethod
+    def get_quality(cls, number: int):
+        if number == 1:
+            return Quality.LEGENDARY
+        if number == 2:
+            return Quality.EPIC
+        if number == 3:
+            return Quality.COMMON
+
+
 class Item:
-    def __init__(self, name, price, description, statistics, for_class, item_id, available):
+    def __init__(self, name, price, description, statistics, for_class, item_id, available, quality: Quality):
+        self.quality = quality
         self.price = price
         self.name = name
         self.description = description
@@ -16,7 +32,8 @@ class Item:
     def __str__(self):
         return '----------------------\nName: ' + self.name + '\nprice: ' + \
                str(self.price) + '\ndescription: ' + self.description + \
-               '\nitem_id: ' + str(self.item_id) + '\n----------------------'
+               '\nitem_id: ' + str(self.item_id) + '\n----------------------\n' + \
+               'quality: ' + str(self.quality.name) + '\n----------------------'
 
 
 class ItemType(Enum):
@@ -36,64 +53,64 @@ class ItemType(Enum):
 
 
 class Belt(Item):
-    def __init__(self, statistics: Statistics, name, price, description, for_class, item_id, available):
-        Item.__init__(self, name, price, description, statistics, for_class, item_id, available)
+    def __init__(self, statistics: Statistics, name, price, description, for_class, item_id, available, quality):
+        Item.__init__(self, name, price, description, statistics, for_class, item_id, available, quality)
         self.item_type = ItemType.Belt
 
 
 class Boots(Item):
-    def __init__(self, statistics: Statistics, name, price, description, for_class, item_id, available):
-        Item.__init__(self, name, price, description, statistics, for_class, item_id, available)
+    def __init__(self, statistics: Statistics, name, price, description, for_class, item_id, available, quality):
+        Item.__init__(self, name, price, description, statistics, for_class, item_id, available, quality)
         self.item_type = ItemType.Boots
 
 
 class Breastplate(Item):
-    def __init__(self, statistics: Statistics, name, price, description, for_class, item_id, available):
-        Item.__init__(self, name, price, description, statistics, for_class, item_id, available)
+    def __init__(self, statistics: Statistics, name, price, description, for_class, item_id, available, quality):
+        Item.__init__(self, name, price, description, statistics, for_class, item_id, available, quality)
         self.item_type = ItemType.Breastplate
 
 
 class Gloves(Item):
-    def __init__(self, statistics: Statistics, name, price, description, for_class, item_id, available):
-        Item.__init__(self, name, price, description, statistics, for_class, item_id, available)
+    def __init__(self, statistics: Statistics, name, price, description, for_class, item_id, available, quality):
+        Item.__init__(self, name, price, description, statistics, for_class, item_id, available, quality)
         self.item_type = ItemType.Gloves
 
 
 class Headgear(Item):
-    def __init__(self, statistics: Statistics, name, price, description, for_class, item_id, available):
-        Item.__init__(self, name, price, description, statistics, for_class, item_id, available)
+    def __init__(self, statistics: Statistics, name, price, description, for_class, item_id, available, quality):
+        Item.__init__(self, name, price, description, statistics, for_class, item_id, available, quality)
         self.item_type = ItemType.Headgear
 
 
 class LuckyItem(Item):
-    def __init__(self, statistics: Statistics, name, price, description, for_class, item_id, available):
-        Item.__init__(self, name, price, description, statistics, for_class, item_id, available)
+    def __init__(self, statistics: Statistics, name, price, description, for_class, item_id, available, quality):
+        Item.__init__(self, name, price, description, statistics, for_class, item_id, available, quality)
         self.item_type = ItemType.LuckyItem
 
 
 class Necklace(Item):
-    def __init__(self, statistics: Statistics, name, price, description, for_class, item_id, available):
-        Item.__init__(self, name, price, description, statistics, for_class, item_id, available)
+    def __init__(self, statistics: Statistics, name, price, description, for_class, item_id, available, quality):
+        Item.__init__(self, name, price, description, statistics, for_class, item_id, available, quality)
         self.item_type = ItemType.Necklace
 
 
 class Ring(Item):
-    def __init__(self, statistics: Statistics, name, price, description, for_class, item_id, available):
-        Item.__init__(self, name, price, description, statistics, for_class, item_id, available)
+    def __init__(self, statistics: Statistics, name, price, description, for_class, item_id, available, quality):
+        Item.__init__(self, name, price, description, statistics, for_class, item_id, available, quality)
         self.item_type = ItemType.Ring
 
 
 class Steed(Item):
-    def __init__(self, statistics: Statistics, name, price, description, for_class, item_id, available,
+    def __init__(self, statistics: Statistics, name, price, description, for_class, item_id, available, quality,
                  additionalStorage=0):
-        Item.__init__(self, name, price, description, statistics, for_class, item_id, available)
+        Item.__init__(self, name, price, description, statistics, for_class, item_id, available, quality)
         self.additionalStorage = additionalStorage  # in slots
         self.item_type = ItemType.Steed
 
 
 class PrimaryWeapon(Item):
-    def __init__(self, statistics: Statistics, name, price, description, for_class, item_id, available):
-        Item.__init__(self, name, price, description, statistics, for_class, item_id, available)
+    def __init__(self, statistics: Statistics, name, price, description, for_class, item_id, available, quality):
+        Item.__init__(self, name, price, description, statistics, for_class, item_id, available, quality)
         if for_class == "w":
             self.min_dmg = statistics.strength * 15
         elif for_class == "a":
@@ -108,14 +125,15 @@ class PrimaryWeapon(Item):
 
 
 class SecondaryWeapon(Item):
-    def __init__(self, statistics: Statistics, name, price, description, for_class, item_id, available):
-        Item.__init__(self, name, price, description, statistics, for_class, item_id, available)
+    def __init__(self, statistics: Statistics, name, price, description, for_class, item_id, available, quality):
+        Item.__init__(self, name, price, description, statistics, for_class, item_id, available, quality)
         self.item_type = ItemType.SecondaryWeapon
 
 
 class PotionPeriod(Item):
-    def __init__(self, statistics: Statistics, name, price, description, for_class, item_id, available, periodInDays=7):
-        Item.__init__(self, name, price, description, statistics, for_class, item_id, available)
+    def __init__(self, statistics: Statistics, name, price, description, for_class, item_id, available, quality,
+                 periodInDays=7):
+        Item.__init__(self, name, price, description, statistics, for_class, item_id, available, quality)
         self.periodInDays = periodInDays
         self.item_type = ItemType.PotionPeriod
 
@@ -124,8 +142,8 @@ class PotionPeriod(Item):
 
 
 class PotionPermanent(Item):
-    def __init__(self, statistics: Statistics, name, price, description, for_class, item_id, available):
-        Item.__init__(self, name, price, description, statistics, for_class, item_id, available)
+    def __init__(self, statistics: Statistics, name, price, description, for_class, item_id, available, quality):
+        Item.__init__(self, name, price, description, statistics, for_class, item_id, available, quality)
         self.item_type = ItemType.PotionPermanent
 
     def use(self):
@@ -154,68 +172,70 @@ class ItemBuilder(object):
             newItem = Belt(newStats,
                            item_info[0],
                            item_info[1],
-                           item_info[2], item_info[6], item_id, available)
+                           item_info[2], item_info[6], item_id, available, Quality.get_quality(item_info[17]))
 
         elif item_info[4] == ItemType.Boots.value:
             newItem = Boots(newStats,
                             item_info[0],
                             item_info[1],
-                            item_info[2], item_info[6], item_id, available)
+                            item_info[2], item_info[6], item_id, available, Quality.get_quality(item_info[17]))
         elif item_info[4] == ItemType.Breastplate.value:
             newItem = Breastplate(newStats,
                                   item_info[0],
                                   item_info[1],
-                                  item_info[2], item_info[6], item_id, available)
+                                  item_info[2], item_info[6], item_id, available, Quality.get_quality(item_info[17]))
         elif item_info[4] == ItemType.Gloves.value:
             newItem = Gloves(newStats,
                              item_info[0],
                              item_info[1],
-                             item_info[2], item_info[6], item_id, available)
+                             item_info[2], item_info[6], item_id, available, Quality.get_quality(item_info[17]))
         elif item_info[4] == ItemType.Headgear.value:
             newItem = Headgear(newStats,
                                item_info[0],
                                item_info[1],
-                               item_info[2], item_info[6], item_id, available)
+                               item_info[2], item_info[6], item_id, available, Quality.get_quality(item_info[17]))
         elif item_info[4] == ItemType.LuckyItem.value:
             newItem = LuckyItem(newStats,
                                 item_info[0],
                                 item_info[1],
-                                item_info[2], item_info[6], item_id, available)
+                                item_info[2], item_info[6], item_id, available, Quality.get_quality(item_info[17]))
         elif item_info[4] == ItemType.Necklace.value:
             newItem = Necklace(newStats,
                                item_info[0],
                                item_info[1],
-                               item_info[2], item_info[6], item_id, available)
+                               item_info[2], item_info[6], item_id, available, Quality.get_quality(item_info[17]))
         elif item_info[4] == ItemType.Ring.value:
             newItem = Ring(newStats,
                            item_info[0],
                            item_info[1],
-                           item_info[2], item_info[6], item_id, available)
+                           item_info[2], item_info[6], item_id, available, Quality.get_quality(item_info[17]))
         elif item_info[4] == ItemType.Steed.value:
             newItem = Steed(newStats,
                             item_info[0],
                             item_info[1],
-                            item_info[2], item_info[6], item_id, available)
+                            item_info[2], item_info[6], item_id, available, Quality.get_quality(item_info[17]))
         elif item_info[4] == ItemType.PrimaryWeapon.value:
             newItem = PrimaryWeapon(newStats,
                                     item_info[0],
                                     item_info[1],
-                                    item_info[2], item_info[6], item_id, available)
+                                    item_info[2], item_info[6], item_id, available, Quality.get_quality(item_info[17]))
         elif item_info[4] == ItemType.SecondaryWeapon.value:
             newItem = SecondaryWeapon(newStats,
                                       item_info[0],
                                       item_info[1],
-                                      item_info[2], item_info[6], item_id, available)
+                                      item_info[2], item_info[6], item_id, available,
+                                      Quality.get_quality(item_info[17]))
         elif item_info[4] == ItemType.PotionPeriod.value:
             newItem = PotionPeriod(newStats,
                                    item_info[0],
                                    item_info[1],
-                                   item_info[2], item_info[6], item_id, available)
+                                   item_info[2], item_info[6], item_id, available, Quality.get_quality(item_info[17]))
         elif item_info[4] == ItemType.PotionPermanent.value:
             newItem = PotionPermanent(newStats,
                                       item_info[0],
                                       item_info[1],
-                                      item_info[2], item_info[6], item_id, available)
+                                      item_info[2], item_info[6], item_id, available,
+                                      Quality.get_quality(item_info[17]))
         else:
             newItem = -1
 
@@ -225,6 +245,6 @@ class ItemBuilder(object):
     def all_info_select(cls, item_id: int):
         select = "SELECT I.name,I.price,I.description,I.only_treasure,I.item_type_id,I.min_lvl,I.for_class," \
                  "s.strength,s.intelligence,s.dexterity,s.constitution,s.luck,s.persuasion,s.trade,s.leadership," \
-                 "s.protection,s.initiative FROM items I JOIN statistics s on s.statistics_id = I.statistics_id" \
+                 "s.protection,s.initiative,i.quality FROM items I JOIN statistics s on s.statistics_id = I.statistics_id" \
                  " WHERE I.item_id = " + str(item_id) + ";"
         return select
