@@ -45,11 +45,12 @@ def Arena(screen, mainClock, user):
             result.append(Label(STATS_NAMES[n], meas.lb_stat_names['font'], meas.lb_stat_names['color'], screen,
                                 x, y, meas.lb_stat_names['anchor']))
 
-            result.append(Label(str(statistics[STATS_NAMES[n]]), meas.lb_stat_values['font'], meas.lb_stat_values['color'], screen,
-                                x + round(0.5 * meas.avatar_size) - meas.list_element_padding,
-                                y,
-                                meas.lb_stat_values['anchor']))
-
+            result.append(
+                Label(str(statistics[STATS_NAMES[n]]), meas.lb_stat_values['font'], meas.lb_stat_values['color'],
+                      screen,
+                      x + round(0.5 * meas.avatar_size) - meas.list_element_padding,
+                      y,
+                      meas.lb_stat_values['anchor']))
 
         return result
 
@@ -84,8 +85,8 @@ def Arena(screen, mainClock, user):
     lb_stats_names = generateStats()
 
     bt_fight = Button(meas.bt_fight['color'], meas.bt_fight['x'], meas.bt_fight['y'],
-                       meas.bt_fight['width'], meas.bt_fight['height'], screen,
-                       meas.bt_fight['text'], meas.header_tertiary_font, border_radius=meas.bt_fight['border-radius'])
+                      meas.bt_fight['width'], meas.bt_fight['height'], screen,
+                      meas.bt_fight['text'], meas.header_tertiary_font, border_radius=meas.bt_fight['border-radius'])
 
     displayedContent = [
         label_page, bt_return, sl_heroes, img_hero, lb_name, bt_fight
