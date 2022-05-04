@@ -38,73 +38,49 @@ class ItemType(Enum):
 class Belt(Item):
     def __init__(self, statistics: Statistics, name, price, description, for_class, item_id, available):
         Item.__init__(self, name, price, description, statistics, for_class, item_id, available)
-
-    @classmethod
-    def get_code(cls):
-        return 0
+        self.item_type = ItemType.Belt
 
 
 class Boots(Item):
     def __init__(self, statistics: Statistics, name, price, description, for_class, item_id, available):
         Item.__init__(self, name, price, description, statistics, for_class, item_id, available)
-
-    @classmethod
-    def get_code(cls):
-        return 1
+        self.item_type = ItemType.Boots
 
 
 class Breastplate(Item):
     def __init__(self, statistics: Statistics, name, price, description, for_class, item_id, available):
         Item.__init__(self, name, price, description, statistics, for_class, item_id, available)
-
-    @classmethod
-    def get_code(cls):
-        return 2
+        self.item_type = ItemType.Breastplate
 
 
 class Gloves(Item):
     def __init__(self, statistics: Statistics, name, price, description, for_class, item_id, available):
         Item.__init__(self, name, price, description, statistics, for_class, item_id, available)
-
-    @classmethod
-    def get_code(cls):
-        return 3
+        self.item_type = ItemType.Gloves
 
 
 class Headgear(Item):
     def __init__(self, statistics: Statistics, name, price, description, for_class, item_id, available):
         Item.__init__(self, name, price, description, statistics, for_class, item_id, available)
-
-    @classmethod
-    def get_code(cls):
-        return 4
+        self.item_type = ItemType.Headgear
 
 
 class LuckyItem(Item):
     def __init__(self, statistics: Statistics, name, price, description, for_class, item_id, available):
         Item.__init__(self, name, price, description, statistics, for_class, item_id, available)
-
-    @classmethod
-    def get_code(cls):
-        return 5
+        self.item_type = ItemType.LuckyItem
 
 
 class Necklace(Item):
     def __init__(self, statistics: Statistics, name, price, description, for_class, item_id, available):
         Item.__init__(self, name, price, description, statistics, for_class, item_id, available)
-
-    @classmethod
-    def get_code(cls):
-        return 6
+        self.item_type = ItemType.Necklace
 
 
 class Ring(Item):
     def __init__(self, statistics: Statistics, name, price, description, for_class, item_id, available):
         Item.__init__(self, name, price, description, statistics, for_class, item_id, available)
-
-    @classmethod
-    def get_code(cls):
-        return 7
+        self.item_type = ItemType.Ring
 
 
 class Steed(Item):
@@ -112,10 +88,7 @@ class Steed(Item):
                  additionalStorage=0):
         Item.__init__(self, name, price, description, statistics, for_class, item_id, available)
         self.additionalStorage = additionalStorage  # in slots
-
-    @classmethod
-    def get_code(cls):
-        return 8
+        self.item_type = ItemType.Steed
 
 
 class PrimaryWeapon(Item):
@@ -131,44 +104,32 @@ class PrimaryWeapon(Item):
             self.min_dmg = statistics.strength * 5 + statistics.dexterity * 5 + statistics.intelligence * 5
 
         self.max_dmg = self.min_dmg * 10 * statistics.luck
-
-    @classmethod
-    def get_code(cls):
-        return 9
+        self.item_type = ItemType.PrimaryWeapon
 
 
 class SecondaryWeapon(Item):
     def __init__(self, statistics: Statistics, name, price, description, for_class, item_id, available):
         Item.__init__(self, name, price, description, statistics, for_class, item_id, available)
-
-    @classmethod
-    def get_code(cls):
-        return 10
+        self.item_type = ItemType.SecondaryWeapon
 
 
 class PotionPeriod(Item):
     def __init__(self, statistics: Statistics, name, price, description, for_class, item_id, available, periodInDays=7):
         Item.__init__(self, name, price, description, statistics, for_class, item_id, available)
         self.periodInDays = periodInDays
+        self.item_type = ItemType.PotionPeriod
 
     def use(self):
         pass
-
-    @classmethod
-    def get_code(cls):
-        return 11
 
 
 class PotionPermanent(Item):
     def __init__(self, statistics: Statistics, name, price, description, for_class, item_id, available):
         Item.__init__(self, name, price, description, statistics, for_class, item_id, available)
+        self.item_type = ItemType.PotionPermanent
 
     def use(self):
         pass
-
-    @classmethod
-    def get_code(cls):
-        return 12
 
 
 class ItemBuilder(object):
