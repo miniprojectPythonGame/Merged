@@ -1,7 +1,7 @@
 from abc import ABC
 from enum import Enum
 
-from api.game_classes.objects.items.item import ItemBuilder
+from api.game_classes.objects.items.item import Item
 from api.web.WebService import connect_to_db, disconnect_from_db
 
 
@@ -29,8 +29,8 @@ class Shop(ABC):
                 bought_item = self.itemList[item_slot_id]
                 print(self.itemList[item_slot_id].item_id)
                 if new_id is not None:
-                    cursor.execute(ItemBuilder.all_info_select(new_id))
-                    self.itemList[item_slot_id] = ItemBuilder.build_item(self.itemList[item_slot_id].item_id,
+                    cursor.execute(Item.all_info_select(new_id))
+                    self.itemList[item_slot_id] = Item.build_item(self.itemList[item_slot_id].item_id,
                                                                          cursor.fetchall()[0])
                 disconnect_from_db(conn, cursor)
                 return bought_item
@@ -51,8 +51,8 @@ class Shop(ABC):
             for i in item_ids:
                 item_id = i[0]
                 if item_id is not None:
-                    cursor.execute(ItemBuilder.all_info_select(item_id))
-                    self.itemList.append(ItemBuilder.build_item(item_id, cursor.fetchall()[0]))
+                    cursor.execute(Item.all_info_select(item_id))
+                    self.itemList.append(Item.build_item(item_id, cursor.fetchall()[0]))
             disconnect_from_db(conn, cursor)
         except Exception as error:
             print(error)

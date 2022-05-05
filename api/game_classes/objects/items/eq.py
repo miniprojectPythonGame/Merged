@@ -1,7 +1,7 @@
 import random
 
 from api.game_classes.creatures.statistics import Statistics
-from api.game_classes.objects.items.item import ItemBuilder, Item
+from api.game_classes.objects.items.item import Item
 from api.web.WebService import connect_to_db, disconnect_from_db
 
 
@@ -9,7 +9,7 @@ class Eq:
     def __init__(self, hero_id, className, gold):
         self.hero_id = hero_id
         self.itemSlots = [None] * 31  # od 0 do 10 to itemy w eq według itemtype'u
-        self.gearStatistics = Statistics()  # dodawanie gear_statistics do statistics
+        self.gearStatistics = Statistics()
         self.className = className
         self.gold = gold
         self.get_storage()
@@ -34,13 +34,9 @@ class Eq:
                 item_id = item[0]
                 available = item[1]
                 item_slot_id = item[2]
-                cursor.execute(
-                    "SELECT I.name,I.price,I.description,I.only_treasure,I.item_type_id,I.min_lvl,I.for_class,s.strength,"
-                    "s.intelligence,s.dexterity,s.constitution,s.luck,s.persuasion,s.trade,s.leadership,s.protection,s.initiative,i.quality "
-                    " FROM items I JOIN statistics s on s.statistics_id = I.statistics_id WHERE I.item_id = %s;",
-                    (item_id,))
+                cursor.execute(Item.all_info_select(item_id))
 
-                self.itemSlots[item_slot_id] = ItemBuilder.build_item(item_id, cursor.fetchall()[0], available)
+                self.itemSlots[item_slot_id] = Item.build_item(item_id, cursor.fetchall()[0], available)
 
                 if item_slot_id <= 10:
                     self.gearStatistics += self.itemSlots[item_slot_id].statistics
@@ -122,7 +118,7 @@ class Eq:
                 return False
         return False
 
-    def add_item(self, item: Item):  # todo wtf is that
+    def add_item(self, item: Item):
         if item is not False:
             try:
                 conn, cursor = connect_to_db()

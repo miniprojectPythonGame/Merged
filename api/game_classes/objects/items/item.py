@@ -29,6 +29,100 @@ class Item:
         self.item_id = item_id
         self.available = available
 
+    @classmethod
+    def build_item(cls, item_id, item_info, available=1):
+        newStats = Statistics(item_info[7],
+                              item_info[8],
+                              item_info[9],
+                              item_info[10],
+                              item_info[11],
+                              item_info[12],
+                              item_info[13],
+                              item_info[14],
+                              item_info[15],
+                              item_info[16],
+                              )
+
+        item_type = item_info[4]
+
+        item_dict = {
+            ItemType.Belt.value: Belt(newStats,
+                                      item_info[0],
+                                      item_info[1],
+                                      item_info[2], item_info[6], item_id, available,
+                                      Quality.get_quality(item_info[17])),
+            ItemType.Boots.value: Boots(newStats,
+                                        item_info[0],
+                                        item_info[1],
+                                        item_info[2], item_info[6], item_id, available,
+                                        Quality.get_quality(item_info[17])),
+            ItemType.Breastplate.value: Breastplate(newStats,
+                                                    item_info[0],
+                                                    item_info[1],
+                                                    item_info[2], item_info[6], item_id, available,
+                                                    Quality.get_quality(item_info[17])),
+            ItemType.Gloves.value: Gloves(newStats,
+                                          item_info[0],
+                                          item_info[1],
+                                          item_info[2], item_info[6], item_id, available,
+                                          Quality.get_quality(item_info[17])),
+            ItemType.Headgear.value: Headgear(newStats,
+                                              item_info[0],
+                                              item_info[1],
+                                              item_info[2], item_info[6], item_id, available,
+                                              Quality.get_quality(item_info[17])),
+            ItemType.LuckyItem.value: LuckyItem(newStats,
+                                                item_info[0],
+                                                item_info[1],
+                                                item_info[2], item_info[6], item_id, available,
+                                                Quality.get_quality(item_info[17])),
+            ItemType.Necklace.value: Necklace(newStats,
+                                              item_info[0],
+                                              item_info[1],
+                                              item_info[2], item_info[6], item_id, available,
+                                              Quality.get_quality(item_info[17])),
+            ItemType.Ring.value: Ring(newStats,
+                                      item_info[0],
+                                      item_info[1],
+                                      item_info[2], item_info[6], item_id, available,
+                                      Quality.get_quality(item_info[17])),
+            ItemType.Steed.value: Steed(newStats,
+                                        item_info[0],
+                                        item_info[1],
+                                        item_info[2], item_info[6], item_id, available,
+                                        Quality.get_quality(item_info[17])),
+            ItemType.PrimaryWeapon.value: PrimaryWeapon(newStats,
+                                                        item_info[0],
+                                                        item_info[1],
+                                                        item_info[2], item_info[6], item_id, available,
+                                                        Quality.get_quality(item_info[17])),
+            ItemType.SecondaryWeapon.value: SecondaryWeapon(newStats,
+                                                            item_info[0],
+                                                            item_info[1],
+                                                            item_info[2], item_info[6], item_id, available,
+                                                            Quality.get_quality(item_info[17])),
+            ItemType.PotionPeriod.value: PotionPeriod(newStats,
+                                                      item_info[0],
+                                                      item_info[1],
+                                                      item_info[2], item_info[6], item_id, available,
+                                                      Quality.get_quality(item_info[17])),
+            ItemType.PotionPermanent.value: PotionPermanent(newStats,
+                                                            item_info[0],
+                                                            item_info[1],
+                                                            item_info[2], item_info[6], item_id, available,
+                                                            Quality.get_quality(item_info[17])),
+        }
+
+        return item_dict.get((item_type), "ItemBuilder.build_item error!")
+
+    @classmethod
+    def all_info_select(cls, item_id: int):
+        select = "SELECT I.name,I.price,I.description,I.only_treasure,I.item_type_id,I.min_lvl,I.for_class," \
+                 "s.strength,s.intelligence,s.dexterity,s.constitution,s.luck,s.persuasion,s.trade,s.leadership," \
+                 "s.protection,s.initiative,i.quality FROM items I JOIN statistics s on s.statistics_id = I.statistics_id" \
+                 " WHERE I.item_id = " + str(item_id) + ";"
+        return select
+
     def __str__(self):
         return '----------------------\nName: ' + self.name + '\nprice: ' + \
                str(self.price) + '\ndescription: ' + self.description + \
@@ -50,6 +144,20 @@ class ItemType(Enum):
     SecondaryWeapon = 10
     PotionPeriod = 11
     PotionPermanent = 12
+
+    item_type_dict = {Belt: 0,
+                      Boots: 1,
+                      Breastplate: 2,
+                      Gloves: 3,
+                      Headgear: 4,
+                      LuckyItem: 5,
+                      Necklace: 6,
+                      Ring: 7,
+                      Steed: 8,
+                      PrimaryWeapon: 9,
+                      SecondaryWeapon: 10,
+                      PotionPeriod: 11,
+                      PotionPermanent: 12}
 
 
 class Belt(Item):
@@ -148,103 +256,3 @@ class PotionPermanent(Item):
 
     def use(self):
         pass
-
-
-class ItemBuilder(object):
-    @classmethod
-    def build_item(cls, item_id, item_info, available=1):
-        newStats = Statistics(item_info[7],
-                              item_info[8],
-                              item_info[9],
-                              item_info[10],
-                              item_info[11],
-                              item_info[12],
-                              item_info[13],
-                              item_info[14],
-                              item_info[15],
-                              item_info[16],
-                              )
-
-        # dict_ = {}
-        # dict to rozwiąrze
-
-        if item_info[4] == ItemType.Belt.value:
-            newItem = Belt(newStats,
-                           item_info[0],
-                           item_info[1],
-                           item_info[2], item_info[6], item_id, available, Quality.get_quality(item_info[17]))
-
-        elif item_info[4] == ItemType.Boots.value:
-            newItem = Boots(newStats,
-                            item_info[0],
-                            item_info[1],
-                            item_info[2], item_info[6], item_id, available, Quality.get_quality(item_info[17]))
-        elif item_info[4] == ItemType.Breastplate.value:
-            newItem = Breastplate(newStats,
-                                  item_info[0],
-                                  item_info[1],
-                                  item_info[2], item_info[6], item_id, available, Quality.get_quality(item_info[17]))
-        elif item_info[4] == ItemType.Gloves.value:
-            newItem = Gloves(newStats,
-                             item_info[0],
-                             item_info[1],
-                             item_info[2], item_info[6], item_id, available, Quality.get_quality(item_info[17]))
-        elif item_info[4] == ItemType.Headgear.value:
-            newItem = Headgear(newStats,
-                               item_info[0],
-                               item_info[1],
-                               item_info[2], item_info[6], item_id, available, Quality.get_quality(item_info[17]))
-        elif item_info[4] == ItemType.LuckyItem.value:
-            newItem = LuckyItem(newStats,
-                                item_info[0],
-                                item_info[1],
-                                item_info[2], item_info[6], item_id, available, Quality.get_quality(item_info[17]))
-        elif item_info[4] == ItemType.Necklace.value:
-            newItem = Necklace(newStats,
-                               item_info[0],
-                               item_info[1],
-                               item_info[2], item_info[6], item_id, available, Quality.get_quality(item_info[17]))
-        elif item_info[4] == ItemType.Ring.value:
-            newItem = Ring(newStats,
-                           item_info[0],
-                           item_info[1],
-                           item_info[2], item_info[6], item_id, available, Quality.get_quality(item_info[17]))
-        elif item_info[4] == ItemType.Steed.value:
-            newItem = Steed(newStats,
-                            item_info[0],
-                            item_info[1],
-                            item_info[2], item_info[6], item_id, available, Quality.get_quality(item_info[17]))
-        elif item_info[4] == ItemType.PrimaryWeapon.value:
-            newItem = PrimaryWeapon(newStats,
-                                    item_info[0],
-                                    item_info[1],
-                                    item_info[2], item_info[6], item_id, available, Quality.get_quality(item_info[17]))
-        elif item_info[4] == ItemType.SecondaryWeapon.value:
-            newItem = SecondaryWeapon(newStats,
-                                      item_info[0],
-                                      item_info[1],
-                                      item_info[2], item_info[6], item_id, available,
-                                      Quality.get_quality(item_info[17]))
-        elif item_info[4] == ItemType.PotionPeriod.value:
-            newItem = PotionPeriod(newStats,
-                                   item_info[0],
-                                   item_info[1],
-                                   item_info[2], item_info[6], item_id, available, Quality.get_quality(item_info[17]))
-        elif item_info[4] == ItemType.PotionPermanent.value:
-            newItem = PotionPermanent(newStats,
-                                      item_info[0],
-                                      item_info[1],
-                                      item_info[2], item_info[6], item_id, available,
-                                      Quality.get_quality(item_info[17]))
-        else:
-            newItem = -1
-
-        return newItem
-
-    @classmethod
-    def all_info_select(cls, item_id: int):
-        select = "SELECT I.name,I.price,I.description,I.only_treasure,I.item_type_id,I.min_lvl,I.for_class," \
-                 "s.strength,s.intelligence,s.dexterity,s.constitution,s.luck,s.persuasion,s.trade,s.leadership," \
-                 "s.protection,s.initiative,i.quality FROM items I JOIN statistics s on s.statistics_id = I.statistics_id" \
-                 " WHERE I.item_id = " + str(item_id) + ";"
-        return select
