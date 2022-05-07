@@ -20,7 +20,8 @@ class Eq:
 
         self.itemSlots[in_eq], self.itemSlots[in_storage] = self.itemSlots[in_storage], self.itemSlots[in_eq]
 
-        self.gearStatistics += self.itemSlots[in_eq].statistics
+        if self.itemSlots[in_eq] is not None:
+            self.gearStatistics += self.itemSlots[in_eq].statistics
 
     def get_storage(self):
         try:
@@ -71,9 +72,9 @@ class Eq:
             return True
         if b <= 10 and self.itemSlots[a] is None:
             return True
-        if 10 >= a == self.itemSlots[b].get_code() and self.itemSlots[b].for_class in (None, self.className):
+        if 10 >= a == self.itemSlots[b].item_type.value and self.itemSlots[b].for_class in (None, self.className):
             return True
-        if 10 >= b == self.itemSlots[a].get_code() and self.itemSlots[a].for_class in (None, self.className):
+        if 10 >= b == self.itemSlots[a].item_type.value and self.itemSlots[a].for_class in (None, self.className):
             return True
         return False
 

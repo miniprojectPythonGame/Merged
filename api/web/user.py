@@ -1,4 +1,5 @@
 from api.game_classes.creatures.hero import Hero
+from api.game_classes.objects.items.item import Item, ItemType
 from api.web.WebService import *
 
 
@@ -140,16 +141,18 @@ class User:
 
 
 if __name__ == "__main__":
-    tmp = User()
+    tmp = ItemType.Belt
+    print(tmp.value)
+    # tmp = User()
 #     # tmp.signup('test@gmail.com', 'alamakota', 'Viciooo', 'm', 21)
-    tmp.login('konto@gmail.com', 'alamakota')
+#     tmp.login('konto@gmail.com', 'alamakota')
     # tmp.createHero(2,'test_fight', 'w', 1, 1, 1, 1, 1, 1, 1, 1, 1, 1)
-    tmp.chooseHero(1)
+    # tmp.chooseHero(1)
 #     # tmp.currentHero.eq.swap_places(13, 0)
 #     # tmp.currentHero.add_to_statistics('dexterity')
 #     # tmp.currentHero.add_to_statistics('luck')
 #     print(tmp.currentHero)
-    print(tmp.currentHero.init_fight_with_other_hero(tmp.Heroes.get(2)))
+#     print(tmp.currentHero.init_fight_with_other_hero(tmp.Heroes.get(2)))
 #     # tmp.currentHero.armourShop.print()
 #     # tmp.currentHero.buy_from_shop(0, 0)
 #     print(tmp.currentHero.eq.itemSlots[11])
