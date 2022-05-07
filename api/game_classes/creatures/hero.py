@@ -177,7 +177,8 @@ class Hero(Creature):
         return False
 
     def init_fight_with_other_hero(self, enemy):
-        Battle.hero_vs_hero(self, enemy)
+        # returns battle_logs,winner.hero_id
+        return Battle.hero_vs_hero(self, enemy)
 
     def get_statistics(self):
         return self.heroClass.statistics + self.eq.gearStatistics

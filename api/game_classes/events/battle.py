@@ -8,6 +8,8 @@ from api.web.WebService import connect_to_db, disconnect_from_db
 class Battle(object):
     @classmethod
     def hero_vs_hero(cls, hero_1, hero_2):
+        # TODO dodać listę w postaci (hero_id,dmg_dealt)
+        battle_logs = []
         chances = hero_1.heroClass.statistics.initiative + hero_2.heroClass.statistics.initiative
         finished = False
         winner = None
@@ -20,14 +22,16 @@ class Battle(object):
 
         while not finished:
             if hero_1_attacks:
-                Battle.__hero_attacks(hero_1, hero_2)
+                battle_log = Battle.__hero_attacks(hero_1, hero_2)
+                battle_logs.append(battle_log)
                 if hero_2.heroClass.statistics.hp <= 0:
                     finished = True
                     winner = hero_1
                     loser = hero_2
 
             else:
-                Battle.__hero_attacks(hero_2, hero_1)
+                battle_log = Battle.__hero_attacks(hero_2, hero_1)
+                battle_logs.append(battle_log)
                 if hero_1.heroClass.statistics.hp <= 0:
                     finished = True
                     winner = hero_2
@@ -38,6 +42,7 @@ class Battle(object):
         winner.heroClass.statistics.hp = winner.heroClass.statistics.constitution * 100
         loser.heroClass.statistics.hp = loser.heroClass.statistics.constitution * 100
         print("winner: ", winner.hero_id)
+        return battle_logs, winner.hero_id
 
     @classmethod
     def __hero_attacks(cls, creature_1, creature_2: Creature):
@@ -49,6 +54,7 @@ class Battle(object):
         dmg = floor(
             dmg / randint(1, creature_2.heroClass.statistics.protection * (1 + creature_2.heroClass.statistics.luck)))
         creature_2.heroClass.statistics.hp -= max(0, dmg)
+        return creature_1.hero_id, max(0, dmg)
 
     @classmethod
     def get_gold_at_stake(cls, hero, other_creature):

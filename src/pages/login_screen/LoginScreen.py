@@ -154,7 +154,7 @@ def LoginScreen(screen, mainClock):
                     # For tests use:
                     if validate():
                         if user.login('konto@gmail.com', 'alamakota'):
-                            # if user.login(input_nickname.text, input_password.text):
+                        # if user.login(input_nickname.text, input_password.text): # TODO przed prezentacją odkomentować
                             input_nickname.reset()
                             input_password.reset()
                             ChooseCharacter(screen, mainClock, user)
