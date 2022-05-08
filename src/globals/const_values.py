@@ -23,6 +23,7 @@ TEXT_FONT = pygame.font.Font(FONT, 23)
 INPUT_FONT = pygame.font.Font(FONT, 30)
 LIST_TITLE_FONT = pygame.font.Font(FONT, 32)
 LIST_SUBTITLE_FONT = pygame.font.Font(FONT, 25)
+SMALL_FONT = pygame.font.Font(FONT, 16)
 
 # ACCOUNT PROPERTIES
 NICKNAME_LENGTH = 38
