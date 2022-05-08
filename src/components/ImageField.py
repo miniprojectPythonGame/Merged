@@ -10,7 +10,7 @@ class ImageField:
         self.border = border
         self.path = path
         self.rect = pygame.Rect(x, y, width, height)
-        self.image = pygame.image.load(path).convert_alpha()
+        self.image = pygame.image.load(path)
         self.scale(width, height)
 
     def scale(self, width, height):

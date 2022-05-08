@@ -3,6 +3,7 @@ import pygame
 from .ItemBox import ItemBox
 from .ColorSchemes import ColorSchemes
 
+from api.game_classes.objects.items.item import Quality
 
 class ItemGrid:
     def __init__(self, x, y, item_size, item_padding, cols, amount, screen, backpack_ref, active=-1):
@@ -25,7 +26,6 @@ class ItemGrid:
         backpack = []
         x = self.x
         y = self.y
-        ib_offset_placeholder = 20
         ib_offset_item = 10
         fill_colors = ColorSchemes()
 
@@ -35,7 +35,8 @@ class ItemGrid:
                 backpack.append(
                     ItemBox(x, y, self.item_size, self.item_size, self.screen,
                             path=self.backpack_ref[i]['img_path'], offset=ib_offset_item,
-                            fill=fill_colors.legendary, border_radius=5, isActive=isActive)
+                            fill=fill_colors.legendary, border_radius=5, isActive=isActive,
+                            id=self.backpack_ref[i]['id'])
                 )
 
             if self.backpack_ref[i]['type'] == 'epic':
@@ -43,7 +44,8 @@ class ItemGrid:
                 backpack.append(
                     ItemBox(x, y, self.item_size, self.item_size, self.screen,
                             path=self.backpack_ref[i]['img_path'], offset=ib_offset_item,
-                            fill=fill_colors.epic, border_radius=5, isActive=isActive)
+                            fill=fill_colors.epic, border_radius=5, isActive=isActive,
+                            id=self.backpack_ref[i]['id'])
                 )
 
             if self.backpack_ref[i]['type'] == 'common':
@@ -51,7 +53,8 @@ class ItemGrid:
                 backpack.append(
                     ItemBox(x, y, self.item_size, self.item_size, self.screen,
                             path=self.backpack_ref[i]['img_path'], offset=ib_offset_item,
-                            fill=fill_colors.common, border_radius=5, isActive=isActive)
+                            fill=fill_colors.common, border_radius=5, isActive=isActive,
+                            id=self.backpack_ref[i]['id'])
                 )
 
             if self.backpack_ref[i]['type'] == 'empty':
@@ -59,7 +62,8 @@ class ItemGrid:
                 backpack.append(
                     ItemBox(x, y, self.item_size, self.item_size, self.screen,
                             path=self.backpack_ref[i]['img_path'], offset=ib_offset_item,
-                            fill=fill_colors.white, border_radius=5, isActive=isActive)
+                            fill=fill_colors.white, border_radius=5, isActive=isActive,
+                            id=self.backpack_ref[i]['id'])
                 )
 
             if i % self.cols == self.cols - 1:

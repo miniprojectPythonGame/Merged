@@ -6,7 +6,7 @@ from src.globals.const_values import *
 class ItemBox:
     def __init__(self, x, y, width, height, screen, color=pygame.Color('#555555'),
                  active_color=pygame.Color('#c73434'), fill=None, path=None, border=2,
-                 offset=0, border_radius=0, isActive=False):
+                 offset=0, border_radius=0, isActive=False, id=None):
         self.x = x
         self.y = y
         self.width = width
@@ -20,6 +20,7 @@ class ItemBox:
         self.offset = offset
         self.isActive = isActive
         self.active_color = active_color
+        self.id = id
         self.image = ImageField(x + offset, y + offset,
                                 width - 2 * offset, height - 2 * offset,
                                 path, screen)

@@ -11,13 +11,17 @@ from src.components.SwitchCards import SwitchCards
 
 from .Measurements import Measurements as meas
 
-from src.globals.mock_data import armor_shop
+from api.game_classes.objects.items.item import ItemType
+from api.game_classes.objects.buildings.shops import ShopType
+
+# from src.globals.mock_data import armor_shop
 from src.globals.const_values import INVENTORY_SHIFT
 
 from src.globals.const_values import \
     getCharacterForEQPreview, \
-    reloadBackpackButtons
-
+    reloadCharacterBackpacks, \
+    reloadBackpackButtons, \
+    getQuality
 
 def ArmorShop(screen, mainClock, user):
     def reloadButtons(buttons_list, current_active):
@@ -41,20 +45,64 @@ def ArmorShop(screen, mainClock, user):
 
         return newButtons
 
+    def sortItems(itemList):
+        sorted = {
+            "headgear": [],
+            "breastplate": [],
+            "gloves": [],
+            "boots": [],
+            "belt": []
+        }
+
+        for i in range(len(itemList)):
+            item_type = str(itemList[i].item_type)[9:].lower()
+            sorted[item_type].append({
+                "name": itemList[i].name,
+                "img_path": '../images/items/armor/' + item_type + '.png',
+                "type": getQuality(itemList[i].quality),
+                "id": i,
+            })
+
+        return sorted
+
     def reloadItemGrid():
         return ItemGrid(meas.ig_items['x'], meas.ig_items['y'],
                         meas.ig_items['item_size'], meas.ig_items['item_padding'],
                         meas.ig_items['cols'], meas.ig_items['amount'],
                         screen, armor_shop[category_active])
 
+    def handleBuyItem(item_id):
+        hero.buy_from_shop(item_id, ShopType.ArmourShop.value)
+        reloadCharacterBackpacks(character, hero)
+        sc_eq_stat_bp.components[0].components[-1] = ItemGrid(meas.ig_backpack['x'], meas.ig_backpack['y'],
+                           meas.ig_backpack['item_size'], meas.ig_backpack['item_padding'],
+                           meas.ig_backpack['cols'], meas.ig_backpack['amount'], screen,
+                           character['backpacks'][backpack_active])
+        character['gold'] = hero.eq.gold
+        label_gold = Label("Gold: " + str(character['gold']), meas.label_gold['font'],
+                           meas.label_gold['color'], screen, meas.label_gold['x'],
+                           meas.label_gold['y'], meas.label_gold['anchor'])
+        return sortItems(hero.armourShop.itemList), label_gold
+
+    def handleSellItem(item_id):
+        hero.eq.sell_item_to_shop(item_id)
+        reloadCharacterBackpacks(character, hero)
+        sc_eq_stat_bp.components[0].components[-1] = ItemGrid(meas.ig_backpack['x'], meas.ig_backpack['y'],
+                           meas.ig_backpack['item_size'], meas.ig_backpack['item_padding'],
+                           meas.ig_backpack['cols'], meas.ig_backpack['amount'], screen,
+                           character['backpacks'][backpack_active])
+        character['gold'] = hero.eq.gold
+        label_gold = Label("Gold: " + str(character['gold']), meas.label_gold['font'],
+                           meas.label_gold['color'], screen, meas.label_gold['x'],
+                           meas.label_gold['y'], meas.label_gold['anchor'])
+        return label_gold
+
     showHand = False
     running = True
     category_active = 'headgear'
     backpack_active = 0
     hero = user.currentHero
-
-    # for item in hero.armourShop.itemList:
-    #     print(item)
+    armor_shop = sortItems(hero.armourShop.itemList)
 
     character = getCharacterForEQPreview(hero)
 
@@ -120,7 +168,7 @@ def ArmorShop(screen, mainClock, user):
          meas.bt_showGloves['path_gray'], bt_showGloves),
         ('boots', meas.bt_showBoots['path_white'],
          meas.bt_showBoots['path_gray'], bt_showBoots),
-        ('belts', meas.bt_showBelts['path_white'],
+        ('belt', meas.bt_showBelts['path_white'],
          meas.bt_showBelts['path_gray'], bt_showBelts),
     ]
 
@@ -249,7 +297,59 @@ def ArmorShop(screen, mainClock, user):
                             sc_eq_stat_bp.current = i
                             break
 
+                    for item in ig_items.backpack:
+                        if item.rect.collidepoint(event.pos):
+                            armor_shop, displayedContent[3] = handleBuyItem(item.id)
+                            break
+
+                    c_backpack_elem = sc_eq_stat_bp.components[0].components
+                    for i in range(len(c_backpack_elem)):
+                        # BACKPACKS
+                        if type(c_backpack_elem[i]).__name__ == "Button":
+                            pass
+                        #     if c_backpack_elem[i].rect.collidepoint(event.pos):
+                        #         backpack_active = i
+                        #         resetActiveItem()
+                        #         break
+                        #
+                        # ACTIVATE ITEMS
+                        else:
+                            for j in range(len(c_backpack_elem[i].backpack_ref)):
+                                if c_backpack_elem[i].backpack[j].rect.collidepoint(event.pos):
+                                    displayedContent[3] = handleSellItem(j + INVENTORY_SHIFT)
+                                    break
+
 
 
         pygame.display.update()
         mainClock.tick(60)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

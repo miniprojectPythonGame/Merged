@@ -186,6 +186,10 @@ def resetActiveItem():
         "to": -1
     }
 
+def getQuality(item_quality):
+    return str(item_quality)[8:].lower()
+
+
 def reloadBackpackButtons(buttons_list, current_active, meas):
     newButtons = []
 
@@ -254,13 +258,15 @@ def getEqItem(item):
         result = {
             "name": item.name,
             "img_path": '../images/items/' + getItemCategory(item_type) + '/' + item_type + '.png',
-            "type": 'common',
+            "type": getQuality(item.quality),
+            "id": 0,
         }
     else:
         result = {
             "name": "empty",
             "img_path": "../images/icons/add_item.png",
             "type": "empty",
+            "id": 0,
         }
 
     return result
@@ -272,7 +278,7 @@ def getEqItemByType(items, expected_type):
         result = {
             "name": items[expected_type].name,
             "img_path": '../images/items/' + getItemCategory(item_type) + '/' + item_type + '.png',
-            "type": 'common',
+            "type": getQuality(items[expected_type].quality),
         }
     else:
         result = {
@@ -320,8 +326,6 @@ def getCharacterForEQPreview(hero):
             "initiative": hero.get_statistics().initiative,
         }
     }
-
-
 
 def getFullAvatarPath(className, number):
     return '../images/characters/' + className + '_' + number + '.jpg'

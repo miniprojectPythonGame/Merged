@@ -85,45 +85,45 @@ character_2 = {
 armor_shop = {
     "headgear": [
         {
-            "name": 'Helmet #1',
-            "img_path": '../images/items/armor/helmet.png',
+            "name": 'headgear #1',
+            "img_path": '../images/items/armor/headgear.png',
             "type": 'legendary',
         },
         {
-            "name": 'Helmet #2',
-            "img_path": '../images/items/armor/helmet.png',
+            "name": 'headgear #2',
+            "img_path": '../images/items/armor/headgear.png',
             "type": 'common',
         },
         {
-            "name": 'Helmet #3',
-            "img_path": '../images/items/armor/helmet.png',
+            "name": 'headgear #3',
+            "img_path": '../images/items/armor/headgear.png',
             "type": 'epic',
         },
         {
-            "name": 'Helmet #4',
-            "img_path": '../images/items/armor/helmet.png',
+            "name": 'headgear #4',
+            "img_path": '../images/items/armor/headgear.png',
             "type": 'common',
         },
     ],
     "breastplate": [
         {
-            "name": 'Chestplate #1',
-            "img_path": '../images/items/armor/chestplate.png',
+            "name": 'breastplate #1',
+            "img_path": '../images/items/armor/breastplate.png',
             "type": 'common',
         },
         {
-            "name": 'Chestplate #2',
-            "img_path": '../images/items/armor/chestplate.png',
+            "name": 'breastplate #2',
+            "img_path": '../images/items/armor/breastplate.png',
             "type": 'common',
         },
         {
-            "name": 'Chestplate #3',
-            "img_path": '../images/items/armor/chestplate.png',
+            "name": 'breastplate #3',
+            "img_path": '../images/items/armor/breastplate.png',
             "type": 'epic',
         },
         {
-            "name": 'Chestplate #4',
-            "img_path": '../images/items/armor/chestplate.png',
+            "name": 'breastplate #4',
+            "img_path": '../images/items/armor/breastplate.png',
             "type": 'legendary',
         },
     ],

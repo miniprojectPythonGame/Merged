@@ -5,6 +5,8 @@ from .ItemBox import ItemBox
 
 from src.globals.const_values import *
 
+from api.game_classes.objects.items.item import ItemType
+
 
 class CharacterEquipment:
     def __init__(self, x, y, font, color, character_ref, screen, active=-1, size='big'):
@@ -94,26 +96,33 @@ class CharacterEquipment:
                               y + itembox_padding,
                               itembox_size, itembox_size, self.screen,
                               path=EQ_PLACEHOLDERS['headgear'], offset=itembox_offset,
+                              fill=self.getColor(self.character_ref['eq']['headgear']),
                               border_radius=itembox_border_radius,
-                              isActive=self.active == 4)
+                              isActive=self.active == ItemType.Headgear.value)
 
         ib_breastplate = ItemBox(x,  # x
                                  y + 2 * itembox_padding + itembox_size,  # y
                                  itembox_size, itembox_size, self.screen,
                                  path=EQ_PLACEHOLDERS['breastplate'], offset=itembox_offset,
-                                 border_radius=itembox_border_radius)
+                                 fill=self.getColor(self.character_ref['eq']['breastplate']),
+                                 border_radius=itembox_border_radius,
+                                 isActive=self.active == ItemType.Breastplate.value)
 
         ib_gloves = ItemBox(x,  # x
                             y + 3 * itembox_padding + 2 * itembox_size,  # y
                             itembox_size, itembox_size, self.screen,
                             path=EQ_PLACEHOLDERS['gloves'], offset=itembox_offset,
-                            border_radius=itembox_border_radius)
+                            fill=self.getColor(self.character_ref['eq']['gloves']),
+                            border_radius=itembox_border_radius,
+                            isActive=self.active == ItemType.Gloves.value)
 
         ib_boots = ItemBox(x,
                            y + 4 * itembox_padding + 3 * itembox_size,  # y,
                            itembox_size, itembox_size, self.screen,
                            path=EQ_PLACEHOLDERS['boots'], offset=itembox_offset,
-                           border_radius=itembox_border_radius)
+                           fill=self.getColor(self.character_ref['eq']['boots']),
+                           border_radius=itembox_border_radius,
+                           isActive=self.active == ItemType.Boots.value)
 
         ib_belt = ItemBox(x + 2 * itembox_padding + itembox_size + avatar_width,  # x,
                           y + itembox_padding,  # y
@@ -121,37 +130,45 @@ class CharacterEquipment:
                           path=EQ_PLACEHOLDERS['belt'], offset=itembox_offset,
                           fill=self.getColor(self.character_ref['eq']['belt']),
                           border_radius=itembox_border_radius,
-                          isActive=(self.active == 0))
+                          isActive=self.active == ItemType.Belt.value)
 
         ib_necklace = ItemBox(x + 2 * itembox_padding + itembox_size + avatar_width,  # x,
                               y + 2 * itembox_padding + itembox_size,  # y
                               itembox_size, itembox_size, self.screen,
                               path=EQ_PLACEHOLDERS['necklace'], offset=itembox_offset,
-                              border_radius=itembox_border_radius)
+                              fill=self.getColor(self.character_ref['eq']['necklace']),
+                              border_radius=itembox_border_radius,
+                              isActive=self.active == ItemType.Necklace.value)
 
         ib_ring = ItemBox(x + 2 * itembox_padding + itembox_size + avatar_width,  # x,
                           y + 3 * itembox_padding + 2 * itembox_size,  # y
                           itembox_size, itembox_size, self.screen,
                           path=EQ_PLACEHOLDERS['ring'], offset=itembox_offset,
-                          border_radius=itembox_border_radius)
+                          fill=self.getColor(self.character_ref['eq']['ring']),
+                          border_radius=itembox_border_radius,
+                          isActive=self.active == ItemType.Ring.value)
 
         ib_lucky_item = ItemBox(x + 2 * itembox_padding + itembox_size + avatar_width,  # x,
                                 y + 4 * itembox_padding + 3 * itembox_size,  # y,
                                 itembox_size, itembox_size, self.screen,
                                 path=EQ_PLACEHOLDERS['lucky_item'], offset=itembox_offset,
-                                border_radius=itembox_border_radius)
+                                fill=self.getColor(self.character_ref['eq']['lucky_item']),
+                                border_radius=itembox_border_radius,
+                                isActive=self.active == ItemType.LuckyItem.value)
 
         ib_primary_weapon = ItemBox(x + itembox_size + itembox_padding,  # x
                                     y + avatar_height + 2 * itembox_padding + 2 * property_bar_height,  # y
                                     itembox_size, itembox_size, self.screen,
                                     path=EQ_PLACEHOLDERS['primary_weapon'], offset=itembox_offset,
-                                    border_radius=itembox_border_radius)
+                                    border_radius=itembox_border_radius,
+                                    isActive=self.active == ItemType.PrimaryWeapon.value)
 
         ib_secondary_weapon = ItemBox(x + itembox_padding + avatar_width,  # x
                                       y + avatar_height + 2 * itembox_padding + 2 * property_bar_height,  # y
                                       itembox_size, itembox_size, self.screen,
                                       path=EQ_PLACEHOLDERS['secondary_weapon'], offset=itembox_offset,
-                                      border_radius=itembox_border_radius)
+                                      border_radius=itembox_border_radius,
+                                      isActive=self.active == ItemType.SecondaryWeapon.value)
 
         return {
             "label_name": label_name,
