@@ -1,7 +1,7 @@
 import random
 
 from api.game_classes.creatures.statistics import Statistics
-from api.game_classes.objects.items.item import Item
+from api.game_classes.objects.items.item import Item, ItemType
 from api.web.WebService import connect_to_db, disconnect_from_db
 
 
@@ -65,7 +65,9 @@ class Eq:
         except Exception as error:
             print(error)
 
-    def __can_be_swapped(self, a, b):
+    def __can_be_swapped(self, a: int, b: int):
+        if a <= 10 and b <= 10:
+            return False
         if a > 10 and b > 10:
             return True
         if a <= 10 and self.itemSlots[b] is None:
