@@ -16,10 +16,18 @@ class User:
         self.all_heroes = self.getAllExistingHeroes()
 
     def login(self, email, password):
+        login_status = None
+        player_id = None
         try:
             self.authUser = auth.sign_in_with_email_and_password(email, password)
             conn, cursor = connect_to_db()
-            cursor.execute("SELECT * FROM players WHERE player_id = %s;", (self.authUser['localId'],))
+            player_id = self.authUser['localId']
+            cursor.execute("select block_id from blocked_users where player_id = %s and current_timestamp < block_end order by block_end desc limit 1;", (player_id,))
+            if cursor.fetchone() is not None:
+                print("You are blocked")
+                login_status = False
+                return False
+            cursor.execute("SELECT * FROM players WHERE player_id = %s;", (player_id,))
             user = cursor.fetchall()[0]
             self.nick = user[0]
             self.email = user[1]
@@ -29,10 +37,28 @@ class User:
             disconnect_from_db(conn, cursor)
             self.getHeroes()
             print("Successfully logged in!")
-            return True
-        except:
-            print("Invalid email or password")
-            return False
+            login_status = True
+        except Exception as error:
+            try:
+                conn, cursor = connect_to_db()
+                cursor.execute("select player_id from players where email = %s", (email,))
+                player_id = cursor.fetchone()
+                disconnect_from_db(conn, cursor)
+            except Exception as db_error:
+                print(db_error, "\n***************\n")
+            finally:
+                print("Invalid email or password\n***************\n", error)
+                login_status = False
+        finally:
+            try:
+                conn, cursor = connect_to_db()
+                cursor.execute("CALL add_log(%s,%s)", (player_id, login_status))
+                conn.commit()
+                disconnect_from_db(conn, cursor)
+            except Exception as error:
+                print(error)
+            finally:
+                return login_status
 
     def signup(self, email, password, nick, sex, age):
         try:
@@ -47,8 +73,8 @@ class User:
 
             disconnect_from_db(conn, cursor)
             return True
-        except:
-            print("Email already exists")
+        except Exception as error:
+            print("Email already exists\n***************\n", error)
             return False
 
     # TODO may need further implementation
@@ -141,13 +167,11 @@ class User:
 
 
 if __name__ == "__main__":
-    tmp = ItemType.Belt
-    print(tmp.value)
-    # tmp = User()
-#     # tmp.signup('test@gmail.com', 'alamakota', 'Viciooo', 'm', 21)
-#     tmp.login('konto@gmail.com', 'alamakota')
-    # tmp.createHero(2,'test_fight', 'w', 1, 1, 1, 1, 1, 1, 1, 1, 1, 1)
-    # tmp.chooseHero(1)
+    tmp = User()
+    #     # tmp.signup('test@gmail.com', 'alamakota', 'Viciooo', 'm', 21)
+    tmp.login('konto@gmail.com', 'alamakota')
+# tmp.createHero(2,'test_fight', 'w', 1, 1, 1, 1, 1, 1, 1, 1, 1, 1)
+# tmp.chooseHero(1)
 #     # tmp.currentHero.eq.swap_places(13, 0)
 #     # tmp.currentHero.add_to_statistics('dexterity')
 #     # tmp.currentHero.add_to_statistics('luck')
