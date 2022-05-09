@@ -182,3 +182,6 @@ class Hero(Creature):
 
     def get_statistics(self):
         return self.heroClass.statistics + self.eq.gearStatistics
+
+    def update_model_from_db(self):
+        pass  # TODO - get whole current hero model in order to synchronize the game
