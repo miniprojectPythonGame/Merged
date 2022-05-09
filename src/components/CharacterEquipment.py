@@ -148,11 +148,11 @@ class CharacterEquipment:
                           border_radius=itembox_border_radius,
                           isActive=self.active == ItemType.Ring.value)
 
-        ib_lucky_item = ItemBox(x + 2 * itembox_padding + itembox_size + avatar_width,  # x,
+        ib_luckyitem = ItemBox(x + 2 * itembox_padding + itembox_size + avatar_width,  # x,
                                 y + 4 * itembox_padding + 3 * itembox_size,  # y,
                                 itembox_size, itembox_size, self.screen,
-                                path=EQ_PLACEHOLDERS['lucky_item'], offset=itembox_offset,
-                                fill=self.getColor(self.character_ref['eq']['lucky_item']),
+                                path=EQ_PLACEHOLDERS['luckyitem'], offset=itembox_offset,
+                                fill=self.getColor(self.character_ref['eq']['luckyitem']),
                                 border_radius=itembox_border_radius,
                                 isActive=self.active == ItemType.LuckyItem.value)
 
@@ -182,7 +182,7 @@ class CharacterEquipment:
             "ib_belt": ib_belt,
             "ib_necklace": ib_necklace,
             "ib_ring": ib_ring,
-            "ib_lucky_item": ib_lucky_item,
+            "ib_luckyitem": ib_luckyitem,
             "ib_primary_weapon": ib_primary_weapon,
             "ib_secondary_weapon": ib_secondary_weapon,
         }

@@ -74,7 +74,9 @@ EQ_PLACEHOLDERS = {
     "belt": '../images/icons/belt_placeholder.png',
     "necklace": '../images/icons/necklace_placeholder.png',
     "ring": '../images/icons/ring_placeholder.png',
-    "lucky_item": '../images/icons/lucky_item_placeholder.png',
+    "luckyitem": '../images/icons/luckyitem_placeholder.png',
+    "potionperiod": '../images/icons/potionperiod_placeholder.png',
+    "potionpermanent": '../images/icons/potionpermanent_placeholder.png',
     "primary_weapon": '../images/icons/primary_weapon_placeholder.png',
     "secondary_weapon": '../images/icons/secondary_weapon_placeholder.png',
 }
@@ -102,8 +104,29 @@ CATEGORY_ICONS = {
             "path_gray": '../images/item_type_icons/armor/belt_gray.png',
         }
     },
-    "weapon": {},
-    "magic": {}
+    "magic": {
+        "luckyitem": {
+            "path_white": '../images/item_type_icons/magic/luckyitem_white.png',
+            "path_gray": '../images/item_type_icons/magic/luckyitem_gray.png',
+        },
+        "necklace": {
+            "path_white": '../images/item_type_icons/magic/necklace_white.png',
+            "path_gray": '../images/item_type_icons/magic/necklace_gray.png',
+        },
+        "ring": {
+            "path_white": '../images/item_type_icons/magic/ring_white.png',
+            "path_gray": '../images/item_type_icons/magic/ring_gray.png',
+        },
+        "potionperiod": {
+            "path_white": '../images/item_type_icons/magic/potionperiod_white.png',
+            "path_gray": '../images/item_type_icons/magic/potionperiod_gray.png',
+        },
+        "potionpermanent": {
+            "path_white": '../images/item_type_icons/magic/belt_white.png',
+            "path_gray": '../images/item_type_icons/magic/belt_gray.png',
+        }
+    },
+    "weapon": {}
 }
 
 BACKPACK_ICONS = {
@@ -237,19 +260,20 @@ def reloadCharacterEQ(character, hero):
         "necklace": getEqItemByType(hero.eq.itemSlots, ItemType.Necklace.value),
         "belt": getEqItemByType(hero.eq.itemSlots, ItemType.Belt.value),
         "ring": getEqItemByType(hero.eq.itemSlots, ItemType.Ring.value),
-        "lucky_item": getEqItemByType(hero.eq.itemSlots, ItemType.LuckyItem.value),
+        "luckyitem": getEqItemByType(hero.eq.itemSlots, ItemType.LuckyItem.value),
     }
 
 def getItemCategory(item_type):
+    print("xd", item_type)
     armors = ['belt', 'boots', 'breastplate', 'gloves', 'headgear']
-    magic = ['luckyitem', 'necklace', 'ring', 'sceptre']
+    magic = ['luckyitem', 'necklace', 'ring', 'potionperiod', 'potionpermanent']
 
     if item_type in armors:
         return "armor"
 
     if item_type in magic:
         return "magic"
-
+    print("exit")
     return "weapon"
 
 def getEqItem(item):
@@ -309,7 +333,7 @@ def getCharacterForEQPreview(hero):
             "necklace": getEqItemByType(hero.eq.itemSlots, ItemType.Necklace.value),
             "belt": getEqItemByType(hero.eq.itemSlots, ItemType.Belt.value),
             "ring": getEqItemByType(hero.eq.itemSlots, ItemType.Ring.value),
-            "lucky_item": getEqItemByType(hero.eq.itemSlots, ItemType.LuckyItem.value),
+            "luckyitem": getEqItemByType(hero.eq.itemSlots, ItemType.LuckyItem.value),
         },
         "backpacks": [
             [getEqItem(hero.eq.itemSlots[i]) for i in range(INVENTORY_SHIFT, len(hero.eq.itemSlots))]

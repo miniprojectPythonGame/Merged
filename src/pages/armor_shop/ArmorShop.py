@@ -11,17 +11,16 @@ from src.components.SwitchCards import SwitchCards
 
 from .Measurements import Measurements as meas
 
-from api.game_classes.objects.items.item import ItemType
 from api.game_classes.objects.buildings.shops import ShopType
 
-# from src.globals.mock_data import armor_shop
 from src.globals.const_values import INVENTORY_SHIFT
 
 from src.globals.const_values import \
     getCharacterForEQPreview, \
     reloadCharacterBackpacks, \
     reloadBackpackButtons, \
-    getQuality
+    getQuality, \
+    getItemCategory
 
 def ArmorShop(screen, mainClock, user):
     def reloadButtons(buttons_list, current_active):
@@ -58,7 +57,7 @@ def ArmorShop(screen, mainClock, user):
             item_type = str(itemList[i].item_type)[9:].lower()
             sorted[item_type].append({
                 "name": itemList[i].name,
-                "img_path": '../images/items/armor/' + item_type + '.png',
+                "img_path": '../images/items/' + getItemCategory(item_type) + '/' + item_type + '.png',
                 "type": getQuality(itemList[i].quality),
                 "id": i,
             })

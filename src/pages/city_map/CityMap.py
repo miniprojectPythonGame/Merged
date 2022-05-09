@@ -155,15 +155,15 @@ def CityMap(screen, mainClock, user):
                         break
 
                     if bt_magicShop.rect.collidepoint(event.pos):
-                        MagicShop(screen, mainClock)
+                        MagicShop(screen, mainClock, user)
                         break
 
                     if bt_weaponShop.rect.collidepoint(event.pos):
-                        WeaponShop(screen, mainClock)
+                        WeaponShop(screen, mainClock, user)
                         break
 
                     if bt_tavern.rect.collidepoint(event.pos):
-                        Tavern(screen, mainClock)
+                        Tavern(screen, mainClock, user)
                         break
 
                     if bt_arena.rect.collidepoint(event.pos):

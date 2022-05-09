@@ -1,6 +1,7 @@
 from src.globals.const_values import *
 from src.components.ColorSchemes import ColorSchemes
 
+from src.globals.const_values import CATEGORY_ICONS
 
 class Measurements:
     # WINDOW PARAMETERS
@@ -45,6 +46,71 @@ class Measurements:
         'color': text_color,
     }
 
+    # BUTTON (type): class inactive
+    bt_class_active = {
+        "color": ColorSchemes(inactive=pygame.Color('#333333')),
+        "border_radius": 5,
+        "image_offset": 7,
+    }
+
+    # BUTTON (type): class active
+    bt_class_inactive = {
+        "color": ColorSchemes(inactive=pygame.Color('white')),
+        "border_radius": 5,
+        "image_offset": 5,
+    }
+
+    # BUTTON: Show helmets in offer
+    bt_showHeadgear = {
+        "x": margin,
+        "y": margin,
+        "width": category_button_size,
+        "height": category_button_size,
+        "path_white": CATEGORY_ICONS['armor']['headgear']['path_white'],
+        "path_gray": CATEGORY_ICONS['armor']['headgear']['path_gray'],
+    }
+
+    # BUTTON: Show breastplate in offer
+    bt_showBreastplates = {
+        "x": margin + category_button_padding + category_button_size,
+        "y": margin,
+        "width": category_button_size,
+        "height": category_button_size,
+        "path_white": CATEGORY_ICONS['armor']['breastplate']['path_white'],
+        "path_gray": CATEGORY_ICONS['armor']['breastplate']['path_gray'],
+    }
+
+    # BUTTON: Show gloves in offer
+    bt_showGloves = {
+        "x": margin + 2*category_button_padding + 2*category_button_size,
+        "y": margin,
+        "width": category_button_size,
+        "height": category_button_size,
+        "path_white": CATEGORY_ICONS['armor']['gloves']['path_white'],
+        "path_gray": CATEGORY_ICONS['armor']['gloves']['path_gray'],
+    }
+
+    # BUTTON: Show boots in offer
+    bt_showBoots = {
+        "x": margin + 3*category_button_padding + 3*category_button_size,
+        "y": margin,
+        "width": category_button_size,
+        "height": category_button_size,
+        "path_white": CATEGORY_ICONS['armor']['boots']['path_white'],
+        "path_gray": CATEGORY_ICONS['armor']['boots']['path_gray'],
+    }
+
+    # BUTTON: Show belts in offer
+    bt_showBelts = {
+        "x": margin + 4*category_button_padding + 4*category_button_size,
+        "y": margin,
+        "width": category_button_size,
+        "height": category_button_size,
+        "path_white": CATEGORY_ICONS['armor']['belt']['path_white'],
+        "path_gray": CATEGORY_ICONS['armor']['belt']['path_gray'],
+    }
+
+    # SWITCH_CARDS: eq <-> statistics <-> backpack
     sc_eq_stat_bp = {
         "x": window_width - (ig_item_size * (ig_cols + 1) + ig_item_padding * ig_cols) - margin,
         "y": margin,
@@ -90,10 +156,7 @@ class Measurements:
         "height": ig_button_height + 10 + ig_item_size * ig_rows + ig_item_padding * (ig_rows - 1),
     }
 
-    labels_stats = [
-        'strength', "intelligence", "dexterity", "constitution", "luck",
-        "protection", "persuasion", "trade", "leadership", "initiative"
-    ]
+    labels_stats = STATS_NAMES
 
     label_stat_header = {
         "font": header_tertiary_font,
@@ -131,70 +194,6 @@ class Measurements:
         "item_padding": 9,
         "cols": 4,
         "amount": 20,
-    }
-
-    # BUTTON (type): class inactive
-    bt_class_active = {
-        "color": ColorSchemes(inactive=pygame.Color('#333333')),
-        "border_radius": 5,
-        "image_offset": 7,
-    }
-
-    # BUTTON (type): class active
-    bt_class_inactive = {
-        "color": ColorSchemes(inactive=pygame.Color('white')),
-        "border_radius": 5,
-        "image_offset": 5,
-    }
-
-    # BUTTON: Show helmets in offer
-    bt_showHeadgear = {
-        "x": margin,
-        "y": margin,
-        "width": category_button_size,
-        "height": category_button_size,
-        "path_white": '../images/item_type_icons/armor/headgear_white.png',
-        "path_gray": '../images/item_type_icons/armor/headgear_gray.png',
-    }
-
-    # BUTTON: Show breastplate in offer
-    bt_showBreastplates = {
-        "x": margin + category_button_padding + category_button_size,
-        "y": margin,
-        "width": category_button_size,
-        "height": category_button_size,
-        "path_white": '../images/item_type_icons/armor/breastplate_white.png',
-        "path_gray": '../images/item_type_icons/armor/breastplate_gray.png',
-    }
-
-    # BUTTON: Show gloves in offer
-    bt_showGloves = {
-        "x": margin + 2*category_button_padding + 2*category_button_size,
-        "y": margin,
-        "width": category_button_size,
-        "height": category_button_size,
-        "path_white": '../images/item_type_icons/armor/gloves_white.png',
-        "path_gray": '../images/item_type_icons/armor/gloves_gray.png',
-    }
-
-    # BUTTON: Show boots in offer
-    bt_showBoots = {
-        "x": margin + 3*category_button_padding + 3*category_button_size,
-        "y": margin,
-        "width": category_button_size,
-        "height": category_button_size,
-        "path_white": '../images/item_type_icons/armor/boots_white.png',
-        "path_gray": '../images/item_type_icons/armor/boots_gray.png',
-    }
-
-    # BUTTON: Show belts in offer
-    bt_showBelts = {
-        "x": margin + 4*category_button_padding + 4*category_button_size,
-        "y": margin,
-        "width": category_button_size,
-        "height": category_button_size,
-        "path_white": '../images/item_type_icons/armor/belt_white.png',
-        "path_gray": '../images/item_type_icons/armor/belt_gray.png',
     }
 
     # LABEL: Gold
