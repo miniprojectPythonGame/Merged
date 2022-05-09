@@ -22,7 +22,9 @@ class User:
             self.authUser = auth.sign_in_with_email_and_password(email, password)
             conn, cursor = connect_to_db()
             player_id = self.authUser['localId']
-            cursor.execute("select block_id from blocked_users where player_id = %s and current_timestamp < block_end order by block_end desc limit 1;", (player_id,))
+            cursor.execute(
+                "select block_id from blocked_users where player_id = %s and current_timestamp < block_end order by block_end desc limit 1;",
+                (player_id,))
             if cursor.fetchone() is not None:
                 print("You are blocked")
                 login_status = False
@@ -170,8 +172,21 @@ if __name__ == "__main__":
     tmp = User()
     #     # tmp.signup('test@gmail.com', 'alamakota', 'Viciooo', 'm', 21)
     tmp.login('konto@gmail.com', 'alamakota')
-# tmp.createHero(2,'test_fight', 'w', 1, 1, 1, 1, 1, 1, 1, 1, 1, 1)
-# tmp.chooseHero(1)
+
+    # tmp.createHero(2,'test_fight', 'w', 1, 1, 1, 1, 1, 1, 1, 1, 1, 1)
+    tmp.chooseHero(19)
+    hero: Hero = tmp.currentHero
+    # for i in hero.market.auctioned_items:
+    #     print(i)
+    #
+    # print("#########################")
+
+    for i in tmp.currentHero.market.buy_now_items:
+        print(i)
+
+    print(hero.add_to_buy_now_items())
+
+
 #     # tmp.currentHero.eq.swap_places(13, 0)
 #     # tmp.currentHero.add_to_statistics('dexterity')
 #     # tmp.currentHero.add_to_statistics('luck')

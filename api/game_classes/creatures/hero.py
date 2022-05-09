@@ -1,3 +1,4 @@
+from datetime import datetime, timedelta
 from math import floor
 from random import randint
 
@@ -9,6 +10,7 @@ from api.game_classes.objects.buildings.market import Market
 from api.game_classes.objects.buildings.shops import ArmourShop, Stable, WeaponShop, MagicShop, MercenaryShop, ShopType
 
 from api.game_classes.objects.items.eq import Eq
+from api.game_classes.objects.items.item import Item
 
 from api.web.WebService import *
 
@@ -185,3 +187,33 @@ class Hero(Creature):
 
     def update_model_from_db(self):
         pass  # TODO - get whole current hero model in order to synchronize the game
+
+    def add_to_buy_now_items(self, item_slot_id: int, price: int):
+        item: Item = self.eq.itemSlots[item_slot_id]
+        if item.available == 1:
+            self.market.add_to_buy_now_items(item, price)
+            item.available = 0
+            return True
+        return False
+
+    def add_to_auctioned_items(self, item_slot_id: int, price: int,
+                               auction_end_date: datetime = datetime.now() + timedelta(days=7)):
+        item: Item = self.eq.itemSlots[item_slot_id]
+        if item.available == 1:
+            self.market.add_to_auctioned_items(item, price, auction_end_date)
+            item.available = 0
+            return True
+        return False
+
+    def buy_now_item(self, item_slot_id: int):
+        item_price: int = self.market.buy_now_items[item_slot_id].price
+        if self.eq.gold >= item_price:
+            self.market.buy_now_item(item_slot_id)
+            self.eq.gold -= item_price
+            return True
+        return False
+
+    def place_bet(self, item_slot_id: int, bet: int):
+        if self.eq.gold >= bet > self.market.auctioned_items[item_slot_id].current_price:
+            return self.market.place_bet(item_slot_id, bet)
+        return False

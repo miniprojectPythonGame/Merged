@@ -37,14 +37,14 @@ class Market:
     def __init__(self, hero_id):
         self.hero_id: int = hero_id
         self.buy_now_items = None
-        self.auction_items = None
+        self.auctioned_items = None
         self.filters = {}  # TODO IMPLEMENT ME
         self.__load_buy_now_items()
         self.__load_auctioned_items()
 
     def __load_auctioned_items(self):
         transaction_status = None
-        self.auction_items = []
+        self.auctioned_items = []
         try:
             conn, cursor = connect_to_db()
             cursor.execute(
@@ -56,7 +56,7 @@ class Market:
                 cursor.execute(Item.all_info_select(item_id))
                 built_item: Item = Item.build_item(item_id, cursor.fetchall()[0])
                 ai: AuctionedItem = AuctionedItem(built_item, i[1], i[2], i[3], i[4], i[5])
-                self.auction_items.append(ai)
+                self.auctioned_items.append(ai)
 
             disconnect_from_db(conn, cursor)
             transaction_status = True
@@ -108,7 +108,7 @@ class Market:
             return transaction_status
 
     def add_to_auctioned_items(self, item: Item, price: int,
-                               auction_end_date: datetime = datetime.now() + timedelta(days=7)):
+                               auction_end_date: datetime):
         new = AuctionedItem(item, self.hero_id, price, price, auction_end_date, None)
         transaction_status = None
         try:
@@ -118,7 +118,7 @@ class Market:
             conn.commit()
             disconnect_from_db(conn, cursor)
             transaction_status = True
-            self.auction_items.append(new)
+            self.auctioned_items.append(new)
         except Exception as error:
             transaction_status = False
             print(error)
@@ -126,7 +126,6 @@ class Market:
             return transaction_status
 
     def buy_now_item(self, item_slot_id: int):
-        # todo validation in hero if enough gold
         transaction_status = None
         bni: BuyNowItem = self.buy_now_items[item_slot_id]
         try:
@@ -142,27 +141,16 @@ class Market:
             return bni if transaction_status else transaction_status
 
     def place_bet(self, item_slot_id: int, bet: int):
-        # todo validation in hero if enough gold
         transaction_status = None
-        ai: AuctionedItem = self.auction_items[item_slot_id]
+        ai: AuctionedItem = self.auctioned_items[item_slot_id]
         try:
             conn, cursor = connect_to_db()
             cursor.execute("select place_bet(%s,%s,%s,%s)", (ai.item.item_id, ai.seller_id, bet, self.hero_id))
-            transaction_status = True if cursor.fetchone() == "SUCCESS" else False  # todo may not work
+            transaction_status = True if cursor.fetchone()[0] == "SUCCESS" else False  # todo may not work
             conn.commit()
             disconnect_from_db(conn, cursor)
         except Exception as error:
             transaction_status = False
             print(error)
         finally:
-            return ai if transaction_status else transaction_status
-
-
-# m = Market(1)
-# for i in m.auction_items:
-#     print(i)
-#
-# print("#################")
-#
-# for i in m.buy_now_items:
-#     print(i)
+            return transaction_status
