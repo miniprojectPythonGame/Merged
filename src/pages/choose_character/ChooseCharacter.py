@@ -20,10 +20,10 @@ def ChooseCharacter(screen, mainClock, user):
         return [{
                     "key": key,
                     "name": heroes[key].name,
-                    "spec": str(heroes[key].heroClass),
+                    "spec": str(heroes[key].fight_class),
                     "level": heroes[key].lvl,
                     "img": getRectAvatarPath(
-                        str(heroes[key].heroClass).lower(),
+                        str(heroes[key].fight_class).lower(),
                         str(heroes[key].avatar_id)
                     ),
                 } for key in heroes.keys()]

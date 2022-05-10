@@ -10,12 +10,12 @@ class Battle(object):
     def hero_vs_hero(cls, hero_1, hero_2):
         # TODO dodać listę w postaci (hero_id,dmg_dealt)
         battle_logs = []
-        chances = hero_1.heroClass.statistics.initiative + hero_2.heroClass.statistics.initiative
+        chances = hero_1.fight_class.statistics.initiative + hero_2.fight_class.statistics.initiative
         finished = False
         winner = None
         loser = None
 
-        if randint(1, chances) <= hero_1.heroClass.statistics.initiative:
+        if randint(1, chances) <= hero_1.fight_class.statistics.initiative:
             hero_1_attacks = True
         else:
             hero_1_attacks = False
@@ -24,7 +24,7 @@ class Battle(object):
             if hero_1_attacks:
                 battle_log = Battle.__hero_attacks(hero_1, hero_2)
                 battle_logs.append(battle_log)
-                if hero_2.heroClass.statistics.hp <= 0:
+                if hero_2.fight_class.statistics.hp <= 0:
                     finished = True
                     winner = hero_1
                     loser = hero_2
@@ -32,7 +32,7 @@ class Battle(object):
             else:
                 battle_log = Battle.__hero_attacks(hero_2, hero_1)
                 battle_logs.append(battle_log)
-                if hero_1.heroClass.statistics.hp <= 0:
+                if hero_1.fight_class.statistics.hp <= 0:
                     finished = True
                     winner = hero_2
                     loser = hero_1
@@ -46,14 +46,14 @@ class Battle(object):
 
     @classmethod
     def __hero_attacks(cls, creature_1, creature_2: Creature):
-        dmg = randint(1, creature_1.heroClass.baseDmg)
+        dmg = randint(1, creature_1.fight_class.baseDmg)
         equipped_weapon = creature_1.eq.itemSlots[9]
         if equipped_weapon is not None:
             dmg *= randint(equipped_weapon.min_dmg, equipped_weapon.max_dmg)
-        dmg *= creature_1.strongAgainstOtherClass(creature_2.heroClass)
+        dmg *= creature_1.strongAgainstOtherClass(creature_2.fight_class)
         dmg = floor(
-            dmg / randint(1, creature_2.heroClass.statistics.protection * (1 + creature_2.heroClass.statistics.luck)))
-        creature_2.heroClass.statistics.hp -= max(0, dmg)
+            dmg / randint(1, creature_2.fight_class.statistics.protection * (1 + creature_2.fight_class.statistics.luck)))
+        creature_2.fight_class.statistics.hp -= max(0, dmg)
         return creature_1.hero_id, max(0, dmg)
 
     @classmethod
@@ -72,8 +72,8 @@ class Battle(object):
 
     @classmethod
     def __finalize_fight_between_heroes(cls, winner, loser):
-        winner.heroClass.statistics.hp = winner.heroClass.statistics.constitution * 100
-        loser.heroClass.statistics.hp = loser.heroClass.statistics.constitution * 100
+        winner.fight_class.statistics.hp = winner.fight_class.statistics.constitution * 100
+        loser.fight_class.statistics.hp = loser.fight_class.statistics.constitution * 100
 
         gold_at_stake = Battle.get_gold_at_stake(winner, loser)
         exp_at_stake = Battle.get_exp_at_stake(winner, loser)

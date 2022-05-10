@@ -49,8 +49,8 @@ class Hero(Creature):
         return "| avatar_id: " + str(self.avatar_id) + "| hero_id: " + str(
             self.hero_id) + "| Hero name: " + self.name + "| exp: " + str(self.exp) + \
                "| exp to next lvl: " + str(self.expToNextLvl) + "| lvl: " + str(self.lvl) + " | class: " + \
-               str(self.heroClass) + " |\n-----------------------\n" + \
-               str(self.heroClass.statistics) + "\n-----------------------\n" + \
+               str(self.fight_class) + " |\n-----------------------\n" + \
+               str(self.fight_class.statistics) + "\n-----------------------\n" + \
                str(self.eq.gearStatistics) + "\n-----------------------\n"
 
     def addExp(self, expOfOther):
@@ -74,25 +74,25 @@ class Hero(Creature):
             self.freeDevelopmentPoints -= 1
 
             if statistic_name == 'strength':
-                self.heroClass.statistics.strength += 1
+                self.fight_class.statistics.strength += 1
             elif statistic_name == 'intelligence':
-                self.heroClass.statistics.intelligence += 1
+                self.fight_class.statistics.intelligence += 1
             elif statistic_name == 'dexterity':
-                self.heroClass.statistics.dexterity += 1
+                self.fight_class.statistics.dexterity += 1
             elif statistic_name == 'constitution':
-                self.heroClass.statistics.constitution += 1
+                self.fight_class.statistics.constitution += 1
             elif statistic_name == 'luck':
-                self.heroClass.statistics.luck += 1
+                self.fight_class.statistics.luck += 1
             elif statistic_name == 'protection':
-                self.heroClass.statistics.protection += 1
+                self.fight_class.statistics.protection += 1
             elif statistic_name == 'persuasion':
-                self.heroClass.statistics.persuasion += 1
+                self.fight_class.statistics.persuasion += 1
             elif statistic_name == 'trade':
-                self.heroClass.statistics.trade += 1
+                self.fight_class.statistics.trade += 1
             elif statistic_name == 'leadership':
-                self.heroClass.statistics.leadership += 1
+                self.fight_class.statistics.leadership += 1
             elif statistic_name == 'initiative':
-                self.heroClass.statistics.initiative += 1
+                self.fight_class.statistics.initiative += 1
 
             try:
                 conn, cursor = connect_to_db()
@@ -183,7 +183,7 @@ class Hero(Creature):
         return Battle.hero_vs_hero(self, enemy)
 
     def get_statistics(self):
-        return self.heroClass.statistics + self.eq.gearStatistics
+        return self.fight_class.statistics + self.eq.gearStatistics
 
     def update_model_from_db(self):
         pass  # TODO - get whole current hero model in order to synchronize the game

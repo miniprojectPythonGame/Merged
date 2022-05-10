@@ -1,10 +1,14 @@
+import string
+
 from api.game_classes.creatures.creature import Creature
 
 
 class Bot(Creature):
-    def __init__(self, name, className, gold, gained_exp, lvl=1, dropped_item=None):
-        Creature.__init__(self, name, className, lvl)
-        self.heroClass.statistics.setFightStatistics(self.freeDevelopmentPoints)
-        self.gold = gold
-        self.dropped_item = dropped_item
-        self.gained_exp = gained_exp
+    def __init__(self, bot_name: string, bot_class: string or None, description: string, is_friendly: True or False,
+                 image_id: int, lvl: int or None = None):
+        Creature.__init__(self, bot_name, bot_class, lvl)
+        self.description = description
+        self.image_id = image_id
+        if not is_friendly:
+            self.freeDevelopmentPoints = lvl * 4
+            self.fight_class.statistics.setFightStatistics(self.freeDevelopmentPoints)

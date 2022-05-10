@@ -317,9 +317,9 @@ def getEqItemByType(items, expected_type):
 def getCharacterForEQPreview(hero):
     return {
         'name': str(hero.name),
-        'spec': str(hero.heroClass),
+        'spec': str(hero.fight_class),
         'level': str(hero.lvl),
-        'img_full': '../images/characters/' + str(hero.heroClass).lower() + '_' + str(
+        'img_full': '../images/characters/' + str(hero.fight_class).lower() + '_' + str(
             hero.avatar_id) + '.jpg',
         "health": str(hero.get_statistics().hp),
         "gold": str(hero.eq.gold),
