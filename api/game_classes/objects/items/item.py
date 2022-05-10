@@ -120,7 +120,7 @@ class Item:
         select = "SELECT I.name,I.price,I.description,I.only_treasure,I.item_type_id,I.min_lvl,I.for_class," \
                  "s.strength,s.intelligence,s.dexterity,s.constitution,s.luck,s.persuasion,s.trade,s.leadership," \
                  "s.protection,s.initiative,i.quality FROM items I JOIN statistics s on s.statistics_id = I.statistics_id" \
-                 " WHERE I.item_id = " + str(item_id) + ";"
+                 " WHERE I.item_id = " + str(item_id)
         return select
 
     def __str__(self):

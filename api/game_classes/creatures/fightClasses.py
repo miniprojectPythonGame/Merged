@@ -1,3 +1,5 @@
+from enum import Enum
+
 from api.game_classes.creatures.statistics import Statistics
 
 

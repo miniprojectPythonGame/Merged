@@ -1,18 +1,23 @@
 import random
 
 from api.game_classes.creatures.statistics import Statistics
-from api.game_classes.objects.items.item import Item, ItemType
+from api.game_classes.objects.items.item import Item
 from api.web.WebService import connect_to_db, disconnect_from_db
 
 
 class Eq:
     def __init__(self, hero_id, className, gold):
         self.hero_id = hero_id
-        self.itemSlots = [None] * 31  # od 0 do 10 to itemy w eq według itemtype'u
+        self.itemSlots: None or Item = [None] * 31  # od 0 do 10 to itemy w eq według itemtype'u
         self.gearStatistics = Statistics()
         self.className = className
         self.gold = gold
         self.get_storage()
+
+    def __add_to_storage(self, item: Item):
+        for i in range(11, len(self.itemSlots)):
+            if self.itemSlots[i] is None:
+                self.itemSlots[i] = item
 
     def __changeEqItem(self, in_eq, in_storage):
         if self.itemSlots[in_eq] is not None:
@@ -124,11 +129,7 @@ class Eq:
     def add_item(self, item: Item):
         if item is not False:
             try:
-                conn, cursor = connect_to_db()
-                cursor.execute("SELECT item_slot_id FROM storage where hero_id = %s and item_id = %s",
-                               (self.hero_id, item.item_id))
-                self.itemSlots[cursor.fetchall()[0][0]] = item
-                disconnect_from_db(conn, cursor)
+                self.__add_to_storage(item)
                 self.gold -= item.price
                 return True
             except Exception as error:

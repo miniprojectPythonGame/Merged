@@ -1,7 +1,8 @@
+import string
 from datetime import datetime, timedelta
 from typing import List
 
-from api.game_classes.objects.items.item import Item
+from api.game_classes.objects.items.item import Item, ItemType
 from api.web.WebService import connect_to_db, disconnect_from_db
 
 
@@ -33,6 +34,16 @@ class AuctionedItem:
             self.item)
 
 
+class Filters:
+    def __init__(self, name: string or None = None, item_type: List[int] or None = None, min_price: int or None = None,
+                 max_price: int or None = None, for_class: List[string] or None = None):
+        self.name = name
+        self.item_type = item_type
+        self.min_price = min_price
+        self.max_price = max_price
+        self.for_class = for_class
+
+
 class Market:
     def __init__(self, hero_id):
         self.hero_id: int = hero_id
@@ -41,6 +52,7 @@ class Market:
         self.filters = {}  # TODO IMPLEMENT ME
         self.__load_buy_now_items()
         self.__load_auctioned_items()
+        self.filters = Filters()
 
     def __load_auctioned_items(self):
         transaction_status = None
@@ -125,9 +137,9 @@ class Market:
         finally:
             return transaction_status
 
-    def buy_now_item(self, item_slot_id: int):
+    def buy_now_item(self, id_in_list: int):
         transaction_status = None
-        bni: BuyNowItem = self.buy_now_items[item_slot_id]
+        bni: BuyNowItem = self.buy_now_items[id_in_list]
         try:
             conn, cursor = connect_to_db()
             cursor.execute("call buy_now(%s,%s,%s);", (self.hero_id, bni.item.item_id, bni.seller_id))
@@ -140,9 +152,9 @@ class Market:
         finally:
             return bni if transaction_status else transaction_status
 
-    def place_bet(self, item_slot_id: int, bet: int):
+    def place_bet(self, id_in_list: int, bet: int):
         transaction_status = None
-        ai: AuctionedItem = self.auctioned_items[item_slot_id]
+        ai: AuctionedItem = self.auctioned_items[id_in_list]
         try:
             conn, cursor = connect_to_db()
             cursor.execute("select place_bet(%s,%s,%s,%s)", (ai.item.item_id, ai.seller_id, bet, self.hero_id))

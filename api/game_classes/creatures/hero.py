@@ -205,15 +205,15 @@ class Hero(Creature):
             return True
         return False
 
-    def buy_now_item(self, item_slot_id: int):
-        item_price: int = self.market.buy_now_items[item_slot_id].price
+    def buy_now_item(self, id_in_list: int):
+        item_price: int = self.market.buy_now_items[id_in_list].price
         if self.eq.gold >= item_price:
-            self.market.buy_now_item(item_slot_id)
+            self.market.buy_now_item(id_in_list)
             self.eq.gold -= item_price
             return True
         return False
 
-    def place_bet(self, item_slot_id: int, bet: int):
-        if self.eq.gold >= bet > self.market.auctioned_items[item_slot_id].current_price:
-            return self.market.place_bet(item_slot_id, bet)
+    def place_bet(self, id_in_list: int, bet: int):
+        if self.eq.gold >= bet > self.market.auctioned_items[id_in_list].current_price:
+            return self.market.place_bet(id_in_list, bet)
         return False

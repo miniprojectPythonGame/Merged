@@ -174,7 +174,7 @@ if __name__ == "__main__":
     tmp.login('konto@gmail.com', 'alamakota')
 
     # tmp.createHero(2,'test_fight', 'w', 1, 1, 1, 1, 1, 1, 1, 1, 1, 1)
-    tmp.chooseHero(19)
+    tmp.chooseHero(20)
     hero: Hero = tmp.currentHero
     # for i in hero.market.auctioned_items:
     #     print(i)
@@ -184,8 +184,7 @@ if __name__ == "__main__":
     for i in tmp.currentHero.market.buy_now_items:
         print(i)
 
-    print(hero.add_to_buy_now_items())
-
+    print(hero.buy_now_item(0))
 
 #     # tmp.currentHero.eq.swap_places(13, 0)
 #     # tmp.currentHero.add_to_statistics('dexterity')
