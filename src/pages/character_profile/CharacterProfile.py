@@ -15,19 +15,18 @@ from api.game_classes.objects.items.item import ItemType
 from .Measurements import Measurements as meas
 
 from src.globals.const_values import \
-    INVENTORY_SHIFT,\
-    reloadCharacterBackpacks,\
-    reloadCharacterEQ,\
-    getCharacterForEQPreview,\
-    reloadItemGrid,\
-    extractType,\
-    reloadBackpackButtons,\
+    INVENTORY_SHIFT, \
+    reloadCharacterBackpacks, \
+    reloadCharacterEQ, \
+    getCharacterForEQPreview, \
+    reloadItemGrid, \
+    extractType, \
+    reloadBackpackButtons, \
     resetActiveItem, \
     setActiveItem
 
 
 def CharacterProfile(screen, mainClock, user):
-
     def reloadStatistics():
         statistics = hero.get_statistics()
         character['statistics'] = {
@@ -125,7 +124,7 @@ def CharacterProfile(screen, mainClock, user):
                              meas.sc_eq_stat['color'], screen, [c_backpack, c_stats], ['Items', 'Statistics'],
                              switch_height=meas.sc_eq_stat['switch_height'])
 
-    ppi_itemDescription = PopupItem(0, 0, 100, 50, screen, '', meas.text_font)
+    ppi_itemDescription = PopupItem(210, 110, screen)
 
     while running:
         screen.fill((255, 255, 255))
@@ -194,17 +193,22 @@ def CharacterProfile(screen, mainClock, user):
                 if event.button == 3:
                     for i in range(len(ig_backpack.backpack_ref)):
                         if ig_backpack.backpack[i].rect.collidepoint(event.pos):
-                            if curr_item_in_popup == ig_backpack.backpack_ref[i]['name']:
-                                ppi_itemDescription = PopupItem(0, 0, 200, 80, screen,
-                                                                '', meas.text_font)
+                            if curr_item_in_popup == ig_backpack.backpack_ref[i]['name'] \
+                                    or ig_backpack.backpack_ref[i]['name'] == "empty":
+                                ppi_itemDescription.setVisible(False)
+                                curr_item_in_popup = ''
+
                             else:
-                                x = min(mx, meas.window_width - 200)
-                                y = min(my, meas.window_height - 80)
-                                ppi_itemDescription = PopupItem(x, y, 200, 80, screen,
-                                                                ig_backpack.backpack_ref[i]['name'],
-                                                                meas.text_font,
-                                                                isVisible=True)
                                 curr_item_in_popup = ig_backpack.backpack_ref[i]['name']
+                                ppi_itemDescription.setItem(
+                                    mx - ppi_itemDescription.width,  # x
+                                    my,  # y
+                                    curr_item_in_popup,  # name
+                                    hero.eq.itemSlots[i+INVENTORY_SHIFT].quality.value,
+                                    hero.eq.itemSlots[i+INVENTORY_SHIFT].statistics
+                                )
+                                ppi_itemDescription.setVisible(True)
+
                             break
 
         pygame.display.update()

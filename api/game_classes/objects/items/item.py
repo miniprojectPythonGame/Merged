@@ -145,19 +145,19 @@ class ItemType(Enum):
     PotionPeriod = 11
     PotionPermanent = 12
 
-    item_type_dict = {Belt: 0,
-                      Boots: 1,
-                      Breastplate: 2,
-                      Gloves: 3,
-                      Headgear: 4,
-                      LuckyItem: 5,
-                      Necklace: 6,
-                      Ring: 7,
-                      Steed: 8,
-                      PrimaryWeapon: 9,
-                      SecondaryWeapon: 10,
-                      PotionPeriod: 11,
-                      PotionPermanent: 12}
+    item_type_dict = {0: Belt,
+                      1: Boots,
+                      2: Breastplate,
+                      3: Gloves,
+                      4: Headgear,
+                      5: LuckyItem,
+                      6: Necklace,
+                      7: Ring,
+                      8: Steed,
+                      9: PrimaryWeapon,
+                      10: SecondaryWeapon,
+                      11: PotionPeriod,
+                      12: PotionPermanent}
 
 
 class Belt(Item):
