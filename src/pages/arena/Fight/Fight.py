@@ -69,7 +69,7 @@ def Fight(screen, mainClock, heroAttacker, heroDefender):
     attacker = {
         "id": heroAttacker.hero_id,
         "name": heroAttacker.name,
-        "heroClass": str(heroAttacker.heroClass).lower(),
+        "fight_class": str(heroAttacker.fight_class).lower(),
         "avatarID": heroAttacker.avatar_id,
         "max_health": heroAttacker.get_statistics().hp,
         "current_health": heroAttacker.get_statistics().hp,
@@ -78,7 +78,7 @@ def Fight(screen, mainClock, heroAttacker, heroDefender):
     defender = {
         "id": heroDefender.hero_id,
         "name": heroDefender.name,
-        "heroClass": str(heroDefender.heroClass).lower(),
+        "fight_class": str(heroDefender.fight_class).lower(),
         "avatarID": heroDefender.avatar_id,
         "max_health": heroDefender.get_statistics().hp,
         "current_health": heroDefender.get_statistics().hp,
@@ -93,14 +93,14 @@ def Fight(screen, mainClock, heroAttacker, heroDefender):
 
     img_attacker = ImageField(meas.img_attacker['x'], meas.img_attacker['y'],
                               meas.img_attacker['width'], meas.img_attacker['height'],
-                              path=getFullAvatarPath(attacker['heroClass'], attacker['avatarID']), screen=screen)
+                              path=getFullAvatarPath(attacker['fight_class'], attacker['avatarID']), screen=screen)
 
     label_attacker = Label(attacker['name'], meas.label_attacker['font'], meas.label_attacker['color'],
                            screen, meas.label_attacker['x'], meas.label_attacker['y'])
 
     img_defender = ImageField(meas.img_defender['x'], meas.img_defender['y'],
                               meas.img_defender['width'], meas.img_defender['height'],
-                              path=getFullAvatarPath(defender['heroClass'], defender['avatarID']), screen=screen)
+                              path=getFullAvatarPath(defender['fight_class'], defender['avatarID']), screen=screen)
 
     label_defender = Label(defender['name'], meas.label_defender['font'], meas.label_defender['color'],
                            screen, meas.label_defender['x'], meas.label_defender['y'],

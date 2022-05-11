@@ -59,12 +59,12 @@ def Arena(screen, mainClock, user):
         return result
 
     def reloadPreview(activeHero):
-        heroClass = str(activeHero.heroClass).lower()
+        fight_class = str(activeHero.fight_class).lower()
         heroAvatar = activeHero.avatar_id - 1
         statistics = reloadStatistics(activeHero.get_statistics())
 
         img_hero = ImageField(meas.img_hero['x'], meas.img_hero['y'], meas.img_hero['width'], meas.img_hero['height'],
-                              AVATARS[heroClass][heroAvatar]['rect'], screen)
+                              AVATARS[fight_class][heroAvatar]['rect'], screen)
 
         lb_name = Label(activeHero.name, meas.lb_name['font'], meas.lb_name['color'], screen,
                         meas.lb_name['x'], meas.lb_name['y'], meas.lb_name['anchor'])
@@ -87,7 +87,7 @@ def Arena(screen, mainClock, user):
 
     list_elements = []
     for key in allHeros.keys():
-        heroClass = str(allHeros[key].heroClass).lower()
+        fight_class = str(allHeros[key].fight_class).lower()
         list_elements.append(ListElement(meas.le_general['x'],
                                          meas.le_general[
                                              'y'] + 0 * meas.list_element_padding + 0 * meas.list_element_height,
@@ -95,7 +95,7 @@ def Arena(screen, mainClock, user):
                                          meas.le_general['colors'], screen, allHeros[key].name, 'No guild',
                                          meas.le_general['property_name'], str(allHeros[key].lvl),
                                          object=allHeros[key],
-                                         img_path=CLASS_ICONS[heroClass]['white']))
+                                         img_path=CLASS_ICONS[fight_class]['white']))
 
     sl_heroes = ScrollableList(meas.sl_heroes['x'], meas.sl_heroes['y'], screen, list_elements,
                                meas.list_element_height, meas.list_element_padding,

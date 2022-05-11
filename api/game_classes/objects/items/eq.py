@@ -18,6 +18,7 @@ class Eq:
         for i in range(11, len(self.itemSlots)):
             if self.itemSlots[i] is None:
                 self.itemSlots[i] = item
+                return
 
     def __changeEqItem(self, in_eq, in_storage):
         if self.itemSlots[in_eq] is not None:

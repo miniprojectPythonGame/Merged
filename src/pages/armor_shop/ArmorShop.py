@@ -73,10 +73,12 @@ def ArmorShop(screen, mainClock, user):
     def handleBuyItem(item_id):
         hero.buy_from_shop(item_id, ShopType.ArmourShop.value)
         reloadCharacterBackpacks(character, hero)
+
         sc_eq_stat_bp.components[0].components[-1] = ItemGrid(meas.ig_backpack['x'], meas.ig_backpack['y'],
                            meas.ig_backpack['item_size'], meas.ig_backpack['item_padding'],
                            meas.ig_backpack['cols'], meas.ig_backpack['amount'], screen,
                            character['backpacks'][backpack_active])
+
         character['gold'] = hero.eq.gold
         label_gold = Label("Gold: " + str(character['gold']), meas.label_gold['font'],
                            meas.label_gold['color'], screen, meas.label_gold['x'],

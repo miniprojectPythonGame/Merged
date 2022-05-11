@@ -81,6 +81,7 @@ def MagicShop(screen, mainClock, user):
                                                               meas.ig_backpack['cols'], meas.ig_backpack['amount'],
                                                               screen,
                                                               character['backpacks'][backpack_active])
+
         character['gold'] = hero.eq.gold
         label_gold = Label("Gold: " + str(character['gold']), meas.label_gold['font'],
                            meas.label_gold['color'], screen, meas.label_gold['x'],

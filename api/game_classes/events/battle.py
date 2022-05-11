@@ -38,8 +38,8 @@ class Battle(object):
             hero_1_attacks = not hero_1_attacks
 
         Battle.__finalize_fight_between_heroes(winner, loser)
-        winner.heroClass.statistics.hp = winner.heroClass.statistics.constitution * 100
-        loser.heroClass.statistics.hp = loser.heroClass.statistics.constitution * 100
+        winner.fight_class.statistics.hp = winner.fight_class.statistics.constitution * 100
+        loser.fight_class.statistics.hp = loser.fight_class.statistics.constitution * 100
         print("winner: ", winner.hero_id)
         return battle_logs, winner.hero_id
 
