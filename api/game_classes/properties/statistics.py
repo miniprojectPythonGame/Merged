@@ -1,4 +1,17 @@
+from enum import Enum
 from random import randint
+
+
+class StatisticsEnum(Enum):
+    STRENGTH = 0
+    INTELLIGENCE = 1
+    DEXTERITY = 2
+    CONSTITUTION = 3
+    PROTECTION = 4
+    PERSUASION = 5
+    TRADE = 6
+    LEADERSHIP = 7
+    INITIATIVE = 8
 
 
 class Statistics:
@@ -19,6 +32,47 @@ class Statistics:
         self.trade = trade
         self.leadership = leadership
         self.initiative = initiative
+
+    @classmethod
+    def genItemStatistics(cls, different_stats_amount: int, points_to_use: int):
+        stats = Statistics()
+        stats_dict = {StatisticsEnum.STRENGTH.value: 0, StatisticsEnum.INTELLIGENCE.value: 0,
+                      StatisticsEnum.DEXTERITY.value: 0, StatisticsEnum.CONSTITUTION.value: 0,
+                      StatisticsEnum.PROTECTION.value: 0, StatisticsEnum.PERSUASION.value: 0,
+                      StatisticsEnum.TRADE.value: 0, StatisticsEnum.LEADERSHIP.value: 0,
+                      StatisticsEnum.INITIATIVE.value: 0}
+
+        chosen_stats = []
+        while len(chosen_stats) < different_stats_amount:
+            x = randint(0, 8)
+            if x not in chosen_stats:
+                chosen_stats.append(x)
+
+        for i in range(points_to_use):
+            stat_to_update = randint(0, different_stats_amount - 1)
+            update_dict = {chosen_stats[stat_to_update]: stats_dict.get(chosen_stats[stat_to_update]) + 1}
+            stats_dict.update(update_dict)
+
+        if StatisticsEnum.STRENGTH.value in chosen_stats:
+            stats.strength += stats_dict.get(StatisticsEnum.STRENGTH.value)
+        if StatisticsEnum.INTELLIGENCE.value in chosen_stats:
+            stats.intelligence += stats_dict.get(StatisticsEnum.INTELLIGENCE.value)
+        if StatisticsEnum.DEXTERITY.value in chosen_stats:
+            stats.dexterity += stats_dict.get(StatisticsEnum.DEXTERITY.value)
+        if StatisticsEnum.CONSTITUTION.value in chosen_stats:
+            stats.constitution += stats_dict.get(StatisticsEnum.CONSTITUTION.value)
+        if StatisticsEnum.PROTECTION.value in chosen_stats:
+            stats.protection += stats_dict.get(StatisticsEnum.PROTECTION.value)
+        if StatisticsEnum.PERSUASION.value in chosen_stats:
+            stats.persuasion += stats_dict.get(StatisticsEnum.PERSUASION.value)
+        if StatisticsEnum.TRADE.value in chosen_stats:
+            stats.trade += stats_dict.get(StatisticsEnum.TRADE.value)
+        if StatisticsEnum.LEADERSHIP.value in chosen_stats:
+            stats.leadership += stats_dict.get(StatisticsEnum.LEADERSHIP.value)
+        if StatisticsEnum.INITIATIVE.value in chosen_stats:
+            stats.initiative += stats_dict.get(StatisticsEnum.INITIATIVE.value)
+
+        return stats
 
     def setFightStatistics(self, freeDevelopmentPoints):
         for i in range(0, freeDevelopmentPoints):
@@ -80,4 +134,3 @@ class Statistics:
         return Statistics(strength, intelligence, dexterity, constitution, luck, persuasion, trade,
                           leadership,
                           protection, initiative)
-

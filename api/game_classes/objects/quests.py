@@ -1,24 +1,11 @@
 import string
-from enum import Enum
 from typing import List
 
 from api.game_classes.creatures.bot import Bot
-from api.game_classes.objects.items.item import Item
+from api.game_classes.properties.enums import Difficulty
+from api.game_classes.properties.statistics import Statistics
+from api.game_classes.objects.items.item import Item, Quality
 from api.web.WebService import connect_to_db, disconnect_from_db
-
-
-class Difficulty(Enum):
-    EASY = 1
-    INTERMEDIATE = 2
-    HARD = 3
-
-    @classmethod
-    def get_difficulty(cls, difficulty: int):
-        return {1: Difficulty.EASY, 2: Difficulty.INTERMEDIATE, 3: Difficulty.HARD}.get(difficulty)
-
-    @classmethod
-    def get_bot_lvl_advantage(cls, difficulty: int):
-        return {1: 3, 2: 7, 3: 15}.get(difficulty)
 
 
 class Quest:
@@ -32,7 +19,8 @@ class Quest:
         self.enemy = enemy
 
     def __str__(self):
-        return '----------------------\nName: ' + self.name + '\ndescription: ' + self.description + '\ndifficulty: ' + str(self.difficulty) + '\nenemy: ' + str(self.enemy) + '\n----------------------\n'
+        return '----------------------\nName: ' + self.name + '\ndescription: ' + self.description + '\ndifficulty: ' + str(
+            self.difficulty) + '\nenemy: ' + str(self.enemy) + '\n----------------------\n' + 'Treasure:\n' + str(self.treasure)
 
 
 class QuestList:
@@ -54,14 +42,16 @@ class QuestList:
             new_bot: Bot = Bot(bot_data[0], bot_data[1], bot_data[2], False, bot_data[3],
                                line[2] + Difficulty.get_bot_lvl_advantage(line[1]))
             treasure_item: Item or None = None
-            if line[9] is not None:  # TODO to be implemented
-                # TODO build item from treasure
-                # TODO if the fight is won item should be created
-                # TODO item should be transferred to hero's storage
+            if line[9] is not None:
                 cursor.execute(
-                    "select image_id,name,description,item_type_id,for_class from treasures where treasure_id = %s",
+                    "select image_id,name,description,item_type_id,for_class,price from treasures where treasure_id = %s",
                     (line[9],))
-                treasure_item = None  # TODO
+                item_data = cursor.fetchall()[0]
+                quality: Quality = Quality.get_quality_from_difficulty(Difficulty.get_difficulty(line[1]))
+                stats_and_points = Quality.get_different_stats_and_points_for_quality(quality)
+                stats: Statistics = Statistics.genItemStatistics(stats_and_points[0], stats_and_points[1])
+                treasure_item = Item(item_data[1], item_data[5], item_data[2], stats,
+                                     item_data[4], None, 1, quality)
 
             new_quest: Quest = Quest(line[3], Difficulty.get_difficulty(line[1]), treasure_item, line[5], line[4],
                                      new_bot)

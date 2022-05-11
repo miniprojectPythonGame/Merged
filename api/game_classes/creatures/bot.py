@@ -16,4 +16,4 @@ class Bot(Creature):
     def __str__(self):
         return '\n----------------------\nName: ' + self.name + '\nbot_class: ' + \
                str(self.fight_class) + '\ndescription: ' + self.description  + \
-               '\nstatistics: ' + str(self.fight_class.statistics) + '\n----------------------\n' + str(self.freeDevelopmentPoints)
+               '\nstatistics: ' + str(self.fight_class.statistics)

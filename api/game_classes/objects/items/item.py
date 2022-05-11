@@ -1,25 +1,14 @@
+import string
 from enum import Enum
+from typing import List
 
-from api.game_classes.creatures.statistics import Statistics
-
-
-class Quality(Enum):
-    LEGENDARY = 1
-    EPIC = 2
-    COMMON = 3
-
-    @classmethod
-    def get_quality(cls, number: int):
-        if number == 1:
-            return Quality.LEGENDARY
-        if number == 2:
-            return Quality.EPIC
-        if number == 3:
-            return Quality.COMMON
+from api.game_classes.properties.enums import Quality
+from api.game_classes.properties.statistics import Statistics
 
 
 class Item:
-    def __init__(self, name, price, description, statistics, for_class, item_id, available, quality: Quality):
+    def __init__(self, name: string, price: int, description: string, statistics: Statistics, for_class: string,
+                 item_id: int or None, available: int, quality: Quality):
         self.quality = quality
         self.price = price
         self.name = name
@@ -30,7 +19,7 @@ class Item:
         self.available = available
 
     @classmethod
-    def build_item(cls, item_id, item_info, available=1):
+    def build_item(cls, item_id: int, item_info: List, available: int = 1):
         newStats = Statistics(item_info[7],
                               item_info[8],
                               item_info[9],
@@ -127,7 +116,7 @@ class Item:
         return '----------------------\nName: ' + self.name + '\nprice: ' + \
                str(self.price) + '\ndescription: ' + self.description + \
                '\nitem_id: ' + str(self.item_id) + '\n----------------------\n' + \
-               'quality: ' + str(self.quality.name) + '\n----------------------'
+               'quality: ' + str(self.quality.name) + '\n----------------------\n' + str(self.statistics)
 
 
 class ItemType(Enum):

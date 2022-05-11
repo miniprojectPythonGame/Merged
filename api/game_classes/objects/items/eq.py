@@ -1,6 +1,6 @@
 import random
 
-from api.game_classes.creatures.statistics import Statistics
+from api.game_classes.properties.statistics import Statistics
 from api.game_classes.objects.items.item import Item
 from api.web.WebService import connect_to_db, disconnect_from_db
 
