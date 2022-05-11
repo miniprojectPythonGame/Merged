@@ -8,7 +8,6 @@ from api.web.WebService import connect_to_db, disconnect_from_db
 class Battle(object):
     @classmethod
     def hero_vs_hero(cls, hero_1, hero_2):
-        # TODO dodać listę w postaci (hero_id,dmg_dealt)
         battle_logs = []
         chances = hero_1.fight_class.statistics.initiative + hero_2.fight_class.statistics.initiative
         finished = False
@@ -90,3 +89,8 @@ class Battle(object):
             disconnect_from_db(conn, cursor)
         except Exception as error:
             print(error)
+
+    @classmethod
+    def hero_vs_bot(cls):
+        pass # TODO
+

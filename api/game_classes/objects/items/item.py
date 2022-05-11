@@ -19,6 +19,14 @@ class Item:
         self.available = available
 
     @classmethod
+    def add_item_to_db(cls, item):
+        pass  # TODO
+
+    @classmethod
+    def add_item_to_hero_storage(cls, hero_id, item_id):
+        pass  # TODO
+
+    @classmethod
     def build_item(cls, item_id: int, item_info: List, available: int = 1):
         newStats = Statistics(item_info[7],
                               item_info[8],
