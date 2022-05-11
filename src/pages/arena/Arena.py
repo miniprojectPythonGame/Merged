@@ -2,6 +2,8 @@ import pygame
 import sys
 from pygame.locals import *
 
+from .Fight.Fight import Fight
+
 from src.components.Label import Label
 from src.components.Button import Button
 from src.components.ListElement import ListElement
@@ -17,22 +19,24 @@ def Arena(screen, mainClock, user):
     showHand = False
     running = True
     hero = user.currentHero
+    allHeros = user.getAllExistingHeroes()
+    activeHero = None
 
-    def reloadStatistics():
+    def reloadStatistics(statistics):
         return {
-            "strength": hero.get_statistics().strength,
-            "intelligence": hero.get_statistics().intelligence,
-            "dexterity": hero.get_statistics().dexterity,
-            "constitution": hero.get_statistics().constitution,
-            "luck": hero.get_statistics().luck,
-            "protection": hero.get_statistics().protection,
-            "persuasion": hero.get_statistics().persuasion,
-            "trade": hero.get_statistics().trade,
-            "leadership": hero.get_statistics().leadership,
-            "initiative": hero.get_statistics().initiative,
+            "strength": statistics.strength,
+            "intelligence": statistics.intelligence,
+            "dexterity": statistics.dexterity,
+            "constitution": statistics.constitution,
+            "luck": statistics.luck,
+            "protection": statistics.protection,
+            "persuasion": statistics.persuasion,
+            "trade": statistics.trade,
+            "leadership": statistics.leadership,
+            "initiative": statistics.initiative,
         }
 
-    def generateStats():
+    def generateStats(statistics):
         result = []
         cols = 2
         rows = round(len(STATS_NAMES) / cols)
@@ -54,6 +58,26 @@ def Arena(screen, mainClock, user):
 
         return result
 
+    def reloadPreview(activeHero):
+        heroClass = str(activeHero.heroClass).lower()
+        heroAvatar = activeHero.avatar_id - 1
+        statistics = reloadStatistics(activeHero.get_statistics())
+
+        img_hero = ImageField(meas.img_hero['x'], meas.img_hero['y'], meas.img_hero['width'], meas.img_hero['height'],
+                              AVATARS[heroClass][heroAvatar]['rect'], screen)
+
+        lb_name = Label(activeHero.name, meas.lb_name['font'], meas.lb_name['color'], screen,
+                        meas.lb_name['x'], meas.lb_name['y'], meas.lb_name['anchor'])
+
+        lb_stats_names = generateStats(statistics)
+
+        bt_fight = Button(meas.bt_fight['color'], meas.bt_fight['x'], meas.bt_fight['y'],
+                          meas.bt_fight['width'], meas.bt_fight['height'], screen,
+                          meas.bt_fight['text'], meas.header_tertiary_font,
+                          border_radius=meas.bt_fight['border-radius'])
+
+        return img_hero, lb_name, lb_stats_names, bt_fight
+
     label_page = Label(meas.label_page['text'], meas.label_page['font'], meas.label_page['color'], screen,
                        meas.label_page['x'], meas.label_page['y'], meas.label_page['anchor'])
 
@@ -61,37 +85,27 @@ def Arena(screen, mainClock, user):
                        meas.bt_return['width'], meas.bt_return['height'], screen,
                        path=meas.bt_return['path'])
 
-    statistics = reloadStatistics()
-
     list_elements = []
-    for i in range(12):
+    for key in allHeros.keys():
+        heroClass = str(allHeros[key].heroClass).lower()
         list_elements.append(ListElement(meas.le_general['x'],
                                          meas.le_general[
                                              'y'] + 0 * meas.list_element_padding + 0 * meas.list_element_height,
                                          meas.le_general['width'], meas.le_general['height'],
-                                         meas.le_general['colors'], screen, 'Item #' + str(i), 'No guild',
-                                         meas.le_general['property_name'], '29',
-                                         img_path=CLASS_ICONS['archer']['white']))
+                                         meas.le_general['colors'], screen, allHeros[key].name, 'No guild',
+                                         meas.le_general['property_name'], str(allHeros[key].lvl),
+                                         object=allHeros[key],
+                                         img_path=CLASS_ICONS[heroClass]['white']))
 
     sl_heroes = ScrollableList(meas.sl_heroes['x'], meas.sl_heroes['y'], screen, list_elements,
-                               meas.list_element_height, meas.list_element_padding)
+                               meas.list_element_height, meas.list_element_padding,
+                               )
 
-    img_hero = ImageField(meas.img_hero['x'], meas.img_hero['y'], meas.img_hero['width'], meas.img_hero['height'],
-                          AVATARS['warrior'][0]['rect'], screen)
+    img_hero = None
+    lb_name = None
+    lb_stats_names = None
+    bt_fight = None
 
-    lb_name = Label(hero.name, meas.lb_name['font'], meas.lb_name['color'], screen,
-                    meas.lb_name['x'], meas.lb_name['y'], meas.lb_name['anchor'])
-
-    lb_stats_names = generateStats()
-
-    bt_fight = Button(meas.bt_fight['color'], meas.bt_fight['x'], meas.bt_fight['y'],
-                      meas.bt_fight['width'], meas.bt_fight['height'], screen,
-                      meas.bt_fight['text'], meas.header_tertiary_font, border_radius=meas.bt_fight['border-radius'])
-
-    displayedContent = [
-        label_page, bt_return, sl_heroes, img_hero, lb_name, bt_fight
-    ]
-    displayedContent += lb_stats_names
 
     while running:
         screen.fill((255, 255, 255))
@@ -101,10 +115,18 @@ def Arena(screen, mainClock, user):
         else:
             pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
 
-        for elem in displayedContent:
-            elem.draw()
-
         mx, my = pygame.mouse.get_pos()
+
+        label_page.draw()
+        bt_return.draw()
+        sl_heroes.draw()
+
+        if activeHero is not None:
+            img_hero.draw()
+            lb_name.draw()
+            for label in lb_stats_names:
+                label.draw()
+            bt_fight.draw()
 
         # HOVER EVENTS
         # if bt_showHeadgear.rect.collidepoint((mx, my)):
@@ -148,6 +170,18 @@ def Arena(screen, mainClock, user):
                     if bt_return.rect.collidepoint(event.pos):
                         running = False
                         break
+
+                    if activeHero is not None and bt_fight.rect.collidepoint(event.pos):
+                        Fight(screen, mainClock, hero, activeHero)
+
+                        break
+
+                    for heroLine in sl_heroes.list:
+                        if heroLine.rect.collidepoint(event.pos):
+                            activeHero = heroLine.object
+                            img_hero, lb_name, lb_stats_names, bt_fight = reloadPreview(activeHero)
+                            break
+
 
                 # SCROLL
                 if event.button == 4:

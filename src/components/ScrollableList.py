@@ -24,7 +24,7 @@ class ScrollableList():
 
     def draw(self):
         pos = 0
-        for i in range(self.scroll_position, self.scroll_position + self.visible):
+        for i in range(self.scroll_position, min(self.scroll_position + self.visible, self.scroll_range)):
             self.list[i].redraw()
             self.elements[i].y = self.getYPosition(pos)
             self.elements[i].x = self.x + self.scroll_thickness + self.scroll_padding
@@ -50,11 +50,12 @@ class ScrollableList():
         return self.visible * self.elem_height + (self.visible - 1) * self.elem_padding
 
     def drawScrollBar(self):
-        height = round((self.visible / self.scroll_range) * self.height)
-        elem_height = round(round((self.visible / self.scroll_range) * self.height) / self.visible)
-        y = self.y + self.scroll_position * elem_height
-        rect = pygame.Rect(self.x, y, self.scroll_thickness, height)
-        pygame.draw.rect(self.screen, self.colors.gray_light, rect, 0, 5)
+        if(self.scroll_range > self.visible):
+            height = round((self.visible / self.scroll_range) * self.height)
+            elem_height = round(round((self.visible / self.scroll_range) * self.height) / self.visible)
+            y = self.y + self.scroll_position * elem_height
+            rect = pygame.Rect(self.x, y, self.scroll_thickness, height)
+            pygame.draw.rect(self.screen, self.colors.gray_light, rect, 0, 5)
 
     def onScrollUp(self):
         if self.scroll_position - 1 >= 0:

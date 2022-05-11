@@ -264,7 +264,6 @@ def reloadCharacterEQ(character, hero):
     }
 
 def getItemCategory(item_type):
-    print("xd", item_type)
     armors = ['belt', 'boots', 'breastplate', 'gloves', 'headgear']
     magic = ['luckyitem', 'necklace', 'ring', 'potionperiod', 'potionpermanent']
 
@@ -353,7 +352,7 @@ def getCharacterForEQPreview(hero):
     }
 
 def getFullAvatarPath(className, number):
-    return '../images/characters/' + className + '_' + number + '.jpg'
+    return '../images/characters/' + className + '_' + str(number) + '.jpg'
 
 def getRectAvatarPath(className, number):
-    return '../images/characters/' + className + '_' + number + '_rect.jpg'
+    return '../images/characters/' + className + '_' + str(number) + '_rect.jpg'

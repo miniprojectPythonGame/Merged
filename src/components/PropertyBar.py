@@ -3,7 +3,7 @@ import pygame
 
 class PropertyBar:
     def __init__(self, x, y, width, height, value,
-                 text, font, border_color, fill_color, screen, border=2):
+                 text, font, border_color, fill_color, screen, border=1):
         self.x = x
         self.y = y
         self.width = width
@@ -15,10 +15,11 @@ class PropertyBar:
         self.fill_color = fill_color
         self.screen = screen
         self.border = border
-        self.bar_border = pygame.Rect(x, y, width, height)
-        self.bar_fill = pygame.Rect(x, y, round(width * value), height)
 
     def draw(self):
+        self.bar_border = pygame.Rect(self.x, self.y, self.width, self.height)
+        self.bar_fill = pygame.Rect(self.x, self.y, round(self.width * self.value), self.height)
+
         pygame.draw.rect(self.screen, self.fill_color, self.bar_fill)
         pygame.draw.rect(self.screen, self.border_color, self.bar_border, self.border)
 

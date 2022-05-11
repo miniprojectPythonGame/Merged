@@ -16,6 +16,15 @@ from src.globals.const_values import *
 
 def ChooseCharacter(screen, mainClock, user):
 
+    def initiateCarousel(n):
+        if n == 0:
+            return -1, ''
+
+        if n == 1:
+            return 0, characters[0]['key']
+
+        return 1, characters[1]['key']
+
     def getCharacters(heroes):
         return [{
                     "key": key,
@@ -30,8 +39,9 @@ def ChooseCharacter(screen, mainClock, user):
 
     characters = getCharacters(user.Heroes)
     running = True
-    curr_index = 1
-    curr_key = characters[curr_index]['key']
+    # curr_index = 1
+    # curr_key = characters[curr_index]['key']
+    curr_index, curr_key = initiateCarousel(len(characters))
 
 
     # Components
@@ -120,8 +130,8 @@ def ChooseCharacter(screen, mainClock, user):
                         characters = getCharacters(user.Heroes)
 
                         cs_characters = CharacterSlider(characters + [CREATE_NEW_CHARACTER], screen)
-                        curr_index = 1
-                        curr_key = characters[curr_index]['key']
+
+                        curr_index, curr_key = initiateCarousel(len(characters))
                     else:
                         user.chooseHero(characters[curr_index]['key'])
                         running = CityMap(screen, mainClock, user)

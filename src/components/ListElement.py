@@ -10,7 +10,7 @@ from src.globals.const_values import LIST_TITLE_FONT, LIST_SUBTITLE_FONT
 
 class ListElement():
     def __init__(self, x, y, width, height, colors, screen,
-                 title='', subtitle='', property_name='', property_value='', img_path=None):
+                 title='', subtitle='', property_name='', property_value='', object=None, img_path=None):
         self.x = x
         self.y = y
         self.width = width
@@ -21,6 +21,7 @@ class ListElement():
         self.subtitle = subtitle
         self.property_name = property_name
         self.property_value = property_value
+        self.object = object
         self.img_path = img_path
         self.initialize()
 

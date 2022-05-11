@@ -22,3 +22,5 @@ class ColorSchemes:
         self.easy = pygame.Color('#659e24')
         self.intermediate = pygame.Color('#d6733a')
         self.hard = pygame.Color('#e04643')
+        self.attacker = pygame.Color('#013069')
+        self.defender = pygame.Color('#690101')
