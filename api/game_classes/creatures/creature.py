@@ -3,9 +3,9 @@ from api.game_classes.creatures.fightClasses import choseClass
 
 
 class Creature:
-    def __init__(self, name, className, lvl, strength=None, intelligence=None, dexterity=None,
-                 constitution=None, luck=None, persuasion=None, trade=None, leadership=None, protection=None,
-                 initiative=None, freeDevelopmentPts=None):
+    def __init__(self, name, className, lvl, strength=0, intelligence=0, dexterity=0,
+                 constitution=0, luck=0, persuasion=0, trade=0, leadership=0, protection=0,
+                 initiative=0, freeDevelopmentPts=0):
         self.name = name
         self.fight_class = choseClass(className, strength, intelligence, dexterity,
                                       constitution, luck, persuasion, trade, leadership, protection,

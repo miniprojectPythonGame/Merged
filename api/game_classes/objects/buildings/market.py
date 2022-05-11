@@ -1,8 +1,8 @@
 import string
-from datetime import datetime, timedelta
+from datetime import datetime
 from typing import List
 
-from api.game_classes.objects.items.item import Item, ItemType
+from api.game_classes.objects.items.item import Item
 from api.web.WebService import connect_to_db, disconnect_from_db
 
 
@@ -36,7 +36,7 @@ class AuctionedItem:
 
 class Filters:
     def __init__(self, name: string or None = None, item_type: List[int] or None = None, min_price: int or None = None,
-                 max_price: int or None = None, for_class: List[string] or None = None):
+                 max_price: int or None = None, for_class: List or None = None):
         self.name = name
         self.item_type = item_type
         self.min_price = min_price
@@ -49,10 +49,9 @@ class Market:
         self.hero_id: int = hero_id
         self.buy_now_items = None
         self.auctioned_items = None
-        self.filters = {}  # TODO IMPLEMENT ME
         self.__load_buy_now_items()
         self.__load_auctioned_items()
-        self.filters = Filters()
+        self.filters = Filters()  # TODO
 
     def __load_auctioned_items(self):
         transaction_status = None

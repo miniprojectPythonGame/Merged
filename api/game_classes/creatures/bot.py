@@ -9,6 +9,11 @@ class Bot(Creature):
         Creature.__init__(self, bot_name, bot_class, lvl)
         self.description = description
         self.image_id = image_id
+        self.is_friendly = is_friendly
         if not is_friendly:
-            self.freeDevelopmentPoints = lvl * 4
-            self.fight_class.statistics.setFightStatistics(self.freeDevelopmentPoints)
+            self.fight_class.statistics.setFightStatistics(lvl * 4)
+
+    def __str__(self):
+        return '\n----------------------\nName: ' + self.name + '\nbot_class: ' + \
+               str(self.fight_class) + '\ndescription: ' + self.description  + \
+               '\nstatistics: ' + str(self.fight_class.statistics) + '\n----------------------\n' + str(self.freeDevelopmentPoints)
