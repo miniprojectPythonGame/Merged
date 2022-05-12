@@ -14,7 +14,7 @@ class Eq:
         self.gold = gold
         self.get_storage()
 
-    def __add_to_storage(self, item: Item):
+    def add_to_storage(self, item: Item):
         for i in range(11, len(self.itemSlots)):
             if self.itemSlots[i] is None:
                 self.itemSlots[i] = item
@@ -130,7 +130,7 @@ class Eq:
     def add_item(self, item: Item):
         if item is not False:
             try:
-                self.__add_to_storage(item)
+                self.add_to_storage(item)
                 self.gold -= item.price
                 return True
             except Exception as error:

@@ -11,6 +11,7 @@ from api.game_classes.objects.buildings.shops import ArmourShop, Stable, WeaponS
 
 from api.game_classes.objects.items.eq import Eq
 from api.game_classes.objects.items.item import Item
+from api.game_classes.objects.quests import QuestList, Quest
 
 from api.web.WebService import *
 
@@ -35,6 +36,7 @@ class Hero(Creature):
         self.expToNextLvl = expToNextLvl
 
         self.messages = None  # TODO to implement for notifications after buying selling or fights
+        self.quests = QuestList(self.hero_id, self.lvl)
 
         self.armourShop = ArmourShop(hero_id)
         self.magicShop = MagicShop(hero_id)
@@ -217,3 +219,16 @@ class Hero(Creature):
         if self.eq.gold >= bet > self.market.auctioned_items[id_in_list].current_price:
             return self.market.place_bet(id_in_list, bet)
         return False
+
+    def fight_with_bot_from_quest(self, quest_id_in_list: int):
+        quest: Quest = self.quests.quest_list[quest_id_in_list]
+        battle_logs, creature_id = Battle.hero_vs_bot(self, quest.enemy)
+        if creature_id == -1:  # bot won - he does not have hero_id so -1 is returned
+            return False
+        else:
+            item_id = Item.add_item_to_db(quest.treasure)
+            Item.add_item_to_hero_storage(self.hero_id, item_id)
+            quest.treasure.item_id = item_id
+            self.eq.add_to_storage(quest.treasure)
+            quest.add_prizes(self.hero_id, self.lvl)
+            return True

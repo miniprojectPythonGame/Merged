@@ -12,7 +12,11 @@ class Difficulty(Enum):
 
     @classmethod
     def get_bot_lvl_advantage(cls, difficulty: int):
-        return {1: 3, 2: 7, 3: 15}.get(difficulty)
+        return {1: 1, 2: 3, 3: 7}.get(difficulty)
+
+    @classmethod
+    def get_gold_and_exp_from_difficulty(cls, difficulty: int):
+        return {1: (3, 70), 2: (6, 150), 3: (20, 250)}.get(difficulty)
 
 
 class Quality(Enum):

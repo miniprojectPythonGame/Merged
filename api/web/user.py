@@ -1,5 +1,4 @@
 from api.game_classes.creatures.hero import Hero
-from api.game_classes.objects.items.item import Item, ItemType
 from api.web.WebService import *
 
 
@@ -88,7 +87,6 @@ class User:
             conn, cursor = connect_to_db()
             cursor.execute("SELECT * FROM HEROES WHERE PLAYER_ID = %s", (self.UID,))
             from_heroes = cursor.fetchall()
-            print(from_heroes)
             for i in from_heroes:
                 cursor.execute("SELECT * FROM STATISTICS WHERE STATISTICS_ID = %s", (i[7],))
                 s = cursor.fetchall()[0]
@@ -176,15 +174,19 @@ if __name__ == "__main__":
     # tmp.createHero(2,'test_fight', 'w', 1, 1, 1, 1, 1, 1, 1, 1, 1, 1)
     tmp.chooseHero(20)
     hero: Hero = tmp.currentHero
-    # for i in hero.market.auctioned_items:
+    # for q in hero.quests.quest_list:
+    #     print(q)
+    hero.fight_with_bot_from_quest(0)
+
+        # for i in hero.market.auctioned_items:
     #     print(i)
     #
     # print("#########################")
 
-    for i in tmp.currentHero.market.buy_now_items:
-        print(i)
-
-    print(hero.buy_now_item(0))
+    # for i in tmp.currentHero.market.buy_now_items:
+    #     print(i)
+    #
+    # print(hero.buy_now_item(0))
 
 #     # tmp.currentHero.eq.swap_places(13, 0)
 #     # tmp.currentHero.add_to_statistics('dexterity')

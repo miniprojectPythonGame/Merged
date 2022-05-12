@@ -1,7 +1,7 @@
 from math import floor
 from random import randint
 
-from api.game_classes.creatures.creature import Creature
+from api.game_classes.creatures.bot import Bot
 from api.web.WebService import connect_to_db, disconnect_from_db
 
 
@@ -21,7 +21,7 @@ class Battle(object):
 
         while not finished:
             if hero_1_attacks:
-                battle_log = Battle.__hero_attacks(hero_1, hero_2)
+                battle_log = Battle.__attack(hero_1, hero_2)
                 battle_logs.append(battle_log)
                 if hero_2.fight_class.statistics.hp <= 0:
                     finished = True
@@ -29,7 +29,7 @@ class Battle(object):
                     loser = hero_2
 
             else:
-                battle_log = Battle.__hero_attacks(hero_2, hero_1)
+                battle_log = Battle.__attack(hero_2, hero_1)
                 battle_logs.append(battle_log)
                 if hero_1.fight_class.statistics.hp <= 0:
                     finished = True
@@ -44,16 +44,18 @@ class Battle(object):
         return battle_logs, winner.hero_id
 
     @classmethod
-    def __hero_attacks(cls, creature_1, creature_2: Creature):
-        dmg = randint(1, creature_1.fight_class.baseDmg)
-        equipped_weapon = creature_1.eq.itemSlots[9]
-        if equipped_weapon is not None:
-            dmg *= randint(equipped_weapon.min_dmg, equipped_weapon.max_dmg)
-        dmg *= creature_1.strongAgainstOtherClass(creature_2.fight_class)
+    def __attack(cls, a, b):
+        dmg = randint(1, a.fight_class.baseDmg)
+        if not isinstance(a, Bot):
+            equipped_weapon = a.eq.itemSlots[9]
+            if equipped_weapon is not None:
+                dmg *= randint(equipped_weapon.min_dmg, equipped_weapon.max_dmg)
+        dmg *= a.strongAgainstOtherClass(b.fight_class)
         dmg = floor(
-            dmg / randint(1, creature_2.fight_class.statistics.protection * (1 + creature_2.fight_class.statistics.luck)))
-        creature_2.fight_class.statistics.hp -= max(0, dmg)
-        return creature_1.hero_id, max(0, dmg)
+            dmg / randint(1,
+                          b.fight_class.statistics.protection * (1 + b.fight_class.statistics.luck)))
+        b.fight_class.statistics.hp -= max(0, dmg)
+        return -1 if isinstance(a, Bot) else a.hero_id, max(0, dmg)
 
     @classmethod
     def get_gold_at_stake(cls, hero, other_creature):
@@ -91,6 +93,36 @@ class Battle(object):
             print(error)
 
     @classmethod
-    def hero_vs_bot(cls):
-        pass # TODO
+    def hero_vs_bot(cls, hero, bot):
+        battle_logs = []
+        chances = hero.fight_class.statistics.initiative + bot.fight_class.statistics.initiative
+
+        if randint(1, chances) <= hero.fight_class.statistics.initiative:
+            hero_attacks = True
+        else:
+            hero_attacks = False
+
+        while True:
+            if hero_attacks:
+                battle_log = Battle.__attack(hero, bot)
+                battle_logs.append(battle_log)
+                if bot.fight_class.statistics.hp <= 0:
+                    winner = hero
+                    break
+
+            else:
+                battle_log = Battle.__attack(bot, hero)
+                battle_logs.append(battle_log)
+                if hero.fight_class.statistics.hp <= 0:
+                    winner = bot
+                    break
+
+            hero_attacks = not hero_attacks
+
+        hero.fight_class.statistics.hp = hero.fight_class.statistics.constitution * 100
+        bot.fight_class.statistics.hp = bot.fight_class.statistics.constitution * 100
+
+        print("winner: ", winner)
+        return battle_logs, -1 if winner is bot else hero.hero_id
+
 

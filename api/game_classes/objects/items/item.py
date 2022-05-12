@@ -4,6 +4,7 @@ from typing import List
 
 from api.game_classes.properties.enums import Quality
 from api.game_classes.properties.statistics import Statistics
+from api.web.WebService import connect_to_db, disconnect_from_db
 
 
 class Item:
@@ -19,12 +20,40 @@ class Item:
         self.available = available
 
     @classmethod
-    def add_item_to_db(cls, item):
-        pass  # TODO
+    def add_item_to_db(cls, item, min_lvl: int = 1):
+        result = None
+        try:
+            conn, cursor = connect_to_db()
+            cursor.execute("call add_item(%s,%s,%s,%s,%s,1::SMALLINT,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)", (
+                item.quality.value, item.name, item.price, item.description, item.for_class, item.item_type.value,
+                min_lvl,
+                item.statistics.strength, item.statistics.intelligence, item.statistics.dexterity,
+                item.statistics.constitution,
+                item.statistics.luck, item.statistics.persuasion, item.statistics.trade, item.statistics.leadership,
+                item.statistics.protection, item.statistics.initiative))
+            conn.commit()
+            cursor.execute("select item_id from items order by item_id desc limit 1")
+            result = cursor.fetchone()[0]
+            disconnect_from_db(conn, cursor)
+        except Exception as error:
+            print(error)
+        finally:
+            return result
 
     @classmethod
     def add_item_to_hero_storage(cls, hero_id, item_id):
-        pass  # TODO
+        transaction_status = None
+        try:
+            conn, cursor = connect_to_db()
+            cursor.execute("call add_to_storage(%s,%s)", (hero_id, item_id))
+            conn.commit()
+            disconnect_from_db(conn, cursor)
+            transaction_status = True
+        except Exception as error:
+            print(error)
+            transaction_status = False
+        finally:
+            return transaction_status
 
     @classmethod
     def build_item(cls, item_id: int, item_info: List, available: int = 1):

@@ -7,7 +7,7 @@ class Archer:
         self.statistics = Statistics(strength, intelligence, dexterity, constitution, luck, persuasion, trade,
                                      leadership, protection, initiative)
         # self.statistics = Statistics(1, 2, 7, 6, 4, 0, 0, 0)
-        self.baseDmg = self.statistics.dexterity * 3
+        self.baseDmg = self.statistics.dexterity * 3 + 5
 
     def __str__(self):
         return 'Archer'
@@ -20,7 +20,7 @@ class Mage:
                                      leadership, protection, initiative)
 
         # self.statistics = Statistics(6, 1, 2, 8, 3, 0, 0, 0)
-        self.baseDmg = self.statistics.strength * 3
+        self.baseDmg = self.statistics.strength * 3 + 5
 
     def __str__(self):
         return 'Mage'
@@ -32,7 +32,7 @@ class Warrior:
         # self.statistics = Statistics(1, 8, 1, 4, 6, 0, 0, 0)
         self.statistics = Statistics(strength, intelligence, dexterity, constitution, luck, persuasion, trade,
                                      leadership, protection, initiative)
-        self.baseDmg = self.statistics.dexterity * 3
+        self.baseDmg = self.statistics.dexterity * 3 + 5
 
     def __str__(self):
         return 'Warrior'
