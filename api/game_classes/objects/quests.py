@@ -13,13 +13,14 @@ from api.web.WebService import connect_to_db, disconnect_from_db
 
 class Quest:
     def __init__(self, quest_id: int, difficulty: Difficulty, treasure: Item or None, description: string, name: string,
-                 enemy: Bot):
+                 enemy: Bot, min_lvl: int):
         self.quest_id = quest_id
         self.treasure = treasure
         self.difficulty = difficulty
         self.description = description
         self.name = name
         self.enemy = enemy
+        self.min_lvl = min_lvl
 
     def add_prizes(self, hero_id, hero_lvl):
         d_gold_mod, d_exp_mod = Difficulty.get_gold_and_exp_from_difficulty(self.difficulty.value)
@@ -42,7 +43,8 @@ class Quest:
 
     def __str__(self):
         return '----------------------\nName: ' + self.name + '\ndescription: ' + self.description + '\ndifficulty: ' + str(
-            self.difficulty) + '\nenemy: ' + str(self.enemy) + '\n----------------------\n' + 'Treasure:\n' + str(
+            self.difficulty) + '\nmin_lvl: ' + str(self.min_lvl) + '\nenemy: ' + str(
+            self.enemy) + '\n----------------------\n' + 'Treasure:\n' + str(
             self.treasure)
 
 
@@ -115,7 +117,7 @@ class QuestList:
                 treasure_item = item_dict.get(item_data[3])
 
             new_quest: Quest = Quest(line[3], Difficulty.get_difficulty(line[1]), treasure_item, line[5], line[4],
-                                     new_bot)
+                                     new_bot, line[2])
             self.quest_list.append(new_quest)
         disconnect_from_db(conn, cursor)
 

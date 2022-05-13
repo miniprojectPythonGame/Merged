@@ -174,9 +174,9 @@ if __name__ == "__main__":
     # tmp.createHero(2,'test_fight', 'w', 1, 1, 1, 1, 1, 1, 1, 1, 1, 1)
     tmp.chooseHero(20)
     hero: Hero = tmp.currentHero
-    # for q in hero.quests.quest_list:
-    #     print(q)
-    hero.fight_with_bot_from_quest(0)
+    for q in hero.quests.quest_list:
+        print(q)
+    # hero.fight_with_bot_from_quest(0)
 
         # for i in hero.market.auctioned_items:
     #     print(i)
