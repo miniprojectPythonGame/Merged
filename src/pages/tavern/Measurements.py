@@ -19,11 +19,14 @@ class Measurements:
 
     # FONTS: colors
     text_color = pygame.Color('gray26')
+    stat_color = pygame.Color('#35848f')
     white = pygame.Color('white')
     label_padding = 35
     list_element_width = 650
     list_element_height = 60
     list_element_padding = 15
+    hero_title_height = 20
+    fight_button_height = 50
     default_color = ColorSchemes()
 
     bt_return = BT_RETURN
@@ -45,5 +48,10 @@ class Measurements:
         "width": 650,
         "height": 60,
         "colors": default_color,
-        "property_name": "Min Level: ",
+        "property_name": "Level: ",
+    }
+
+    sl_quests = {
+        "x": margin,
+        "y": margin,
     }
