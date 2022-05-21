@@ -1,8 +1,7 @@
 import string
-from enum import Enum
 from typing import List
 
-from api.game_classes.properties.enums import Quality
+from api.game_classes.properties.enums import Quality, ItemType
 from api.game_classes.properties.statistics import Statistics
 from api.web.WebService import connect_to_db, disconnect_from_db
 
@@ -22,23 +21,23 @@ class Item:
     @classmethod
     def add_item_to_db(cls, item, min_lvl: int = 1):
         result = None
-        try:
-            conn, cursor = connect_to_db()
-            cursor.execute("call add_item(%s,%s,%s,%s,%s,1::SMALLINT,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)", (
-                item.quality.value, item.name, item.price, item.description, item.for_class, item.item_type.value,
-                min_lvl,
-                item.statistics.strength, item.statistics.intelligence, item.statistics.dexterity,
-                item.statistics.constitution,
-                item.statistics.luck, item.statistics.persuasion, item.statistics.trade, item.statistics.leadership,
-                item.statistics.protection, item.statistics.initiative))
-            conn.commit()
-            cursor.execute("select item_id from items order by item_id desc limit 1")
-            result = cursor.fetchone()[0]
-            disconnect_from_db(conn, cursor)
-        except Exception as error:
-            print(error)
-        finally:
-            return result
+        conn, cursor = connect_to_db()
+        with conn:
+            try:
+                cursor.execute("call add_item(%s,%s,%s,%s,%s,1::SMALLINT,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)", (
+                    item.quality.value, item.name, item.price, item.description, item.for_class, item.item_type.value,
+                    min_lvl,
+                    item.statistics.strength, item.statistics.intelligence, item.statistics.dexterity,
+                    item.statistics.constitution,
+                    item.statistics.luck, item.statistics.persuasion, item.statistics.trade, item.statistics.leadership,
+                    item.statistics.protection, item.statistics.initiative))
+                conn.commit()
+                cursor.execute("select item_id from items order by item_id desc limit 1")
+                result = cursor.fetchone()[0]
+            except Exception as error:
+                print(error)
+            finally:
+                return result
 
     @classmethod
     def add_item_to_hero_storage(cls, hero_id, item_id):
@@ -70,76 +69,29 @@ class Item:
                               )
 
         item_type = item_info[4]
+        args = (newStats,
+                item_info[0],
+                item_info[1],
+                item_info[2], item_info[6], item_id, available,
+                Quality.get_quality(item_info[17]))
 
         item_dict = {
-            ItemType.Belt.value: Belt(newStats,
-                                      item_info[0],
-                                      item_info[1],
-                                      item_info[2], item_info[6], item_id, available,
-                                      Quality.get_quality(item_info[17])),
-            ItemType.Boots.value: Boots(newStats,
-                                        item_info[0],
-                                        item_info[1],
-                                        item_info[2], item_info[6], item_id, available,
-                                        Quality.get_quality(item_info[17])),
-            ItemType.Breastplate.value: Breastplate(newStats,
-                                                    item_info[0],
-                                                    item_info[1],
-                                                    item_info[2], item_info[6], item_id, available,
-                                                    Quality.get_quality(item_info[17])),
-            ItemType.Gloves.value: Gloves(newStats,
-                                          item_info[0],
-                                          item_info[1],
-                                          item_info[2], item_info[6], item_id, available,
-                                          Quality.get_quality(item_info[17])),
-            ItemType.Headgear.value: Headgear(newStats,
-                                              item_info[0],
-                                              item_info[1],
-                                              item_info[2], item_info[6], item_id, available,
-                                              Quality.get_quality(item_info[17])),
-            ItemType.LuckyItem.value: LuckyItem(newStats,
-                                                item_info[0],
-                                                item_info[1],
-                                                item_info[2], item_info[6], item_id, available,
-                                                Quality.get_quality(item_info[17])),
-            ItemType.Necklace.value: Necklace(newStats,
-                                              item_info[0],
-                                              item_info[1],
-                                              item_info[2], item_info[6], item_id, available,
-                                              Quality.get_quality(item_info[17])),
-            ItemType.Ring.value: Ring(newStats,
-                                      item_info[0],
-                                      item_info[1],
-                                      item_info[2], item_info[6], item_id, available,
-                                      Quality.get_quality(item_info[17])),
-            ItemType.Steed.value: Steed(newStats,
-                                        item_info[0],
-                                        item_info[1],
-                                        item_info[2], item_info[6], item_id, available,
-                                        Quality.get_quality(item_info[17])),
-            ItemType.PrimaryWeapon.value: PrimaryWeapon(newStats,
-                                                        item_info[0],
-                                                        item_info[1],
-                                                        item_info[2], item_info[6], item_id, available,
-                                                        Quality.get_quality(item_info[17])),
-            ItemType.SecondaryWeapon.value: SecondaryWeapon(newStats,
-                                                            item_info[0],
-                                                            item_info[1],
-                                                            item_info[2], item_info[6], item_id, available,
-                                                            Quality.get_quality(item_info[17])),
-            ItemType.PotionPeriod.value: PotionPeriod(newStats,
-                                                      item_info[0],
-                                                      item_info[1],
-                                                      item_info[2], item_info[6], item_id, available,
-                                                      Quality.get_quality(item_info[17])),
-            ItemType.PotionPermanent.value: PotionPermanent(newStats,
-                                                            item_info[0],
-                                                            item_info[1],
-                                                            item_info[2], item_info[6], item_id, available,
-                                                            Quality.get_quality(item_info[17])),
+            ItemType.Belt: Belt,
+            ItemType.Boots: Boots,
+            ItemType.Breastplate: Breastplate,
+            ItemType.Gloves: Gloves,
+            ItemType.Headgear: Headgear,
+            ItemType.LuckyItem: LuckyItem,
+            ItemType.Necklace: Necklace,
+            ItemType.Ring: Ring,
+            ItemType.Steed: Steed,
+            ItemType.PrimaryWeapon: PrimaryWeapon,
+            ItemType.SecondaryWeapon: SecondaryWeapon,
+            ItemType.PotionPeriod: PotionPeriod,
+            ItemType.PotionPermanent: PotionPermanent,
         }
 
-        return item_dict.get((item_type), "ItemBuilder.build_item error!")
+        return item_dict[ItemType(item_type)](*args)
 
     @classmethod
     def all_info_select(cls, item_id: int):
@@ -150,40 +102,15 @@ class Item:
         return select
 
     def __str__(self):
-        return '----------------------\nName: ' + self.name + '\nprice: ' + \
-               str(self.price) + '\ndescription: ' + self.description + \
-               '\nitem_id: ' + str(self.item_id) + '\n----------------------\n' + \
-               'quality: ' + str(self.quality.name) + '\n----------------------\n' + str(self.statistics)
-
-
-class ItemType(Enum):
-    Belt = 0
-    Boots = 1
-    Breastplate = 2
-    Gloves = 3
-    Headgear = 4
-    LuckyItem = 5
-    Necklace = 6
-    Ring = 7
-    Steed = 8
-    PrimaryWeapon = 9
-    SecondaryWeapon = 10
-    PotionPeriod = 11
-    PotionPermanent = 12
-
-    item_type_dict = {0: Belt,
-                      1: Boots,
-                      2: Breastplate,
-                      3: Gloves,
-                      4: Headgear,
-                      5: LuckyItem,
-                      6: Necklace,
-                      7: Ring,
-                      8: Steed,
-                      9: PrimaryWeapon,
-                      10: SecondaryWeapon,
-                      11: PotionPeriod,
-                      12: PotionPermanent}
+        return f'----------------------\n' \
+               f'name:{self.name}\n' \
+               f'price:{self.price}\n' \
+               f'description:{self.description}\n' \
+               f'item_id:{self.item_id}\n' \
+               f'\n----------------------\n' \
+               f'quality:{self.quality.name}\n' \
+               f'\n----------------------\n' \
+               f'{self.statistics}'
 
 
 class Belt(Item):

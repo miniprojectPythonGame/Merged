@@ -1,17 +1,6 @@
-from enum import Enum
 from random import randint
 
-
-class StatisticsEnum(Enum):
-    STRENGTH = 0
-    INTELLIGENCE = 1
-    DEXTERITY = 2
-    CONSTITUTION = 3
-    PROTECTION = 4
-    PERSUASION = 5
-    TRADE = 6
-    LEADERSHIP = 7
-    INITIATIVE = 8
+from api.game_classes.properties.enums import StatisticsEnum
 
 
 class Statistics:
@@ -92,12 +81,17 @@ class Statistics:
         self.hp = self.constitution * 100
 
     def __str__(self):
-        return 'strength: ' + str(self.strength) + '\n' + 'intelligence: ' + str(self.intelligence) + \
-               '\n' + 'dexterity: ' + str(self.dexterity) + '\n' + 'constitution: ' + str(self.constitution) + \
-               '\n' + 'luck: ' + str(self.luck) + '\n' + 'persuasion: ' + str(self.persuasion) + \
-               '\n' + 'trade: ' + str(self.trade) + '\n' + 'leadership: ' + str(self.leadership) + \
-               '\n' + 'protection: ' + str(self.protection) + '\n' + 'initiative: ' + str(self.initiative) + \
-               '\n' + 'hp: ' + str(self.hp)
+        return f'strength: {self.strength}\n' \
+               f'intelligence:{self.intelligence}\n' \
+               f'dexterity:{self.dexterity}\n' \
+               f'constitution:{self.constitution}\n' \
+               f'luck:{self.luck}\n' \
+               f'persuasion:{self.persuasion}\n' \
+               f'trade:{self.trade}\n' \
+               f'leadership:{self.leadership}\n' \
+               f'protection:{self.protection}\n' \
+               f'initiative:{self.initiative}\n' \
+               f'hp:{self.hp}'
 
     def __add__(self, other):
         strength = self.strength + other.strength
