@@ -41,31 +41,3 @@ class Quality(Enum):
     @classmethod
     def get_different_stats_and_points_for_quality(cls, quality):
         return {Quality.COMMON: (2, 5), Quality.EPIC: (3, 15), Quality.LEGENDARY: (5, 25)}.get(quality)
-
-
-class StatisticsEnum(Enum):
-    STRENGTH = 0
-    INTELLIGENCE = 1
-    DEXTERITY = 2
-    CONSTITUTION = 3
-    PROTECTION = 4
-    PERSUASION = 5
-    TRADE = 6
-    LEADERSHIP = 7
-    INITIATIVE = 8
-
-
-class ItemType(Enum):
-    Belt = 0
-    Boots = 1
-    Breastplate = 2
-    Gloves = 3
-    Headgear = 4
-    LuckyItem = 5
-    Necklace = 6
-    Ring = 7
-    Steed = 8
-    PrimaryWeapon = 9
-    SecondaryWeapon = 10
-    PotionPeriod = 11
-    PotionPermanent = 12
