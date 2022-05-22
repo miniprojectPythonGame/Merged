@@ -213,8 +213,6 @@ def resetActiveItem():
 def getQuality(item_quality):
     return str(item_quality)[8:].lower()
 
-def getDifficulty(quest_difficulty):
-    return str(quest_difficulty)[11:].lower()
 
 def reloadBackpackButtons(buttons_list, current_active, meas):
     newButtons = []

@@ -16,7 +16,6 @@ from src.globals.const_values import CLASS_ICONS, AVATARS, STATS_NAMES
 
 
 def Arena(screen, mainClock, user):
-
     showHand = False
     running = True
     hero = user.currentHero
@@ -174,6 +173,7 @@ def Arena(screen, mainClock, user):
 
                     if activeHero is not None and bt_fight.rect.collidepoint(event.pos):
                         Fight(screen, mainClock, hero, activeHero)
+
                         break
 
                     for heroLine in sl_heroes.list:

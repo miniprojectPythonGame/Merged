@@ -12,7 +12,7 @@ from src.pages.settings.Settings import Settings
 from src.pages.armor_shop.ArmorShop import ArmorShop
 from src.pages.magic_shop.MagicShop import MagicShop
 from src.pages.weapon_shop.WeaponShop import WeaponShop
-from src.pages.tavern.Tavern import Tavern
+from src.pages.quests.Tavern import Tavern
 from src.pages.arena.Arena import Arena
 
 

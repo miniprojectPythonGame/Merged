@@ -130,8 +130,8 @@ def Fight(screen, mainClock, heroAttacker, heroDefender):
                                      meas.pb_health_defender['fill_color'], screen)
 
     bt_speedup = Button(meas.bt_speedup['color'], meas.bt_speedup['x'], meas.bt_speedup['y'],
-                        meas.bt_speedup['width'], meas.bt_speedup['height'], screen,
-                        path=meas.bt_speedup['path'])
+                       meas.bt_speedup['width'], meas.bt_speedup['height'], screen,
+                       path=meas.bt_speedup['path'])
 
     while running:
         screen.fill((255, 255, 255))
