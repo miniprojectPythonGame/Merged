@@ -132,22 +132,21 @@ class User:
     def createHero(self, avatar_id, name, className, strength, intelligence, dexterity, constitution,
                    luck, persuasion, trade, leadership, protection, initiative):
         # className in ('a','w','m')
-        try:
-            conn, cursor = connect_to_db()
-            cursor.execute("SELECT add_hero(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",
-                           (avatar_id, name, self.UID, className, strength, intelligence, dexterity, constitution,
-                            luck, persuasion, trade, leadership, protection, initiative))
-            conn.commit()
-            disconnect_from_db(conn, cursor)
-            newHero = Hero(avatar_id, name, className, 0, strength, intelligence, dexterity, constitution,
-                           luck, persuasion, trade, leadership, protection, initiative)
-            self.Heroes[int(cursor.fetchall()[0])] = newHero
+        conn, cursor = connect_to_db()
+        with conn:
+            try:
+                cursor.execute("SELECT add_hero(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",
+                               (avatar_id, name, self.UID, className, strength, intelligence, dexterity, constitution,
+                                luck, persuasion, trade, leadership, protection, initiative))
+                newHero = Hero(avatar_id, name, className, 0, strength, intelligence, dexterity, constitution,
+                               luck, persuasion, trade, leadership, protection, initiative)
+                self.Heroes[int(cursor.fetchall()[0])] = newHero
 
-        except Exception as error:
-            print(error)
+            except Exception as error:
+                print(error)
 
-    @classmethod
-    def getAllExistingHeroes(cls):
+    @staticmethod
+    def getAllExistingHeroes():
         try:
             all_existing_heroes = {}
             conn, cursor = connect_to_db()
