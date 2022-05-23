@@ -9,6 +9,16 @@ from api.web.WebService import connect_to_db
 class Item:
     def __init__(self, name: string, price: int, description: string, statistics: Statistics, for_class: string,
                  item_id: int or None, available: int, quality: Quality):
+        """
+        :param name: Item name
+        :param price: Selling price
+        :param description: Info about the itme
+        :param statistics: Item statistics used during fight (and possibly other things in the future)
+        :param for_class: ('a','m','w',None) Character describing which class could wield it, if its equal None it means that any class can equip and use it
+        :param item_id: Identifier of the item in the db
+        :param available: Either 0 or 1, 0 means that for some reason item is locked in the inventory and can not be sold(ex. Auctions)
+        :param quality: Describes the item uniqueness
+        """
         self.quality = quality
         self.price = price
         self.name = name

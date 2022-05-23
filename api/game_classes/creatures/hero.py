@@ -7,11 +7,12 @@ from api.game_classes.events.battle import Battle
 from api.game_classes.objects.buildings.cityGuilds import CityGuilds
 from api.game_classes.objects.buildings.guild import Guild
 from api.game_classes.objects.buildings.market import Market
-from api.game_classes.objects.buildings.shops import ArmourShop, Stable, WeaponShop, MagicShop, MercenaryShop, ShopType
+from api.game_classes.objects.buildings.shops import ArmourShop, Stable, WeaponShop, MagicShop, MercenaryShop
 
 from api.game_classes.objects.items.eq import Eq
 from api.game_classes.objects.items.item import Item
 from api.game_classes.objects.quests import QuestList, Quest
+from api.game_classes.properties.enums import ShopType
 
 from api.web.WebService import *
 

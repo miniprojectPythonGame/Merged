@@ -13,8 +13,10 @@ class BuyNowItem:
         self.price = price
 
     def __str__(self):
-        return '----------------------\nSeller_id: ' + str(self.seller_id) + '\nprice: ' + \
-               str(self.price) + "\n" + str(self.item)
+        return f'----------------------\n' \
+               f'seller_id:{self.seller_id}\n' \
+               f'price:{self.price}\n' \
+               f'{self.item}'
 
 
 class AuctionedItem:
@@ -28,10 +30,13 @@ class AuctionedItem:
         self.leader = leader
 
     def __str__(self):
-        return '----------------------\nSeller_id: ' + str(self.seller_id) + '\nstart_price: ' + \
-               str(self.start_price) + '\ncurrent_price: ' + str(self.current_price) + \
-               '\nauction_end_date: ' + str(self.auction_end_date) + '\nleader_id: ' + str(self.leader) + "\n" + str(
-            self.item)
+        return f'----------------------\n' \
+               f'seller_id:{self.seller_id}\n' \
+               f'start_price:{self.start_price}\n' \
+               f'current_price:{self.current_price}\n' \
+               f'auction_end_date:{self.auction_end_date:}\n' \
+               f'leader_id:{self.leader}' \
+               f'{self.item}'
 
 
 class Filters:
@@ -54,23 +59,23 @@ class Market:
         self.filters = Filters()  # TODO
 
     def __load_auctioned_items(self):
-        transaction_status = None
-        self.auctioned_items = []
+        transaction_status: bool or None = None
+        self.auctioned_items: List = []
         try:
             conn, cursor = connect_to_db()
-            cursor.execute(
-                "SELECT item_id,seller_id,start_price,current_price,auction_end_date,current_leader_id from auctioned_items")
-            result: List = cursor.fetchall()
+            with conn:
+                cursor.execute(
+                    "SELECT item_id,seller_id,start_price,current_price,auction_end_date,current_leader_id from auctioned_items")
+                result: List = cursor.fetchall()
 
-            for i in result:
-                item_id = i[0]
-                cursor.execute(Item.all_info_select(item_id))
-                built_item: Item = Item.build_item(item_id, cursor.fetchall()[0])
-                ai: AuctionedItem = AuctionedItem(built_item, i[1], i[2], i[3], i[4], i[5])
-                self.auctioned_items.append(ai)
+                for i in result:
+                    item_id = i[0]
+                    cursor.execute(Item.all_info_select(item_id))
+                    built_item: Item = Item.build_item(item_id, cursor.fetchall()[0])
+                    ai: AuctionedItem = AuctionedItem(built_item, i[1], i[2], i[3], i[4], i[5])
+                    self.auctioned_items.append(ai)
 
-            disconnect_from_db(conn, cursor)
-            transaction_status = True
+                transaction_status = True
         except Exception as error:
             transaction_status = False
             print(error)
@@ -78,23 +83,23 @@ class Market:
             return transaction_status
 
     def __load_buy_now_items(self):
-        transaction_status = None
-        self.buy_now_items = []
+        transaction_status: bool or None = None
+        self.buy_now_items: List = []
         try:
             conn, cursor = connect_to_db()
-            cursor.execute(
-                "SELECT item_id,seller_id,selling_price from buy_now_items")
-            result: List = cursor.fetchall()
+            with conn:
+                cursor.execute(
+                    "SELECT item_id,seller_id,selling_price from buy_now_items")
+                result: List = cursor.fetchall()
 
-            for i in result:
-                item_id = i[0]
-                cursor.execute(Item.all_info_select(item_id))
-                built_item: Item = Item.build_item(item_id, cursor.fetchall()[0])
-                bni: BuyNowItem = BuyNowItem(built_item, i[1], i[2])
-                self.buy_now_items.append(bni)
+                for i in result:
+                    item_id = i[0]
+                    cursor.execute(Item.all_info_select(item_id))
+                    built_item: Item = Item.build_item(item_id, cursor.fetchone())
+                    bni: BuyNowItem = BuyNowItem(built_item, i[1], i[2])
+                    self.buy_now_items.append(bni)
 
-            disconnect_from_db(conn, cursor)
-            transaction_status = True
+                transaction_status = True
         except Exception as error:
             transaction_status = False
             print(error)
@@ -103,15 +108,14 @@ class Market:
 
     def add_to_buy_now_items(self, item: Item, price: int):
         new = BuyNowItem(item, self.hero_id, price)
-        transaction_status = None
+        transaction_status: bool or None = None
         try:
             conn, cursor = connect_to_db()
-            cursor.execute("call add_new_item_on_sale(%s,%s,%s,%s,%s);",
-                           (item.item_id, self.hero_id, price, 'buy_now', None))
-            conn.commit()
-            disconnect_from_db(conn, cursor)
-            transaction_status = True
-            self.buy_now_items.append(new)
+            with conn:
+                cursor.execute("call add_new_item_on_sale(%s,%s,%s,%s,%s);",
+                               (item.item_id, self.hero_id, price, 'buy_now', None))
+                transaction_status = True
+                self.buy_now_items.append(new)
         except Exception as error:
             transaction_status = False
             print(error)
@@ -120,16 +124,15 @@ class Market:
 
     def add_to_auctioned_items(self, item: Item, price: int,
                                auction_end_date: datetime):
-        new = AuctionedItem(item, self.hero_id, price, price, auction_end_date, None)
-        transaction_status = None
+        new: AuctionedItem = AuctionedItem(item, self.hero_id, price, price, auction_end_date, None)
+        transaction_status: bool or None = None
         try:
             conn, cursor = connect_to_db()
-            cursor.execute("call add_new_item_on_sale(%s,%s,%s,%s,%s);",
-                           (item.item_id, self.hero_id, price, 'auction', auction_end_date))
-            conn.commit()
-            disconnect_from_db(conn, cursor)
-            transaction_status = True
-            self.auctioned_items.append(new)
+            with conn:
+                cursor.execute("call add_new_item_on_sale(%s,%s,%s,%s,%s);",
+                               (item.item_id, self.hero_id, price, 'auction', auction_end_date))
+                transaction_status = True
+                self.auctioned_items.append(new)
         except Exception as error:
             transaction_status = False
             print(error)
@@ -137,14 +140,13 @@ class Market:
             return transaction_status
 
     def buy_now_item(self, id_in_list: int):
-        transaction_status = None
+        transaction_status: bool or None = None
         bni: BuyNowItem = self.buy_now_items[id_in_list]
         try:
             conn, cursor = connect_to_db()
-            cursor.execute("call buy_now(%s,%s,%s);", (self.hero_id, bni.item.item_id, bni.seller_id))
-            conn.commit()
-            disconnect_from_db(conn, cursor)
-            transaction_status = True
+            with conn:
+                cursor.execute("call buy_now(%s,%s,%s);", (self.hero_id, bni.item.item_id, bni.seller_id))
+                transaction_status = True
         except Exception as error:
             transaction_status = False
             print(error)
@@ -152,14 +154,13 @@ class Market:
             return bni if transaction_status else transaction_status
 
     def place_bet(self, id_in_list: int, bet: int):
-        transaction_status = None
+        transaction_status: bool or None = None
         ai: AuctionedItem = self.auctioned_items[id_in_list]
         try:
             conn, cursor = connect_to_db()
-            cursor.execute("select place_bet(%s,%s,%s,%s)", (ai.item.item_id, ai.seller_id, bet, self.hero_id))
-            transaction_status = True if cursor.fetchone()[0] == "SUCCESS" else False  # todo may not work
-            conn.commit()
-            disconnect_from_db(conn, cursor)
+            with conn:
+                cursor.execute("select place_bet(%s,%s,%s,%s)", (ai.item.item_id, ai.seller_id, bet, self.hero_id))
+                transaction_status = True if cursor.fetchone()[0] == "SUCCESS" else False  # todo may not work
         except Exception as error:
             transaction_status = False
             print(error)

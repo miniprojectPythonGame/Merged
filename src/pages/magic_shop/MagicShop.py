@@ -11,7 +11,7 @@ from src.components.SwitchCards import SwitchCards
 
 from .Measurements import Measurements as meas
 
-from api.game_classes.objects.buildings.shops import ShopType
+from api.game_classes.properties.enums import ShopType
 
 from src.globals.const_values import INVENTORY_SHIFT
 

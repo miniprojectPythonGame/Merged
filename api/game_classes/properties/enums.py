@@ -83,3 +83,10 @@ class ItemType(Enum):
                       10: SecondaryWeapon,
                       11: PotionPeriod,
                       12: PotionPermanent}
+
+class ShopType(Enum):
+    ArmourShop = 0
+    MagicShop = 1
+    MercenaryShop = 2
+    Stable = 3
+    WeaponShop = 4

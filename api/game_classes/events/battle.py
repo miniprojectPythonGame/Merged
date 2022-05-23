@@ -1,5 +1,6 @@
 from math import floor
 from random import randint
+from typing import List, Tuple
 
 from api.game_classes.creatures.bot import Bot
 from api.web.WebService import connect_to_db, disconnect_from_db
@@ -8,9 +9,9 @@ from api.web.WebService import connect_to_db, disconnect_from_db
 class Battle(object):
     @classmethod
     def hero_vs_hero(cls, hero_1, hero_2):
-        battle_logs = []
+        battle_logs: List[Tuple[int, int]] or List = []
         chances = hero_1.fight_class.statistics.initiative + hero_2.fight_class.statistics.initiative
-        finished = False
+        finished: bool = False
         winner = None
         loser = None
 
@@ -40,7 +41,6 @@ class Battle(object):
         Battle.__finalize_fight_between_heroes(winner, loser)
         winner.fight_class.statistics.hp = winner.fight_class.statistics.constitution * 100
         loser.fight_class.statistics.hp = loser.fight_class.statistics.constitution * 100
-        print("winner: ", winner.hero_id)
         return battle_logs, winner.hero_id
 
     @classmethod
@@ -83,18 +83,17 @@ class Battle(object):
 
         try:
             conn, cursor = connect_to_db()
-            cursor.execute("UPDATE heroes SET gold = gold - %s WHERE hero_id = %s", (gold_at_stake, loser.hero_id))
-            cursor.execute("UPDATE heroes SET gold = gold + %s WHERE hero_id = %s", (gold_at_stake, winner.hero_id))
-            conn.commit()
-            winner.eq.gold += gold_at_stake
-            loser.eq.gold -= gold_at_stake
-            disconnect_from_db(conn, cursor)
+            with conn:
+                cursor.execute("UPDATE heroes SET gold = gold - %s WHERE hero_id = %s", (gold_at_stake, loser.hero_id))
+                cursor.execute("UPDATE heroes SET gold = gold + %s WHERE hero_id = %s", (gold_at_stake, winner.hero_id))
+                winner.eq.gold += gold_at_stake
+                loser.eq.gold -= gold_at_stake
         except Exception as error:
             print(error)
 
     @classmethod
     def hero_vs_bot(cls, hero, bot):
-        battle_logs = []
+        battle_logs: List[Tuple[int, int]] or List = []
         chances = hero.fight_class.statistics.initiative + bot.fight_class.statistics.initiative
 
         if randint(1, chances) <= hero.fight_class.statistics.initiative:
@@ -122,7 +121,4 @@ class Battle(object):
         hero.fight_class.statistics.hp = hero.fight_class.statistics.constitution * 100
         bot.fight_class.statistics.hp = bot.fight_class.statistics.constitution * 100
 
-        print("winner: ", winner)
         return battle_logs, -1 if winner is bot else hero.hero_id
-
-

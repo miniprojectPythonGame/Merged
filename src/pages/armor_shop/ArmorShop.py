@@ -11,7 +11,7 @@ from src.components.SwitchCards import SwitchCards
 
 from .Measurements import Measurements as meas
 
-from api.game_classes.objects.buildings.shops import ShopType
+from api.game_classes.properties.enums import ShopType
 
 from src.globals.const_values import INVENTORY_SHIFT
 
@@ -21,6 +21,7 @@ from src.globals.const_values import \
     reloadBackpackButtons, \
     getQuality, \
     getItemCategory
+
 
 def ArmorShop(screen, mainClock, user):
     def reloadButtons(buttons_list, current_active):
@@ -75,9 +76,11 @@ def ArmorShop(screen, mainClock, user):
         reloadCharacterBackpacks(character, hero)
 
         sc_eq_stat_bp.components[0].components[-1] = ItemGrid(meas.ig_backpack['x'], meas.ig_backpack['y'],
-                           meas.ig_backpack['item_size'], meas.ig_backpack['item_padding'],
-                           meas.ig_backpack['cols'], meas.ig_backpack['amount'], screen,
-                           character['backpacks'][backpack_active])
+                                                              meas.ig_backpack['item_size'],
+                                                              meas.ig_backpack['item_padding'],
+                                                              meas.ig_backpack['cols'], meas.ig_backpack['amount'],
+                                                              screen,
+                                                              character['backpacks'][backpack_active])
 
         character['gold'] = hero.eq.gold
         label_gold = Label("Gold: " + str(character['gold']), meas.label_gold['font'],
@@ -89,9 +92,11 @@ def ArmorShop(screen, mainClock, user):
         hero.eq.sell_item_to_shop(item_id)
         reloadCharacterBackpacks(character, hero)
         sc_eq_stat_bp.components[0].components[-1] = ItemGrid(meas.ig_backpack['x'], meas.ig_backpack['y'],
-                           meas.ig_backpack['item_size'], meas.ig_backpack['item_padding'],
-                           meas.ig_backpack['cols'], meas.ig_backpack['amount'], screen,
-                           character['backpacks'][backpack_active])
+                                                              meas.ig_backpack['item_size'],
+                                                              meas.ig_backpack['item_padding'],
+                                                              meas.ig_backpack['cols'], meas.ig_backpack['amount'],
+                                                              screen,
+                                                              character['backpacks'][backpack_active])
         character['gold'] = hero.eq.gold
         label_gold = Label("Gold: " + str(character['gold']), meas.label_gold['font'],
                            meas.label_gold['color'], screen, meas.label_gold['x'],
@@ -210,7 +215,8 @@ def ArmorShop(screen, mainClock, user):
 
     sc_eq_stat_bp = SwitchCards(meas.sc_eq_stat_bp['x'], meas.sc_eq_stat_bp['y'],
                                 meas.sc_eq_stat_bp['width'], meas.sc_eq_stat_bp['height'], meas.sc_eq_stat_bp['font'],
-                                meas.sc_eq_stat_bp['color'], screen, [c_backpack, ce_characterEqPreview, c_stats], ['Backpack', 'Equipment', 'Statistics'],
+                                meas.sc_eq_stat_bp['color'], screen, [c_backpack, ce_characterEqPreview, c_stats],
+                                ['Backpack', 'Equipment', 'Statistics'],
                                 switch_height=meas.sc_eq_stat_bp['switch_height'])
 
     displayedContent = [
@@ -320,37 +326,5 @@ def ArmorShop(screen, mainClock, user):
                                     displayedContent[3] = handleSellItem(j + INVENTORY_SHIFT)
                                     break
 
-
-
         pygame.display.update()
         mainClock.tick(60)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
