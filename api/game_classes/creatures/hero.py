@@ -191,8 +191,8 @@ class Hero(Creature):
         pass  # TODO - get whole current hero model in order to synchronize the game
 
     def add_to_buy_now_items(self, item_slot_id: int, price: int):
-        item: Item = self.eq.itemSlots[item_slot_id]
-        if item.available == 1:
+        item: Item or None = self.eq.itemSlots[item_slot_id]
+        if item is not None and item.available == 1:
             self.market.add_to_buy_now_items(item, price)
             item.available = 0
             return True
@@ -200,8 +200,8 @@ class Hero(Creature):
 
     def add_to_auctioned_items(self, item_slot_id: int, price: int,
                                auction_end_date: datetime = datetime.now() + timedelta(days=7)):
-        item: Item = self.eq.itemSlots[item_slot_id]
-        if item.available == 1:
+        item: Item or None = self.eq.itemSlots[item_slot_id]
+        if item is not None and item.available == 1:
             self.market.add_to_auctioned_items(item, price, auction_end_date)
             item.available = 0
             return True

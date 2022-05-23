@@ -134,7 +134,7 @@ class User:
                                 luck, persuasion, trade, leadership, protection, initiative))
                 newHero = Hero(avatar_id, name, className, 0, strength, intelligence, dexterity, constitution,
                                luck, persuasion, trade, leadership, protection, initiative)
-                self.Heroes[int(cursor.fetchone())] = newHero
+                self.Heroes[int(cursor.fetchall()[0])] = newHero
 
             except Exception as error:
                 print(error)
