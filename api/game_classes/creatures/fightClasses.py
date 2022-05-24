@@ -1,9 +1,12 @@
+import string
+
 from api.game_classes.properties.statistics import Statistics
 
 
 class Archer:
-    def __init__(self, strength, intelligence, dexterity, constitution, luck, persuasion, trade, leadership, protection,
-                 initiative):
+    def __init__(self, strength: int, intelligence: int, dexterity: int, constitution: int, luck: int, persuasion: int,
+                 trade: int, leadership: int, protection: int,
+                 initiative: int):
         self.statistics = Statistics(strength, intelligence, dexterity, constitution, luck, persuasion, trade,
                                      leadership, protection, initiative)
         # self.statistics = Statistics(1, 2, 7, 6, 4, 0, 0, 0)
@@ -14,8 +17,9 @@ class Archer:
 
 
 class Mage:
-    def __init__(self, strength, intelligence, dexterity, constitution, luck, persuasion, trade, leadership, protection,
-                 initiative):
+    def __init__(self, strength: int, intelligence: int, dexterity: int, constitution: int, luck: int, persuasion: int,
+                 trade: int, leadership: int, protection: int,
+                 initiative: int):
         self.statistics = Statistics(strength, intelligence, dexterity, constitution, luck, persuasion, trade,
                                      leadership, protection, initiative)
 
@@ -27,8 +31,9 @@ class Mage:
 
 
 class Warrior:
-    def __init__(self, strength, intelligence, dexterity, constitution, luck, persuasion, trade, leadership, protection,
-                 initiative):
+    def __init__(self, strength: int, intelligence: int, dexterity: int, constitution: int, luck: int, persuasion: int,
+                 trade: int, leadership: int, protection: int,
+                 initiative: int):
         # self.statistics = Statistics(1, 8, 1, 4, 6, 0, 0, 0)
         self.statistics = Statistics(strength, intelligence, dexterity, constitution, luck, persuasion, trade,
                                      leadership, protection, initiative)
@@ -38,18 +43,14 @@ class Warrior:
         return 'Warrior'
 
 
-def choseClass(className, strength=None, intelligence=None, dexterity=None,
-               constitution=None, luck=None, persuasion=None, trade=None, leadership=None, protection=None,
-               initiative=None):
-    if className == 'a':
-        return Archer(strength, intelligence, dexterity,
-                      constitution, luck, persuasion, trade, leadership, protection,
-                      initiative)
-    if className == 'w':
-        return Warrior(strength, intelligence, dexterity,
-                       constitution, luck, persuasion, trade, leadership, protection,
-                       initiative)
-    if className == 'm':
-        return Mage(strength, intelligence, dexterity,
-                    constitution, luck, persuasion, trade, leadership, protection,
-                    initiative)
+def choseClass(className: string, strength: int = 0, intelligence: int = 0, dexterity: int = 0,
+               constitution: int = 0, luck: int = 0, persuasion: int = 0, trade: int = 0, leadership: int = 0,
+               protection: int = 0,
+               initiative: int = 0):
+
+    args = (strength, intelligence, dexterity,
+            constitution, luck, persuasion, trade, leadership, protection,
+            initiative)
+
+    class_dict = {'a': Archer, 'w': Warrior, 'm': Mage}
+    return class_dict[className](*args)

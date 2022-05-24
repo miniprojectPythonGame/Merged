@@ -1,11 +1,14 @@
+import string
 
 from api.game_classes.creatures.fightClasses import choseClass
 
 
 class Creature:
-    def __init__(self, name, className, lvl, strength=0, intelligence=0, dexterity=0,
-                 constitution=0, luck=0, persuasion=0, trade=0, leadership=0, protection=0,
-                 initiative=0, freeDevelopmentPts=0):
+    def __init__(self, name: string, className: string, lvl: int, strength: int = 0, intelligence: int = 0,
+                 dexterity: int = 0,
+                 constitution: int = 0, luck: int = 0, persuasion: int = 0, trade: int = 0, leadership: int = 0,
+                 protection: int = 0,
+                 initiative: int = 0, freeDevelopmentPts: int = 0):
         self.name = name
         self.fight_class = choseClass(className, strength, intelligence, dexterity,
                                       constitution, luck, persuasion, trade, leadership, protection,
@@ -20,4 +23,3 @@ class Creature:
             return self.fight_class.statistics.intelligence * 2
         if type(other).__name__ == 'Archer':
             return self.fight_class.statistics.dexterity * 2
-

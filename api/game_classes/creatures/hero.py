@@ -1,3 +1,4 @@
+import string
 from datetime import datetime, timedelta
 from math import floor
 from random import randint
@@ -18,15 +19,19 @@ from api.web.WebService import *
 
 
 class Hero(Creature):
-    def __init__(self, avatar_id, name, className, gold=0, strength=None, intelligence=None,
-                 dexterity=None,
-                 constitution=None, luck=None, persuasion=None, trade=None, leadership=None, protection=None,
-                 initiative=None, lvl=None, exp=None, expToNextLvl=None, freeDevelopmentPts=None, hero_id=None,
-                 statistics_id=None):
+    def __init__(self, avatar_id: int, name: string, className: string, gold: int = 0, strength: int = 0,
+                 intelligence: int = 0,
+                 dexterity: int = 0,
+                 constitution: int = 0, luck: int = 0, persuasion: int = 0, trade: int = 0, leadership: int = 0,
+                 protection: int = 0,
+                 initiative: int = 0, lvl: int = 0, exp: int = 0, expToNextLvl: int = 0, freeDevelopmentPts: int = 4,
+                 hero_id: int or None = None,
+                 statistics_id: int or None = None):
 
         Creature.__init__(self, name, className, lvl, strength, intelligence, dexterity,
                           constitution, luck, persuasion, trade, leadership, protection,
                           initiative, freeDevelopmentPts)
+
         self.avatar_id = avatar_id
         self.hero_id = hero_id
         self.eq = Eq(hero_id, className, gold)
@@ -42,6 +47,7 @@ class Hero(Creature):
         self.armourShop = ArmourShop(hero_id)
         self.magicShop = MagicShop(hero_id)
         self.weaponShop = WeaponShop(hero_id)
+
         self.stable = Stable(hero_id)  # TODO to be done in the future
         self.guild = Guild(hero_id)  # TODO to be done in the future
         self.cityGuilds = CityGuilds(hero_id)  # TODO to be done in the future
@@ -49,25 +55,30 @@ class Hero(Creature):
         self.mercenaryShop = MercenaryShop(hero_id)  # TODO to be done in the future
 
     def __str__(self):
-        return "| avatar_id: " + str(self.avatar_id) + "| hero_id: " + str(
-            self.hero_id) + "| Hero name: " + self.name + "| exp: " + str(self.exp) + \
-               "| exp to next lvl: " + str(self.expToNextLvl) + "| lvl: " + str(self.lvl) + " | class: " + \
-               str(self.fight_class) + " |\n-----------------------\n" + \
-               str(self.fight_class.statistics) + "\n-----------------------\n" + \
-               str(self.eq.gearStatistics) + "\n-----------------------\n"
+        return f'avatar_id:{self.avatar_id}\n' \
+               f'hero_id:{self.hero_id}\n' \
+               f'name:{self.name}\n' \
+               f'exp:{self.exp}\n' \
+               f'exp_to_next_lvl:{self.expToNextLvl}\n' \
+               f'lvl:{self.lvl}\n' \
+               f'class:{self.fight_class}\n' \
+               f'\n-----------------------\n' \
+               f'{self.fight_class.statistics}' \
+               f'\n-----------------------\n' \
+               f'{self.eq.gearStatistics}' \
+               f'\n-----------------------\n'
 
     def addExp(self, expOfOther):
         exp_to_add = floor(expOfOther * randint(1, 26) / 100)
         self.exp += exp_to_add
         try:
             conn, cursor = connect_to_db()
-            cursor.execute("CALL add_exp(%s ,%s )", (self.hero_id, exp_to_add))
-            conn.commit()
-            disconnect_from_db(conn, cursor)
-            if self.exp >= self.expToNextLvl:
-                self.__updateAfterLvlUp()
-                # TODO add some message for the user
-            return True
+            with conn:
+                cursor.execute("CALL add_exp(%s ,%s )", (self.hero_id, exp_to_add))
+                if self.exp >= self.expToNextLvl:
+                    self.__updateAfterLvlUp()
+                    # TODO add some message for the user
+                return True
         except Exception as error:
             print("Email already exists " + str(error))
             return False
@@ -99,17 +110,16 @@ class Hero(Creature):
 
             try:
                 conn, cursor = connect_to_db()
-                statistics_update = "UPDATE statistics SET " + statistic_name + " = " + statistic_name + " + 1 WHERE statistics_id = " + \
-                                    str(self.statistics_id)
-                cursor.execute(statistics_update)
+                with conn:
+                    statistics_update = "UPDATE statistics SET " + statistic_name + " = " + statistic_name + " + 1 WHERE statistics_id = " + \
+                                        str(self.statistics_id)
+                    cursor.execute(statistics_update)
 
-                heroes_update = "UPDATE heroes SET free_development_pts = free_development_pts - 1 WHERE hero_id = " + \
-                                str(self.hero_id)
-                cursor.execute(heroes_update)
+                    heroes_update = "UPDATE heroes SET free_development_pts = free_development_pts - 1 WHERE hero_id = " + \
+                                    str(self.hero_id)
+                    cursor.execute(heroes_update)
 
-                conn.commit()
-                disconnect_from_db(conn, cursor)
-                return True
+                    return True
             except Exception as error:
                 print(error)
                 return False
@@ -119,14 +129,12 @@ class Hero(Creature):
     def __updateAfterLvlUp(self):
         try:
             conn, cursor = connect_to_db()
-            cursor.execute("SELECT exp_next_lvl from heroes where hero_id = %s", (self.hero_id,))
-            conn.commit()
-            self.expToNextLvl = cursor.fetchall()[0][0]
-            disconnect_from_db(conn, cursor)
-
-            self.lvl += 1
-            self.freeDevelopmentPoints += 4
-            return True
+            with conn:
+                cursor.execute("SELECT exp_next_lvl from heroes where hero_id = %s", (self.hero_id,))
+                self.expToNextLvl = cursor.fetchone()[0]
+                self.lvl += 1
+                self.freeDevelopmentPoints += 4
+                return True
         except Exception as error:
             print("Email already exists: " + str(error))
             return False
@@ -182,7 +190,10 @@ class Hero(Creature):
         return False
 
     def init_fight_with_other_hero(self, enemy):
-        # returns battle_logs,winner.hero_id
+        """
+        :param enemy: Hero class instance
+        :return: (battle_logs,winner.hero_id) - battle logs look like list of such tuples (<hero_id of hero that attacked>,<dmg dealt>) and winner.hero_id is self-explanatory
+        """
         return Battle.hero_vs_hero(self, enemy)
 
     def get_statistics(self):

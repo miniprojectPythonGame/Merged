@@ -14,6 +14,8 @@ class Bot(Creature):
             self.fight_class.statistics.setFightStatistics(lvl * 4)
 
     def __str__(self):
-        return '\n----------------------\nName: ' + self.name + '\nbot_class: ' + \
-               str(self.fight_class) + '\ndescription: ' + self.description  + \
-               '\nstatistics: ' + str(self.fight_class.statistics)
+        return f'\n----------------------\n' \
+               f'name:{self.name}\n' \
+               f'fight_class:{self.fight_class}\n' \
+               f'description:{self.description}\n' \
+               f'statistics:{self.fight_class.statistics}'
