@@ -34,7 +34,7 @@ class Measurements:
     bt_return = BT_RETURN
     # LABEL: Page
     label_page = {
-        'text': 'Arena fight',
+        'text': 'Quest fight',
         'x': margin,
         'y': 20,
         'anchor': 'topleft',

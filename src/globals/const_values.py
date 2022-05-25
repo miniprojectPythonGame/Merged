@@ -364,3 +364,12 @@ def getFullEnemyPath(className, number):
 
 def getRectEnemyPath(className, number):
     return '../images/enemies/' + className + '_' + str(number) + '_rect.jpg'
+
+def setColor(colors, subtitle):
+    if subtitle == 'easy':
+        return colors.easy
+    if subtitle == 'intermediate':
+        return colors.intermediate
+    if subtitle == 'hard':
+        return colors.hard
+    return colors.white

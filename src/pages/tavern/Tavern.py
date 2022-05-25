@@ -7,15 +7,19 @@ from src.components.Label import Label
 from src.components.ListElement import ListElement
 from src.components.ScrollableList import ScrollableList
 from src.components.Plane import Plane
+from src.components.ImageField import ImageField
 
 from .fight.Fight import Fight
 from .Measurements import Measurements as meas
-from src.globals.const_values import getDifficulty
+
+from src.globals.const_values import getDifficulty,\
+    setColor,\
+    getRectEnemyPath
 
 
 def Tavern(screen, mainClock, user):
-
     def reloadPreview(activeQuest):
+
         p_background = Plane(meas.p_background['x'], meas.p_background['y'],
                              meas.p_background['width'], meas.p_background['height'],
                              meas.p_background['color'], screen)
@@ -23,20 +27,67 @@ def Tavern(screen, mainClock, user):
         lb_quest_title = Label(activeQuest.name, meas.lb_quest_title['font'], meas.lb_quest_title['color'],
                                screen, meas.lb_quest_title['x'], meas.lb_quest_title['y'])
 
-        lb_difficulty_header = Label("Difficulty: ", meas.lb_difficulty_header['font'],
-                                     meas.lb_difficulty_header['color'], screen,
-                                     meas.lb_difficulty_header['x'], meas.lb_difficulty_header['y'])
+        lb_difficulty_header = Label("Difficulty: ", meas.lb_headers['font'],
+                                     meas.lb_headers['color'], screen,
+                                     meas.lb_headers['x'], meas.lb_headers['difficulty_y'])
+        lb_difficulty_value = Label(getDifficulty(activeQuest.difficulty), meas.lb_values['font'],
+                                    setColor(meas.lb_values['color'], getDifficulty(activeQuest.difficulty)),
+                                    screen,
+                                    meas.lb_values['x'], meas.lb_values['difficulty_y'],
+                                    anchor=meas.lb_values['anchor'])
 
-        lb_min_level_header = Label("Min level: ", meas.lb_min_level_header['font'],
-                                     meas.lb_min_level_header['color'], screen,
-                                     meas.lb_min_level_header['x'], meas.lb_min_level_header['y'])
+        lb_min_level_header = Label("Min level: ", meas.lb_headers['font'],
+                                    meas.lb_headers['color'], screen,
+                                    meas.lb_headers['x'], meas.lb_headers['min_level_y'])
+        lb_min_level_value = Label(str(activeQuest.min_lvl), meas.lb_values['font'],
+                                   meas.stat_color, screen,
+                                   meas.lb_values['x'], meas.lb_values['min_level_y'],
+                                   anchor=meas.lb_values['anchor'])
+
+        lb_gold_header = Label("Gold reward: ", meas.lb_headers['font'],
+                               meas.lb_headers['color'], screen,
+                               meas.lb_headers['x'], meas.lb_headers['gold_y'])
+        lb_gold_value = Label(str(5), meas.lb_values['font'],
+                              meas.stat_color, screen,
+                              meas.lb_values['x'], meas.lb_values['gold_y'],
+                              anchor=meas.lb_values['anchor'])
+
+        lb_exp_header = Label("EXP reward: ", meas.lb_headers['font'],
+                              meas.lb_headers['color'], screen,
+                              meas.lb_headers['x'], meas.lb_headers['exp_y'])
+        lb_exp_value = Label(str(300), meas.lb_values['font'],
+                             meas.stat_color, screen,
+                             meas.lb_values['x'], meas.lb_values['exp_y'],
+                             anchor=meas.lb_values['anchor'])
+
+        lb_enemy_header = Label("Enemy: ", meas.lb_headers['font'],
+                                meas.lb_headers['color'], screen,
+                                meas.lb_headers['x'], meas.lb_headers['enemy_y'])
+
+        lb_enemy_name = Label(activeQuest.enemy.name, meas.lb_enemy['font'],
+                                meas.lb_enemy['color'], screen,
+                                meas.lb_enemy['x'], meas.lb_enemy['name_y'])
+
+        lb_enemy_class = Label(str(activeQuest.enemy.fight_class), meas.lb_enemy['font'],
+                                meas.lb_enemy['color'], screen,
+                                meas.lb_enemy['x'], meas.lb_enemy['class_y'])
 
         bt_fight = Button(meas.bt_fight['color'], meas.bt_fight['x'], meas.bt_fight['y'],
                           meas.bt_fight['width'], meas.bt_fight['height'], screen,
                           meas.bt_fight['text'], meas.header_tertiary_font,
                           border_radius=meas.bt_fight['border-radius'])
 
-        return p_background, lb_quest_title, bt_fight, lb_difficulty_header, lb_min_level_header
+        content = [
+            p_background, lb_quest_title,
+            lb_difficulty_header, lb_difficulty_value,
+            lb_min_level_header, lb_min_level_value,
+            lb_gold_header, lb_gold_value,
+            lb_exp_header, lb_exp_value,
+            lb_enemy_header,
+            lb_enemy_name, lb_enemy_class
+        ]
+
+        return bt_fight, content
 
     showHand = False
     running = True
@@ -64,21 +115,26 @@ def Tavern(screen, mainClock, user):
     sl_quests = ScrollableList(meas.sl_quests['x'], meas.sl_quests['y'], screen, list_elements,
                                meas.list_element_height, meas.list_element_padding)
 
-    p_background = None
-    lb_quest_title = None
-    ml_quest_description = None
-    lb_min_level_header = None
-    lb_min_leevl_value = None
-    lb_difficulty_header = None
-    lb_difficulty_value = None
-    lb_gold_header = None
-    lb_gold_value = None
-    lb_teasure_header = None
+    # p_background = None
+    # lb_quest_title = None
+    # ml_quest_description = None
+    # lb_min_level_header = None
+    # lb_min_leevl_value = None
+    # lb_difficulty_header = None
+    # lb_difficulty_value = None
+    # lb_gold_header = None
+    # lb_gold_value = None
+    # lb_exp_header = None
+    # lb_exp_value = None
+    # lb_teasure_header = None
+    # lb_enemy_header = None
     bt_fight = None
 
     displayedContent = [
         label_page, bt_return,
     ]
+
+    questContent = []
 
     while running:
         screen.fill((255, 255, 255))
@@ -93,11 +149,9 @@ def Tavern(screen, mainClock, user):
         sl_quests.draw()
 
         if activeQuest is not None:
-            p_background.draw()
-            lb_quest_title.draw()
+            for label in questContent:
+                label.draw()
             bt_fight.draw()
-            lb_difficulty_header.draw()
-            lb_min_level_header.draw()
 
         mx, my = pygame.mouse.get_pos()
 
@@ -125,7 +179,7 @@ def Tavern(screen, mainClock, user):
                         if questLine.rect.collidepoint(event.pos):
                             activeQuest = questLine.object
                             print(activeQuest)
-                            p_background, lb_quest_title, bt_fight, lb_difficulty_header, lb_min_level_header = reloadPreview(activeQuest)
+                            bt_fight, questContent = reloadPreview(activeQuest)
                             break
                 # SCROLL
                 if event.button == 4:

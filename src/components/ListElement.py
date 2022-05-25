@@ -5,8 +5,9 @@ from .Label import Label
 from .ColorSchemes import ColorSchemes
 from .ImageField import ImageField
 
-from src.globals.const_values import LIST_TITLE_FONT, LIST_SUBTITLE_FONT
-
+from src.globals.const_values import LIST_TITLE_FONT,\
+    LIST_SUBTITLE_FONT, \
+    setColor
 
 class ListElement():
     def __init__(self, x, y, width, height, colors, screen,
@@ -32,7 +33,7 @@ class ListElement():
             self.image = None
             self.title_label = Label(self.title, LIST_TITLE_FONT, self.colors.white,
                                      self.screen, self.x + 10, self.y + 10, "topleft")
-            self.subtitle_label = Label(self.subtitle.capitalize(), LIST_SUBTITLE_FONT, self.setColor(self.colors, self.subtitle),
+            self.subtitle_label = Label(self.subtitle.capitalize(), LIST_SUBTITLE_FONT, setColor(self.colors, self.subtitle),
                                         self.screen, self.x + 10, self.y + self.height - 30, "topleft")
             self.property_name_label = Label(self.property_name, LIST_SUBTITLE_FONT, self.colors.white,
                                              self.screen, self.x + 400, self.y + 14, "topleft")
@@ -45,7 +46,7 @@ class ListElement():
             self.image = ImageField(self.x + 10, self.y + 10, self.height-20, self.height-20, self.img_path, self.screen)
             self.title_label = Label(self.title, LIST_TITLE_FONT, self.colors.white,
                                      self.screen, self.x + 10 + self.height, self.y + 10, "topleft")
-            self.subtitle_label = Label(self.subtitle.capitalize(), LIST_SUBTITLE_FONT, self.setColor(self.colors, self.subtitle),
+            self.subtitle_label = Label(self.subtitle.capitalize(), LIST_SUBTITLE_FONT, setColor(self.colors, self.subtitle),
                                         self.screen, self.x + 10 + self.height, self.y + self.height - 30, "topleft")
             self.property_name_label = Label(self.property_name, LIST_SUBTITLE_FONT, self.colors.white,
                                              self.screen, self.x + 400 + self.height - 30, self.y + 14, "topleft")
@@ -65,16 +66,6 @@ class ListElement():
         self.property_name_label.draw()
         self.property_value_label.draw()
         self.button.draw()
-
-    def setColor(self, colors, subtitle):
-        if subtitle == 'easy':
-            return colors.easy
-        if subtitle == 'intermediate':
-            return colors.intermediate
-        if subtitle == 'hard':
-            return colors.hard
-
-        return colors.white
 
     def redraw(self):
         self.initialize()

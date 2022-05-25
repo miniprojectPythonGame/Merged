@@ -19,6 +19,7 @@ class Measurements:
 
     # FONTS: colors
     text_color = pygame.Color('gray26')
+    stat_color = pygame.Color('#35848f')
     white = pygame.Color('white')
     label_padding = 35
     list_element_width = 650
@@ -75,22 +76,38 @@ class Measurements:
         'color': white,
     }
 
-    # LABEL: difficulty
-    lb_difficulty_header = {
+    lb_headers = {
         'x': p_background['x'] + plane_padding,
-        'y': p_background['y'] + plane_padding + title_padding,
+        'enemy_x': p_background['x'] + 2*plane_padding,
         'anchor': 'topleft',
         'font': text_font,
         'color': white,
+        'difficulty_y': p_background['y'] + plane_padding + title_padding,
+        'min_level_y': p_background['y'] + plane_padding + title_padding + header_padding,
+        'gold_y': p_background['y'] + plane_padding + title_padding + 2*header_padding,
+        'exp_y': p_background['y'] + plane_padding + title_padding + 3*header_padding,
+        'enemy_y': p_background['y'] + plane_padding + title_padding + 4*header_padding,
     }
 
-    # LABEL: min level
-    lb_min_level_header = {
-        'x': p_background['x'] + plane_padding,
-        'y': p_background['y'] + plane_padding + title_padding + header_padding,
-        'anchor': 'topleft',
+    lb_values = {
+        'x': p_background['x'] + p_background['width'] - plane_padding,
+        'anchor': 'topright',
         'font': text_font,
-        'color': white,
+        'color': default_color,
+        'difficulty_y': p_background['y'] + plane_padding + title_padding,
+        'min_level_y': p_background['y'] + plane_padding + title_padding + header_padding,
+        'gold_y': p_background['y'] + plane_padding + title_padding + 2*header_padding,
+        'exp_y': p_background['y'] + plane_padding + title_padding + 3*header_padding,
+        'enemy_y': p_background['y'] + plane_padding + title_padding + 4*header_padding,
+    }
+
+    lb_enemy = {
+        'x': p_background['x'] + plane_padding,
+        'anchor': 'topright',
+        'font': text_font,
+        'color': stat_color,
+        'name_y': p_background['y'] + plane_padding + title_padding + 6*header_padding,
+        'class_y': p_background['y'] + plane_padding + title_padding + 7*header_padding,
     }
 
     # BUTTON: fight
