@@ -1,9 +1,9 @@
 import string
 
 from api.game_classes.creatures.fightClasses import choseClass
+from abc import ABC,abstractmethod
 
-
-class Creature:
+class Creature(ABC):
     def __init__(self, name: string, className: string, lvl: int, strength: int = 0, intelligence: int = 0,
                  dexterity: int = 0,
                  constitution: int = 0, luck: int = 0, persuasion: int = 0, trade: int = 0, leadership: int = 0,
@@ -15,6 +15,10 @@ class Creature:
                                       initiative)
         self.lvl = lvl
         self.freeDevelopmentPoints = freeDevelopmentPts
+
+    @abstractmethod
+    def get_statistics(self):
+        pass
 
     def strongAgainstOtherClass(self, other):
         if type(other).__name__ == 'Warrior':

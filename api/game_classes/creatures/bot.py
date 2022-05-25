@@ -19,3 +19,6 @@ class Bot(Creature):
                f'fight_class:{self.fight_class}\n' \
                f'description:{self.description}\n' \
                f'statistics:{self.fight_class.statistics}'
+
+    def get_statistics(self):
+        return self.fight_class.statistics
