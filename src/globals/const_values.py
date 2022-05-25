@@ -358,3 +358,9 @@ def getFullAvatarPath(className, number):
 
 def getRectAvatarPath(className, number):
     return '../images/characters/' + className + '_' + str(number) + '_rect.jpg'
+
+def getFullEnemyPath(className, number):
+    return '../images/enemies/' + className + '_' + str(number) + '.jpg'
+
+def getRectEnemyPath(className, number):
+    return '../images/enemies/' + className + '_' + str(number) + '_rect.jpg'

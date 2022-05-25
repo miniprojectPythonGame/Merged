@@ -153,8 +153,8 @@ def LoginScreen(screen, mainClock):
                     print("Login: ", input_nickname.text, input_password.text, cb_remember.isSelected)
                     # For tests use:
                     if validate():
-                        # if user.login('konto@gmail.com', 'alamakota'):
-                        if user.login('areq@gmail.com', 'xdxd1234'):
+                        if user.login('konto@gmail.com', 'alamakota'):
+                        # if user.login('areq@gmail.com', 'xdxd1234'):
                         # if user.login(input_nickname.text, input_password.text): # TODO przed prezentacją odkomentować
                             input_nickname.reset()
                             input_password.reset()

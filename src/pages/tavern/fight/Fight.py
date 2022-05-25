@@ -11,7 +11,9 @@ from src.components.ImageField import ImageField
 from src.components.PropertyBar import PropertyBar
 
 from .Measurements import Measurements as meas
-from src.globals.const_values import getFullAvatarPath, STATS_NAMES, TEXT_FONT
+from src.globals.const_values import getFullAvatarPath,\
+    STATS_NAMES,\
+    getFullEnemyPath
 
 
 def Fight(screen, mainClock, hero, bot):
@@ -101,7 +103,7 @@ def Fight(screen, mainClock, hero, bot):
 
     img_defender = ImageField(meas.img_defender['x'], meas.img_defender['y'],
                               meas.img_defender['width'], meas.img_defender['height'],
-                              path=getFullAvatarPath(defender['fight_class'], defender['avatarID']), screen=screen)
+                              path=getFullEnemyPath(defender['fight_class'], defender['avatarID']), screen=screen)
 
     label_defender = Label(defender['name'], meas.label_defender['font'], meas.label_defender['color'],
                            screen, meas.label_defender['x'], meas.label_defender['y'],
