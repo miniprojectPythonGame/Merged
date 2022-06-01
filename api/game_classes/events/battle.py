@@ -79,7 +79,7 @@ class Battle(object):
         gold_at_stake = Battle.get_gold_at_stake(winner, loser)
         exp_at_stake = Battle.get_exp_at_stake(winner, loser)
 
-        winner.addExp(exp_at_stake)
+        winner.add_exp(floor(exp_at_stake * randint(1, 26) / 100))
 
         try:
             conn, cursor = connect_to_db()

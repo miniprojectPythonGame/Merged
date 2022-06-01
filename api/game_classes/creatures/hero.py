@@ -1,7 +1,5 @@
 import string
 from datetime import datetime, timedelta
-from math import floor
-from random import randint
 
 from api.game_classes.creatures.creature import Creature
 from api.game_classes.events.battle import Battle
@@ -58,6 +56,7 @@ class Hero(Creature):
         return f'avatar_id:{self.avatar_id}\n' \
                f'hero_id:{self.hero_id}\n' \
                f'name:{self.name}\n' \
+               f'gold:{self.eq.gold}\n' \
                f'exp:{self.exp}\n' \
                f'exp_to_next_lvl:{self.expToNextLvl}\n' \
                f'lvl:{self.lvl}\n' \
@@ -68,8 +67,7 @@ class Hero(Creature):
                f'{self.eq.gearStatistics}' \
                f'\n-----------------------\n'
 
-    def addExp(self, expOfOther):
-        exp_to_add = floor(expOfOther * randint(1, 26) / 100)
+    def add_exp(self, exp_to_add):
         self.exp += exp_to_add
         try:
             conn, cursor = connect_to_db()
@@ -80,7 +78,7 @@ class Hero(Creature):
                     # TODO add some message for the user
                 return True
         except Exception as error:
-            print("Email already exists " + str(error))
+            print(error)
             return False
 
     def add_to_statistics(self, statistic_name):
@@ -238,9 +236,12 @@ class Hero(Creature):
         if creature_id == -1:  # bot won - he does not have hero_id so -1 is returned
             return False
         else:
+
             item_id = Item.add_item_to_db(quest.treasure)
             Item.add_item_to_hero_storage(self.hero_id, item_id)
             quest.treasure.item_id = item_id
             self.eq.add_to_storage(quest.treasure)
-            quest.add_prizes(self.hero_id, self.lvl)
+            _, exp, gold = quest.add_prizes(self.hero_id, self.lvl)
+            self.eq.gold += gold
+            self.add_exp(exp)
             return True

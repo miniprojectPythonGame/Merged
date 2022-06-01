@@ -165,7 +165,13 @@ if __name__ == "__main__":
     tmp.login('konto@gmail.com', 'alamakota')
     tmp.chooseHero(20)
     hero: Hero = tmp.currentHero
-    print(hero.armourShop)
+    print(hero)
+    print("-------------------------")
+    print(hero.fight_with_bot_from_quest(0))
+    print("-------------------------fight")
+    print(hero)
+
+
 
     # tmp.createHero(2,'test_fight', 'w', 1, 1, 1, 1, 1, 1, 1, 1, 1, 1)
     # for h in tmp.all_heroes.values():

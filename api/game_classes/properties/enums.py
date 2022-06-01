@@ -12,7 +12,7 @@ class Difficulty(Enum):
 
     @classmethod
     def get_bot_lvl_advantage(cls, difficulty: int):
-        return {1: 1, 2: 3, 3: 7}.get(difficulty)
+        return {1: 0, 2: 1, 3: 3}.get(difficulty)
 
     @classmethod
     def get_gold_and_exp_from_difficulty(cls, difficulty: int):
@@ -83,6 +83,7 @@ class ItemType(Enum):
                       10: SecondaryWeapon,
                       11: PotionPeriod,
                       12: PotionPermanent}
+
 
 class ShopType(Enum):
     ArmourShop = 0

@@ -38,7 +38,7 @@ class Quest:
                 print(error)
                 t_status = False
             finally:
-                return t_status
+                return t_status,exp,gold
 
     def __str__(self):
         return f'----------------------\n' \
@@ -105,8 +105,3 @@ class QuestList:
                 new_quest: Quest = Quest(line[3], Difficulty.get_difficulty(line[1]), new_item, line[5], line[4],
                                          new_bot, line[2])
                 self.quest_list.append(new_quest)
-
-
-# q = QuestList(20, 1)
-# for quest in q.quest_list:
-#     print(quest)
