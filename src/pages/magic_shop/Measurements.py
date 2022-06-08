@@ -73,7 +73,7 @@ class Measurements:
 
     # BUTTON: Show rings in offer
     bt_showRings = {
-        "x": bt_showPotionPeriod['x'] + magic_shop_category_offset,
+        "x": margin + category_button_padding + category_button_size,
         "y": margin,
         "width": category_button_size,
         "height": category_button_size,
@@ -83,12 +83,32 @@ class Measurements:
 
     # BUTTON: Show necklaces in offer
     bt_showNecklaces = {
-        "x": bt_showRings['x'] + magic_shop_category_offset,
+        "x": margin + 2*category_button_padding + 2*category_button_size,
         "y": margin,
         "width": category_button_size,
         "height": category_button_size,
         "path_white": CATEGORY_ICONS['magic']['necklace']['path_white'],
         "path_gray": CATEGORY_ICONS['magic']['necklace']['path_gray'],
+    }
+
+    # BUTTON: Show necklaces in offer
+    bt_showPotionPermanent = {
+        "x": margin + 3*category_button_padding + 3*category_button_size,
+        "y": margin,
+        "width": category_button_size,
+        "height": category_button_size,
+        "path_white": CATEGORY_ICONS['magic']['potionpermanent']['path_white'],
+        "path_gray": CATEGORY_ICONS['magic']['potionpermanent']['path_gray'],
+    }
+
+    # BUTTON: Show necklaces in offer
+    bt_showLuckyItem = {
+        "x": margin + 4 * category_button_padding + 4 * category_button_size,
+        "y": margin,
+        "width": category_button_size,
+        "height": category_button_size,
+        "path_white": CATEGORY_ICONS['magic']['luckyitem']['path_white'],
+        "path_gray": CATEGORY_ICONS['magic']['luckyitem']['path_gray'],
     }
 
     # SWITCH_CARDS: eq <-> statistics <-> backpack

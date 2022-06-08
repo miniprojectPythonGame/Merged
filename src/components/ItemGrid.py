@@ -16,9 +16,14 @@ class ItemGrid:
         self.screen = screen
         self.active = active
         self.backpack_ref = backpack_ref
+        self.ref_updated = False
         self.backpack = self.initateBackpack()
 
     def draw(self):
+        if self.ref_updated:
+            self.backpack = self.initateBackpack()
+            self.ref_updated = False
+
         for item in self.backpack:
             item.draw()
 
@@ -73,3 +78,7 @@ class ItemGrid:
                 x += self.item_size + self.item_padding
 
         return backpack
+
+    def updateBackpackRef(self, new_Ref):
+        self.backpack_ref = new_Ref
+        self.ref_updated = True

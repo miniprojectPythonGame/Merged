@@ -24,7 +24,6 @@ from src.globals.const_values import \
 
 
 def MagicShop(screen, mainClock, user):
-
     def reloadButtons(buttons_list, current_active):
         newButtons = []
 
@@ -73,7 +72,7 @@ def MagicShop(screen, mainClock, user):
                         screen, magic_shop[category_active])
 
     def handleBuyItem(item_id):
-        hero.buy_from_shop(item_id, ShopType.ArmourShop.value)
+        hero.buy_from_shop(item_id, ShopType.MagicShop.value)
         reloadCharacterBackpacks(character, hero)
         sc_eq_stat_bp.components[0].components[-1] = ItemGrid(meas.ig_backpack['x'], meas.ig_backpack['y'],
                                                               meas.ig_backpack['item_size'],
@@ -86,7 +85,7 @@ def MagicShop(screen, mainClock, user):
         label_gold = Label("Gold: " + str(character['gold']), meas.label_gold['font'],
                            meas.label_gold['color'], screen, meas.label_gold['x'],
                            meas.label_gold['y'], meas.label_gold['anchor'])
-        return sortItems(hero.armourShop.itemList), label_gold
+        return sortItems(hero.magicShop.itemList), label_gold
 
     def handleSellItem(item_id):
         hero.eq.sell_item_to_shop(item_id)
@@ -120,23 +119,41 @@ def MagicShop(screen, mainClock, user):
                        path=meas.bt_return['path'])
 
     bt_showPotionPeriod = Button(meas.bt_class_active['color'],
-                            meas.bt_showPotionPeriod['x'], meas.bt_showPotionPeriod['y'],
-                            meas.bt_showPotionPeriod['width'], meas.bt_showPotionPeriod['height'], screen,
-                            path=meas.bt_showPotionPeriod['path_white'],
-                            image_ofset=meas.bt_class_active['image_offset'],
-                            border_radius=meas.bt_class_active['border_radius'])
+                                 meas.bt_showPotionPeriod['x'], meas.bt_showPotionPeriod['y'],
+                                 meas.bt_showPotionPeriod['width'], meas.bt_showPotionPeriod['height'],
+                                 screen,
+                                 path=meas.bt_showPotionPeriod['path_white'],
+                                 image_ofset=meas.bt_class_active['image_offset'],
+                                 border_radius=meas.bt_class_active['border_radius'])
 
     bt_showRings = Button(meas.bt_class_inactive['color'],
                           meas.bt_showRings['x'], meas.bt_showRings['y'],
-                          meas.bt_showRings['width'], meas.bt_showRings['height'], screen,
+                          meas.bt_showRings['width'], meas.bt_showRings['height'],
+                          screen,
                           path=meas.bt_showRings['path_white'],
                           image_ofset=meas.bt_class_inactive['image_offset'],
                           border_radius=meas.bt_class_inactive['border_radius'])
 
     bt_showNecklaces = Button(meas.bt_class_inactive['color'],
                               meas.bt_showNecklaces['x'], meas.bt_showNecklaces['y'],
-                              meas.bt_showNecklaces['width'], meas.bt_showNecklaces['height'], screen,
+                              meas.bt_showNecklaces['width'], meas.bt_showNecklaces['height'],
+                              screen,
                               path=meas.bt_showNecklaces['path_white'],
+                              image_ofset=meas.bt_class_inactive['image_offset'],
+                              border_radius=meas.bt_class_inactive['border_radius'])
+
+    bt_showPotionPermanent = Button(meas.bt_class_inactive['color'],
+                                    meas.bt_showPotionPermanent['x'], meas.bt_showPotionPermanent['y'],
+                                    meas.bt_showPotionPermanent['width'], meas.bt_showPotionPermanent['height'],
+                                    screen,
+                                    path=meas.bt_showPotionPermanent['path_white'],
+                                    image_ofset=meas.bt_class_inactive['image_offset'],
+                                    border_radius=meas.bt_class_inactive['border_radius'])
+
+    bt_showLuckyItem = Button(meas.bt_class_inactive['color'],
+                              meas.bt_showLuckyItem['x'], meas.bt_showLuckyItem['y'],
+                              meas.bt_showLuckyItem['width'], meas.bt_showLuckyItem['height'], screen,
+                              path=meas.bt_showLuckyItem['path_white'],
                               image_ofset=meas.bt_class_inactive['image_offset'],
                               border_radius=meas.bt_class_inactive['border_radius'])
 
@@ -158,6 +175,10 @@ def MagicShop(screen, mainClock, user):
          meas.bt_showRings['path_gray'], bt_showRings),
         ('necklace', meas.bt_showNecklaces['path_white'],
          meas.bt_showNecklaces['path_gray'], bt_showNecklaces),
+        ('potionpermanent', meas.bt_showPotionPermanent['path_white'],
+         meas.bt_showPotionPermanent['path_gray'], bt_showPotionPermanent),
+        ('luckyitem', meas.bt_showLuckyItem['path_white'],
+         meas.bt_showLuckyItem['path_gray'], bt_showLuckyItem),
     ]
 
     ig_backpack = ItemGrid(meas.ig_backpack['x'], meas.ig_backpack['y'],

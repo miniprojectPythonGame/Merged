@@ -160,6 +160,7 @@ class CharacterEquipment:
                                     y + avatar_height + 2 * itembox_padding + 2 * property_bar_height,  # y
                                     itembox_size, itembox_size, self.screen,
                                     path=EQ_PLACEHOLDERS['primary_weapon'], offset=itembox_offset,
+                                    fill=self.getColor(self.character_ref['eq']['primaryweapon']),
                                     border_radius=itembox_border_radius,
                                     isActive=self.active == ItemType.PrimaryWeapon.value)
 
@@ -167,6 +168,7 @@ class CharacterEquipment:
                                       y + avatar_height + 2 * itembox_padding + 2 * property_bar_height,  # y
                                       itembox_size, itembox_size, self.screen,
                                       path=EQ_PLACEHOLDERS['secondary_weapon'], offset=itembox_offset,
+                                      fill=self.getColor(self.character_ref['eq']['secondaryweapon']),
                                       border_radius=itembox_border_radius,
                                       isActive=self.active == ItemType.SecondaryWeapon.value)
 
@@ -183,6 +185,6 @@ class CharacterEquipment:
             "ib_necklace": ib_necklace,
             "ib_ring": ib_ring,
             "ib_luckyitem": ib_luckyitem,
-            "ib_primary_weapon": ib_primary_weapon,
-            "ib_secondary_weapon": ib_secondary_weapon,
+            "ib_primaryweapon": ib_primary_weapon,
+            "ib_secondaryweapon": ib_secondary_weapon,
         }

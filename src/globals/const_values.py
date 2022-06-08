@@ -1,5 +1,7 @@
 import pygame
 
+from api.game_classes.properties.enums import Quality
+
 pygame.init()
 
 from src.components.ItemGrid import ItemGrid
@@ -122,11 +124,20 @@ CATEGORY_ICONS = {
             "path_gray": '../images/item_type_icons/magic/potionperiod_gray.png',
         },
         "potionpermanent": {
-            "path_white": '../images/item_type_icons/magic/belt_white.png',
-            "path_gray": '../images/item_type_icons/magic/belt_gray.png',
+            "path_white": '../images/item_type_icons/magic/potionpermanent_white.png',
+            "path_gray": '../images/item_type_icons/magic/potionpermanent_gray.png',
         }
     },
-    "weapon": {}
+    "weapon": {
+        "primaryweapon": {
+            "path_white": '../images/item_type_icons/weapon/primaryweapon_white.png',
+            "path_gray": '../images/item_type_icons/weapon/primaryweapon_gray.png',
+        },
+        "secondaryweapon": {
+            "path_white": '../images/item_type_icons/weapon/secondaryweapon_white.png',
+            "path_gray": '../images/item_type_icons/weapon/secondaryweapon_gray.png',
+        }
+    }
 }
 
 BACKPACK_ICONS = {
@@ -240,6 +251,16 @@ def reloadBackpackButtons(buttons_list, current_active, meas):
     return newButtons
 
 def extractType(name):
+    if name == 'ib_luckyitem':
+        return 'LuckyItem'
+
+    if name == 'ib_primaryweapon':
+        return 'PrimaryWeapon'
+
+    if name == 'ib_secondaryweapon':
+        return 'SecondaryWeapon'
+
+    print(''.join(' '.join(name[3:].split('_')).title().split()))
     return ''.join(' '.join(name[3:].split('_')).title().split())
 
 def reloadItemGrid(character, backpack_active, meas, active_item, screen):
@@ -263,6 +284,8 @@ def reloadCharacterEQ(character, hero):
         "belt": getEqItemByType(hero.eq.itemSlots, ItemType.Belt.value),
         "ring": getEqItemByType(hero.eq.itemSlots, ItemType.Ring.value),
         "luckyitem": getEqItemByType(hero.eq.itemSlots, ItemType.LuckyItem.value),
+        "primaryweapon": getEqItemByType(hero.eq.itemSlots, ItemType.PrimaryWeapon.value),
+        "secondaryweapon": getEqItemByType(hero.eq.itemSlots, ItemType.SecondaryWeapon.value),
     }
 
 def getItemCategory(item_type):
@@ -305,12 +328,14 @@ def getEqItemByType(items, expected_type):
             "name": items[expected_type].name,
             "img_path": '../images/items/' + getItemCategory(item_type) + '/' + item_type + '.png',
             "type": getQuality(items[expected_type].quality),
+            "statistics": items[expected_type].statistics
         }
     else:
         result = {
             "name": "empty",
             "img_path": "../images/icons/add_item.png",
             "type": "empty",
+            "statistics": "empty"
         }
 
     return result
@@ -335,6 +360,8 @@ def getCharacterForEQPreview(hero):
             "belt": getEqItemByType(hero.eq.itemSlots, ItemType.Belt.value),
             "ring": getEqItemByType(hero.eq.itemSlots, ItemType.Ring.value),
             "luckyitem": getEqItemByType(hero.eq.itemSlots, ItemType.LuckyItem.value),
+            "primaryweapon": getEqItemByType(hero.eq.itemSlots, ItemType.PrimaryWeapon.value),
+            "secondaryweapon": getEqItemByType(hero.eq.itemSlots, ItemType.SecondaryWeapon.value),
         },
         "backpacks": [
             [getEqItem(hero.eq.itemSlots[i]) for i in range(INVENTORY_SHIFT, len(hero.eq.itemSlots))]
@@ -373,3 +400,17 @@ def setColor(colors, subtitle):
     if subtitle == 'hard':
         return colors.hard
     return colors.white
+
+def getQualityValue(color):
+    fill_colors = ColorSchemes()
+
+    if color == fill_colors.legendary:
+        return Quality.LEGENDARY.value
+
+    if color == fill_colors.epic:
+        return Quality.EPIC.value
+
+    if color == fill_colors.common:
+        return Quality.COMMON.value
+
+    return None
