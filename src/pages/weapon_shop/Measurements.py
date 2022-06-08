@@ -1,6 +1,7 @@
 from src.globals.const_values import *
 from src.components.ColorSchemes import ColorSchemes
 
+from src.globals.const_values import CATEGORY_ICONS
 
 class Measurements:
     # WINDOW PARAMETERS
@@ -19,14 +20,21 @@ class Measurements:
 
     # FONTS: colors
     text_color = pygame.Color('gray26')
+    stat_color = pygame.Color('#35848f')
     white = pygame.Color('white')
     label_padding = 35
     category_button_size = 60
     category_button_padding = 20
-
     default_color = ColorSchemes()
 
     bt_return = BT_RETURN
+
+    ig_item_size = 80
+    ig_item_padding = 10
+    ig_cols = 4
+    ig_amount = 20
+    ig_rows = round(ig_amount / ig_cols)
+    ig_button_height = 30
 
     # LABEL: Page
     label_page = {
@@ -36,24 +44,6 @@ class Measurements:
         'anchor': 'topleft',
         'font': header_primary_font,
         'color': text_color,
-    }
-
-    # CHARACTER_EQUIPMENT: -//-
-    ce_characterEqPreview = {
-        "x": window_width - 510 - margin,
-        "y": margin - 30,
-        "font": header_tertiary_font,
-        "colors": default_color,
-    }
-
-    # ITEM_GRID: shop offer
-    ig_items = {
-        "x": margin + category_button_padding,
-        "y": margin + category_button_padding + category_button_size,
-        "item_size": 80,
-        "item_padding": 8,
-        "cols": 4,
-        "amount": 20,
     }
 
     # BUTTON (type): class inactive
@@ -71,53 +61,109 @@ class Measurements:
     }
 
     # BUTTON: Show helmets in offer
-    bt_showSwords = {
+    bt_showPrimaryWeapons = {
         "x": margin,
         "y": margin,
         "width": category_button_size,
         "height": category_button_size,
-        "path_white": '../images/item_type_icons/weapon/sword_white.png',
-        "path_gray": '../images/item_type_icons/weapon/sword_gray.png',
+        "path_white": CATEGORY_ICONS['weapon']['primaryweapon']['path_white'],
+        "path_gray": CATEGORY_ICONS['weapon']['primaryweapon']['path_gray'],
     }
 
-    # BUTTON: Show chestplates in offer
-    bt_showShields = {
+    # BUTTON: Show breastplate in offer
+    bt_showSecondaryWeapons = {
         "x": margin + category_button_padding + category_button_size,
         "y": margin,
         "width": category_button_size,
         "height": category_button_size,
-        "path_white": '../images/item_type_icons/weapon/shield_white.png',
-        "path_gray": '../images/item_type_icons/weapon/shield_gray.png',
+        "path_white": CATEGORY_ICONS['weapon']['secondaryweapon']['path_white'],
+        "path_gray": CATEGORY_ICONS['weapon']['secondaryweapon']['path_gray'],
     }
 
-    # BUTTON: Show gloves in offer
-    bt_showHammers = {
-        "x": margin + 2*category_button_padding + 2*category_button_size,
+    # SWITCH_CARDS: eq <-> statistics <-> backpack
+    sc_eq_stat_bp = {
+        "x": window_width - (ig_item_size * (ig_cols + 1) + ig_item_padding * ig_cols) - margin,
         "y": margin,
-        "width": category_button_size,
-        "height": category_button_size,
-        "path_white": '../images/item_type_icons/weapon/hammer_white.png',
-        "path_gray": '../images/item_type_icons/weapon/hammer_gray.png',
+        "width": ig_item_size * (ig_cols + 1) + ig_item_padding * ig_cols,
+        "height": ig_button_height + 10 + ig_item_size * ig_rows + ig_item_padding * (ig_rows - 1),
+        "font": text_font,
+        "color": ColorSchemes(),
+        "switch_height": ig_button_height,
     }
 
-    # BUTTON: Show boots in offer
-    bt_showBows = {
-        "x": margin + 3*category_button_padding + 3*category_button_size,
+    c_backpack = {
+        "x": window_width - (ig_item_size * (ig_cols + 1) + ig_item_padding * ig_cols) - margin,
         "y": margin,
-        "width": category_button_size,
-        "height": category_button_size,
-        "path_white": '../images/item_type_icons/weapon/bow_white.png',
-        "path_gray": '../images/item_type_icons/weapon/bow_gray.png',
+        "width": ig_item_size * (ig_cols + 1) + ig_item_padding * ig_cols,
+        "height": ig_button_height + 10 + ig_item_size * ig_rows + ig_item_padding * (ig_rows - 1),
     }
 
-    # BUTTON: Show belts in offer
-    bt_showDaggers = {
-        "x": margin + 4*category_button_padding + 4*category_button_size,
+    # ITEM_GRID: backpack
+    ig_backpack = {
+        "x": window_width - (ig_item_size * ig_cols + ig_item_padding * (ig_cols - 1)) - margin,
+        "y": margin + sc_eq_stat_bp['switch_height'] + 10,
+        "item_size": ig_item_size,
+        "item_padding": ig_item_padding,
+        "cols": ig_cols,
+        "amount": ig_amount,
+    }
+
+    # BUTTON: backpack
+    buttons_backpack = {
+        "x": window_width - (ig_item_size * (ig_cols + 1) + ig_item_padding * ig_cols) - margin,
+        "y": ig_backpack['y'],
+        "width": ig_item_size,
+        "height": ig_item_size,
+        "padding": ig_item_padding,
+        "path_white": BACKPACK_ICONS["path_white"],
+        "path_gray": BACKPACK_ICONS["path_gray"],
+    }
+
+    c_stats = {
+        "x": window_width - (ig_item_size * (ig_cols + 1) + ig_item_padding * ig_cols) - margin,
         "y": margin,
-        "width": category_button_size,
-        "height": category_button_size,
-        "path_white": '../images/item_type_icons/weapon/dagger_white.png',
-        "path_gray": '../images/item_type_icons/weapon/dagger_gray.png',
+        "width": ig_item_size * (ig_cols + 1) + ig_item_padding * ig_cols,
+        "height": ig_button_height + 10 + ig_item_size * ig_rows + ig_item_padding * (ig_rows - 1),
+    }
+
+    labels_stats = STATS_NAMES
+
+    label_stat_header = {
+        "font": header_tertiary_font,
+        "color": text_color,
+        "x": window_width - (ig_item_size * (ig_cols + 1) + ig_item_padding * ig_cols) - margin,
+        "y": round(margin * 1.75),
+        "height": 25,
+        "padding": 15,
+        "anchor": "topleft",
+    }
+
+    label_stat_values = {
+        "font": header_tertiary_font,
+        "color": stat_color,
+        "x": window_width - margin,
+        "y": round(margin * 1.75),
+        "height": 25,
+        "padding": 15,
+        "anchor": "topright",
+    }
+
+    # CHARACTER_EQUIPMENT: -//-
+    ce_characterEqPreview = {
+        "x": window_width - (ig_item_size * (ig_cols + 1) + ig_item_padding * ig_cols) - margin,
+        "y": round(margin * 1.5),
+        "font": text_font,
+        "colors": default_color,
+    }
+
+    # ITEM_GRID: shop offer
+    ig_items = {
+        "x": margin,
+        "y": margin + category_button_padding + category_button_size,
+        "item_size": 70,
+        "item_padding": 9,
+        "cols": 4,
+        "amount": 20,
     }
 
     # LABEL: Gold

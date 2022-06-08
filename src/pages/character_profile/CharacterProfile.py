@@ -23,7 +23,8 @@ from src.globals.const_values import \
     extractType, \
     reloadBackpackButtons, \
     resetActiveItem, \
-    setActiveItem
+    setActiveItem,\
+    getQualityValue
 
 
 def CharacterProfile(screen, mainClock, user):
@@ -56,6 +57,7 @@ def CharacterProfile(screen, mainClock, user):
             reloadCharacterBackpacks(character, hero)
             reloadCharacterEQ(character, hero)
             reloadStatistics()
+            ig_backpack.updateBackpackRef(character['backpacks'][backpack_active])
             ce_characterEqPreview.reloadCharacter(character, -1)
             return resetActiveItem()
         else:
@@ -141,6 +143,7 @@ def CharacterProfile(screen, mainClock, user):
         ppi_itemDescription.draw()
 
         mx, my = pygame.mouse.get_pos()
+        stoper = False
 
         for event in pygame.event.get():
             if event.type == QUIT:
@@ -155,31 +158,50 @@ def CharacterProfile(screen, mainClock, user):
             if event.type == MOUSEBUTTONDOWN:
                 # LEFT CLICK
                 if event.button == 1:
+                    ppi_itemDescription.setVisible(False)
+                    curr_item_in_popup = ''
+
                     # HANDLE RETURN BUTTON
                     if bt_return.rect.collidepoint(event.pos):
                         running = False
+                        stoper = True
+
+                    if stoper:
+                        break
 
                     # CARD SWITCH
+                    stoper = False
                     for i in range(len(sc_eq_stat.buttons)):
                         if sc_eq_stat.buttons[i].rect.collidepoint(event.pos):
                             sc_eq_stat.current = i
+                            stoper = True
                             break
 
+                    if stoper:
+                        break
+
                     # EQ
+                    stoper = False
                     for key in ce_characterEqPreview.character:
                         if type(ce_characterEqPreview.character[key]).__name__ == "ItemBox":
                             if ce_characterEqPreview.character[key].rect.collidepoint(event.pos):
                                 active_item = handleItemClick(ItemType[extractType(key)].value, active_item)
+                                stoper = True
                                 break
+
+                    if stoper:
+                        break
 
                     # ITEM GRID
                     c_backpack_elem = sc_eq_stat.components[0].components
+                    stoper = False
                     for i in range(len(c_backpack_elem)):
                         # BACKPACKS
                         if type(c_backpack_elem[i]).__name__ == "Button":
                             if c_backpack_elem[i].rect.collidepoint(event.pos):
                                 backpack_active = i
                                 resetActiveItem()
+                                stoper = True
                                 break
 
                         # ACTIVATE ITEMS
@@ -187,18 +209,24 @@ def CharacterProfile(screen, mainClock, user):
                             for j in range(len(c_backpack_elem[i].backpack_ref)):
                                 if c_backpack_elem[i].backpack[j].rect.collidepoint(event.pos):
                                     active_item = handleItemClick(j + INVENTORY_SHIFT, active_item)
+                                    stoper = True
                                     break
 
+                    if stoper:
+                        break
                 # RIGHT CLICK
                 if event.button == 3:
+                    stoper = False
                     for i in range(len(ig_backpack.backpack_ref)):
                         if ig_backpack.backpack[i].rect.collidepoint(event.pos):
                             if curr_item_in_popup == ig_backpack.backpack_ref[i]['name'] \
                                     or ig_backpack.backpack_ref[i]['name'] == "empty":
                                 ppi_itemDescription.setVisible(False)
                                 curr_item_in_popup = ''
+                                stoper = True
+                                break
 
-                            else:
+                            if (curr_item_in_popup == '' or curr_item_in_popup != ig_backpack.backpack_ref[i]['name']) and hero.eq.itemSlots[i+INVENTORY_SHIFT]:
                                 curr_item_in_popup = ig_backpack.backpack_ref[i]['name']
                                 ppi_itemDescription.setItem(
                                     mx - ppi_itemDescription.width,  # x
@@ -209,7 +237,9 @@ def CharacterProfile(screen, mainClock, user):
                                 )
                                 ppi_itemDescription.setVisible(True)
 
+                            stoper = True
                             break
-
+                    if stoper:
+                        break
         pygame.display.update()
         mainClock.tick(60)
