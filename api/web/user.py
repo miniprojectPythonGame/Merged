@@ -12,7 +12,9 @@ class User:
         self.Heroes = {}
         self.currentHero = None
         self.authUser = None
-        self.all_heroes = self.getAllExistingHeroes()
+
+        self.all_heroes = None
+        # self.all_heroes = self.getAllExistingHeroes()
 
     def login(self, email, password):
         login_status = None
@@ -37,6 +39,11 @@ class User:
                 self.age = user[3]
                 self.UID = user[4]
                 self.getHeroes()
+
+                """
+                Jeśli będzie czas to można zamienić listę bohaterów na listę nazw bohaterów i dopiero po kliknięciu na bohatera ładowac jego szczegóły
+                """
+
                 print("Successfully logged in!")
                 login_status = True
             except Exception as error:
@@ -134,7 +141,7 @@ class User:
                                 luck, persuasion, trade, leadership, protection, initiative))
                 newHero = Hero(avatar_id, name, className, 0, strength, intelligence, dexterity, constitution,
                                luck, persuasion, trade, leadership, protection, initiative)
-                self.Heroes[int(cursor.fetchall()[0])] = newHero
+                self.Heroes[int(cursor.fetchone())] = newHero
 
             except Exception as error:
                 print(error)
@@ -165,40 +172,9 @@ if __name__ == "__main__":
     tmp.login('konto@gmail.com', 'alamakota')
     tmp.chooseHero(20)
     hero: Hero = tmp.currentHero
-    print(hero)
-    print("-------------------------")
-    print(hero.fight_with_bot_from_quest(0))
-    print("-------------------------fight")
-    print(hero)
-
-
-
-    # tmp.createHero(2,'test_fight', 'w', 1, 1, 1, 1, 1, 1, 1, 1, 1, 1)
-    # for h in tmp.all_heroes.values():
-    #     print(h)
-    # hero.fight_with_bot_from_quest(0)
-
-    # for i in hero.market.auctioned_items:
-    #     print(i)
-    #
-    # print("#########################")
-
-    # for i in tmp.currentHero.market.buy_now_items:
-    #     print(i)
-    #
-    # print(hero.buy_now_item(0))
-
-#     # tmp.currentHero.eq.swap_places(13, 0)
-#     # tmp.currentHero.add_to_statistics('dexterity')
-#     # tmp.currentHero.add_to_statistics('luck')
-#     print(tmp.currentHero)
-#     print(tmp.currentHero.init_fight_with_other_hero(tmp.Heroes.get(2)))
-#     # tmp.currentHero.armourShop.print()
-#     # tmp.currentHero.buy_from_shop(0, 0)
-#     print(tmp.currentHero.eq.itemSlots[11])
-#     # tmp.currentHero.buy_from_shop(0, 1)
-#     # tmp.currentHero.buy_from_shop(0, 2)
-#     # tmp.currentHero.buy_from_shop(0, 3)
-#     # tmp.currentHero.buy_from_shop(0, 4)
-#     # for i in User.getAllExistingHeroes().values():
-#     #     print(i)
+    print(hero.get_gold())
+    # print(hero)
+    # print("-------------------------")
+    # print(hero.fight_with_bot_from_quest(0))
+    # print("-------------------------fight")
+    # print(hero)

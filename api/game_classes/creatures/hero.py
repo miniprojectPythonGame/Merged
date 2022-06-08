@@ -32,7 +32,10 @@ class Hero(Creature):
 
         self.avatar_id = avatar_id
         self.hero_id = hero_id
-        self.eq = Eq(hero_id, className, gold)
+
+        self.eq = None
+        # self.eq = Eq(hero_id, className, gold)
+
         self.statistics_id = statistics_id
 
         self.lvl = lvl
@@ -40,16 +43,26 @@ class Hero(Creature):
         self.expToNextLvl = expToNextLvl
 
         self.messages = None  # TODO to implement for notifications after buying selling or fights
-        self.quests = QuestList(self.hero_id, self.lvl)
 
-        self.armourShop = ArmourShop(hero_id)
-        self.magicShop = MagicShop(hero_id)
-        self.weaponShop = WeaponShop(hero_id)
+        self.quests = None
+        # self.quests = QuestList(self.hero_id, self.lvl)
 
-        self.stable = Stable(hero_id)  # TODO to be done in the future
+        self.armourShop = None
+        # self.armourShop = ArmourShop(hero_id)
+
+        self.magicShop = None
+        # self.magicShop = MagicShop(hero_id)
+
+        self.weaponShop = None
+        # self.weaponShop = WeaponShop(hero_id)
+
+        # TODO not implemented in frontend but in waiting
+        self.market = None
+        self.stable = None
+
+        # TODO just not implemented
         self.guild = Guild(hero_id)  # TODO to be done in the future
         self.cityGuilds = CityGuilds(hero_id)  # TODO to be done in the future
-        self.market = Market(hero_id)  # TODO to be done in the future
         self.mercenaryShop = MercenaryShop(hero_id)  # TODO to be done in the future
 
     def __str__(self):
@@ -236,7 +249,6 @@ class Hero(Creature):
         if creature_id == -1:  # bot won - he does not have hero_id so -1 is returned
             return False
         else:
-
             item_id = Item.add_item_to_db(quest.treasure)
             Item.add_item_to_hero_storage(self.hero_id, item_id)
             quest.treasure.item_id = item_id
@@ -245,3 +257,31 @@ class Hero(Creature):
             self.eq.gold += gold
             self.add_exp(exp)
             return True
+
+    def get_gold(self):
+        conn, cursor = connect_to_db()
+        with conn:
+            cursor.execute("SELECT gold from heroes where hero_id = %s", (self.hero_id,))
+        gold = cursor.fetchone()[0]
+        return gold
+
+    def gen_quests(self):
+        self.quests = QuestList(self.hero_id, self.lvl)
+
+    def gen_armour_shop(self):
+        self.armourShop = ArmourShop(self.hero_id)
+
+    def gen_magic_shop(self):
+        self.magicShop = MagicShop(self.hero_id)
+
+    def gen_weapon_shop(self):
+        self.weaponShop = WeaponShop(self.hero_id)
+
+    def gen_market(self):
+        self.market = Market(self.hero_id)
+
+    def gen_stable(self):
+        self.stable = Stable(self.hero_id)
+
+    def gen_eq(self):
+        self.eq = Eq(self.hero_id, self.fight_class, self.get_gold())
