@@ -17,7 +17,7 @@ from api.web.WebService import *
 
 
 class Hero(Creature):
-    def __init__(self, avatar_id: int, name: string, className: string, gold: int = 0, strength: int = 0,
+    def __init__(self, avatar_id: int, name: string, className: string, strength: int = 0,
                  intelligence: int = 0,
                  dexterity: int = 0,
                  constitution: int = 0, luck: int = 0, persuasion: int = 0, trade: int = 0, leadership: int = 0,
@@ -69,7 +69,7 @@ class Hero(Creature):
         return f'avatar_id:{self.avatar_id}\n' \
                f'hero_id:{self.hero_id}\n' \
                f'name:{self.name}\n' \
-               f'gold:{self.eq.gold}\n' \
+               f'gold:{None if self.eq is None else self.eq.gold}\n' \
                f'exp:{self.exp}\n' \
                f'exp_to_next_lvl:{self.expToNextLvl}\n' \
                f'lvl:{self.lvl}\n' \
@@ -77,7 +77,7 @@ class Hero(Creature):
                f'\n-----------------------\n' \
                f'{self.fight_class.statistics}' \
                f'\n-----------------------\n' \
-               f'{self.eq.gearStatistics}' \
+               f'{None if self.eq is None else self.eq.gearStatistics}' \
                f'\n-----------------------\n'
 
     def add_exp(self, exp_to_add):
@@ -209,9 +209,6 @@ class Hero(Creature):
 
     def get_statistics(self):
         return self.fight_class.statistics + self.eq.gearStatistics
-
-    def update_model_from_db(self):
-        pass  # TODO - get whole current hero model in order to synchronize the game
 
     def add_to_buy_now_items(self, item_slot_id: int, price: int):
         item: Item or None = self.eq.itemSlots[item_slot_id]

@@ -37,7 +37,7 @@ def ChooseCharacter(screen, mainClock, user):
                     ),
                 } for key in heroes.keys()]
 
-    characters = getCharacters(user.Heroes)
+    characters = getCharacters(user.heroes)
     running = True
     # curr_index = 1
     # curr_key = characters[curr_index]['key']
@@ -115,8 +115,8 @@ def ChooseCharacter(screen, mainClock, user):
                         curr_key = characters[curr_index]['key']
 
                 if bt_delete.rect.collidepoint(event.pos):
-                    user.removeHero(curr_key)
-                    characters = getCharacters(user.Heroes)
+                    user.remove_hero(curr_key)
+                    characters = getCharacters(user.heroes)
 
                     cs_characters = CharacterSlider(characters + [CREATE_NEW_CHARACTER], screen)
                     curr_index = 1
@@ -127,7 +127,7 @@ def ChooseCharacter(screen, mainClock, user):
                         if CreateCharacter(screen, mainClock, user):
                             user.getHeroes()
 
-                        characters = getCharacters(user.Heroes)
+                        characters = getCharacters(user.heroes)
 
                         cs_characters = CharacterSlider(characters + [CREATE_NEW_CHARACTER], screen)
 

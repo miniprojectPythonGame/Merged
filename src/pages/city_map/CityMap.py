@@ -137,7 +137,7 @@ def CityMap(screen, mainClock, user):
 
                     # SWAP HERO
                     if navbar.bt_swap_hero.rect.collidepoint(event.pos):
-                        user.deselectHero()
+                        user.deselect_hero()
                         running = False
                         swapHero = True
                         break

@@ -227,7 +227,7 @@ def RegisterScreen(screen, mainClock, user):
 
                     # Tutaj będzie wysyłanie requesta w celu zarejestrowania
                     if validate():
-                        if user.signup(input_email.text, input_password.text, input_nickname.text, sex, input_age.text):
+                        if user.sign_up(input_email.text, input_password.text, input_nickname.text, sex, input_age.text):
                             print("Redirect-> ChooseCharacter.py")
                             ChooseCharacter(screen, mainClock, user)
                             running = False

@@ -223,8 +223,8 @@ def CreateCharacter(screen, mainClock, user):
 
                 if bt_create.rect.collidepoint(event.pos):
                     if validate():
-                        user.createHero(cur_avatar_id + 1, input_name.text, curr_active[0], 1, 1, 1, 1, 1, 1, 1, 1, 1,
-                                        1)
+                        user.create_hero(cur_avatar_id + 1, input_name.text, curr_active[0], 1, 1, 1, 1, 1, 1, 1, 1, 1,
+                                         1)
                         running = False
                         result = True
                     else:
