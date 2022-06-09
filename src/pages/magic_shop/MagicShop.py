@@ -107,6 +107,7 @@ def MagicShop(screen, mainClock, user):
     category_active = 'ring'
     backpack_active = 0
     hero = user.currentHero
+    hero.gen_magic_shop()
     magic_shop = sortItems(hero.magicShop.itemList)
 
     character = getCharacterForEQPreview(hero)

@@ -108,6 +108,7 @@ def ArmorShop(screen, mainClock, user):
     category_active = 'headgear'
     backpack_active = 0
     hero = user.currentHero
+    hero.gen_armour_shop()
     armor_shop = sortItems(hero.armourShop.itemList)
 
     character = getCharacterForEQPreview(hero)

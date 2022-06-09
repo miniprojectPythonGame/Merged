@@ -104,6 +104,7 @@ def WeaponShop(screen, mainClock, user):
     category_active = 'primaryweapon'
     backpack_active = 0
     hero = user.currentHero
+    hero.gen_weapon_shop()
     weapon_shop = sortItems(hero.weaponShop.itemList)
 
     character = getCharacterForEQPreview(hero)

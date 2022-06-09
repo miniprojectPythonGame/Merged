@@ -68,6 +68,8 @@ def CityMap(screen, mainClock, user):
     ]
 
     navbar = Navbar(screen)
+    hero = user.currentHero
+    hero.gen_eq()
 
     while running:
         screen.fill((255, 255, 255))
@@ -128,11 +130,13 @@ def CityMap(screen, mainClock, user):
                     # CHARACTER PROFILE
                     if navbar.bt_profile.rect.collidepoint(event.pos):
                         CharacterProfile(screen, mainClock, user)
+                        hero.gen_eq()
                         break
 
                     # SETTINGS
                     if navbar.bt_settings.rect.collidepoint(event.pos):
                         Settings(screen, mainClock)
+                        hero.gen_eq()
                         break
 
                     # SWAP HERO
@@ -152,22 +156,27 @@ def CityMap(screen, mainClock, user):
                     # HANDLE CITY PLACES
                     if bt_armorShop.rect.collidepoint(event.pos):
                         ArmorShop(screen, mainClock, user)
+                        hero.gen_eq()
                         break
 
                     if bt_magicShop.rect.collidepoint(event.pos):
                         MagicShop(screen, mainClock, user)
+                        hero.gen_eq()
                         break
 
                     if bt_weaponShop.rect.collidepoint(event.pos):
                         WeaponShop(screen, mainClock, user)
+                        hero.gen_eq()
                         break
 
                     if bt_tavern.rect.collidepoint(event.pos):
                         Tavern(screen, mainClock, user)
+                        hero.gen_eq()
                         break
 
                     if bt_arena.rect.collidepoint(event.pos):
                         Arena(screen, mainClock, user)
+                        hero.gen_eq()
                         break
 
         pygame.display.update()

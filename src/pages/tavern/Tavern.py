@@ -92,6 +92,7 @@ def Tavern(screen, mainClock, user):
     showHand = False
     running = True
     hero = user.currentHero
+    hero.gen_quests()
     activeQuest = None
 
     quest_list = user.currentHero.quests.quest_list
