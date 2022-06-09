@@ -11,14 +11,12 @@ class User:
         self.UID = None
 
         self.heroes_min_info = {}
-
         self.heroes = {}
 
         self.currentHero = None
         self.authUser = None
 
         self.enemy_heroes_min_info = {}
-
         self.enemy_heroes = {}
 
     def login(self, email, password):
@@ -152,6 +150,7 @@ class User:
 
     def choose_enemy_hero(self, hero_id):
         self.get_enemy_hero(*self.enemy_heroes_min_info[hero_id])
+        self.enemy_heroes[hero_id].gen_eq()
 
     def deselect_hero(self):
         self.currentHero = None
