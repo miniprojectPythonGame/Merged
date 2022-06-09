@@ -42,7 +42,6 @@ class User:
                 self.age = user[3]
                 self.UID = user[4]
 
-                # self.getheroes()
                 self.get_heroes_min_info()
 
                 print("Successfully logged in!")

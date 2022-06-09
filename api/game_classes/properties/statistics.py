@@ -79,6 +79,7 @@ class Statistics:
                 self.luck += 1
 
         self.protection = randint(0, 50)
+        self.constitution = max(self.constitution, 1)
         self.hp = self.constitution * 100
 
     def __str__(self):
