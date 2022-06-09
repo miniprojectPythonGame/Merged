@@ -39,8 +39,6 @@ class Battle(object):
             hero_1_attacks = not hero_1_attacks
 
         Battle.__finalize_fight_between_heroes(winner, loser)
-        winner.fight_class.statistics.hp = winner.fight_class.statistics.constitution * 100
-        loser.fight_class.statistics.hp = loser.fight_class.statistics.constitution * 100
         return battle_logs, winner.hero_id
 
     @classmethod
@@ -54,8 +52,11 @@ class Battle(object):
         dmg = floor(
             dmg / randint(1,
                           b.fight_class.statistics.protection * (1 + b.fight_class.statistics.luck)))
-        b.fight_class.statistics.hp -= max(0, dmg)
-        return -1 if isinstance(a, Bot) else a.hero_id, max(0, dmg)
+        if dmg > 0:
+            b.fight_class.statistics.hp -= dmg
+            return -1 if isinstance(a, Bot) else a.hero_id, dmg
+        else:
+            return -1 if isinstance(a, Bot) else a.hero_id, max(0, dmg)
 
     @classmethod
     def get_gold_at_stake(cls, hero, other_creature):
