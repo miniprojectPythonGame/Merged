@@ -19,7 +19,7 @@ def Arena(screen, mainClock, user):
     showHand = False
     running = True
     hero = user.currentHero
-    allHeros = user.getAllExistingHeroes()
+    allHeros = user.getAllExistingheroes()
     activeHero = None
 
     def reloadStatistics(statistics):

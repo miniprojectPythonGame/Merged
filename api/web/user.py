@@ -13,7 +13,6 @@ class User:
         self.heroes_min_info = {}
 
         self.heroes = {}
-        # self.Heroes = {}
 
         self.currentHero = None
         self.authUser = None
@@ -21,7 +20,6 @@ class User:
         self.enemy_heroes_min_info = {}
 
         self.enemy_heroes = {}
-        # self.all_heroes = self.getAllExistingHeroes()
 
     def login(self, email, password):
         login_status = None
@@ -45,7 +43,8 @@ class User:
                 self.sex = user[2]
                 self.age = user[3]
                 self.UID = user[4]
-                # self.getHeroes()
+
+                # self.getheroes()
                 self.get_heroes_min_info()
 
                 print("Successfully logged in!")
@@ -75,7 +74,8 @@ class User:
         conn, cursor = connect_to_db()
         with conn:
             try:
-                cursor.execute("SELECT hero_id,name,avatar_id FROM HEROES WHERE PLAYER_ID = %s", (self.UID,))
+                cursor.execute("SELECT hero_id,name,avatar_id,level_id,hero_class FROM heroes WHERE PLAYER_ID = %s",
+                               (self.UID,))
                 from_heroes = cursor.fetchall()
                 for i in from_heroes:
                     self.heroes_min_info[i[0]] = i
@@ -86,7 +86,8 @@ class User:
         conn, cursor = connect_to_db()
         with conn:
             try:
-                cursor.execute("SELECT hero_id,name,avatar_id FROM HEROES WHERE PLAYER_ID != %s", (self.UID,))
+                cursor.execute("SELECT hero_id,name,avatar_id,level_id,hero_class FROM heroes WHERE PLAYER_ID != %s",
+                               (self.UID,))
                 from_heroes = cursor.fetchall()
                 for i in from_heroes:
                     self.enemy_heroes_min_info[i[0]] = i
@@ -110,36 +111,37 @@ class User:
     def logout():
         auth.current_user = None
 
-    def get_hero(self, hero_id, name, avatar_id):
+    def get_hero(self, hero_id, name, avatar_id, lvl, hero_class):
         conn, cursor = connect_to_db()
         with conn:
             try:
                 cursor.execute(
-                    "SELECT hero_class,level_id,exp,exp_next_lvl,free_development_pts,statistics_id FROM HEROES WHERE HERO_ID = %s",
+                    "SELECT exp,exp_next_lvl,free_development_pts,statistics_id FROM heroes WHERE HERO_ID = %s",
                     (hero_id,))
                 h = cursor.fetchone()
-                cursor.execute("SELECT * FROM STATISTICS WHERE STATISTICS_ID = %s", (h[5],))
+                cursor.execute("SELECT * FROM STATISTICS WHERE STATISTICS_ID = %s", (h[3],))
                 s = cursor.fetchone()
-                self.heroes[hero_id] = Hero(avatar_id, name, h[0], s[1], s[2], s[3], s[4], s[5], s[6], s[7], s[8],
+                self.heroes[hero_id] = Hero(avatar_id, name, hero_class, s[1], s[2], s[3], s[4], s[5], s[6], s[7], s[8],
                                             s[9],
-                                            s[10], h[1], h[2], h[3], h[4], hero_id, h[5])
+                                            s[10], lvl, h[0], h[1], h[2], hero_id, h[3])
 
             except Exception as error:
                 print(error)
 
-    def get_enemy_hero(self, hero_id, name, avatar_id):
+    def get_enemy_hero(self, hero_id, name, avatar_id, lvl, hero_class):
         conn, cursor = connect_to_db()
         with conn:
             try:
                 cursor.execute(
-                    "SELECT hero_class,level_id,exp,exp_next_lvl,free_development_pts,statistics_id FROM HEROES WHERE HERO_ID = %s",
+                    "SELECT exp,exp_next_lvl,free_development_pts,statistics_id FROM heroes WHERE HERO_ID = %s",
                     (hero_id,))
                 h = cursor.fetchone()
-                cursor.execute("SELECT * FROM STATISTICS WHERE STATISTICS_ID = %s", (h[5],))
+                cursor.execute("SELECT * FROM STATISTICS WHERE STATISTICS_ID = %s", (h[3],))
                 s = cursor.fetchone()
-                self.enemy_heroes[hero_id] = Hero(avatar_id, name, h[0], s[1], s[2], s[3], s[4], s[5], s[6], s[7], s[8],
-                                            s[9],
-                                            s[10], h[1], h[2], h[3], h[4], hero_id, h[5])
+                self.enemy_heroes[hero_id] = Hero(avatar_id, name, hero_class, s[1], s[2], s[3], s[4], s[5], s[6], s[7],
+                                                  s[8],
+                                                  s[9],
+                                                  s[10], lvl, h[0], h[1], h[2], hero_id, h[3])
 
             except Exception as error:
                 print(error)
@@ -199,22 +201,23 @@ class User:
 if __name__ == "__main__":
     tmp = User()
     # tmp.sign_up('enemy@gmail.com', 'alamakota', 'JohnDoe', 'f', 20)
-    # tmp.login('konto@gmail.com', 'alamakota')
-    tmp.login('enemy@gmail.com', 'alamakota')
+    tmp.login('konto@gmail.com', 'alamakota')
+    # tmp.login('enemy@gmail.com', 'alamakota')
     # tmp.create_hero(2, 'Dude', 'm', 1, 1, 1, 1,
     #                 1, 1, 1, 1, 1, 1)
 
     tmp.get_enemy_heroes_min_info()
     for _, val in tmp.enemy_heroes_min_info.items():
-        print(val)
-    tmp.choose_enemy_hero(20)
-    print(tmp.enemy_heroes[20])
+        print(_)
+    # tmp.choose_hero(1)
+    # print(tmp.currentHero)
+    tmp.choose_enemy_hero(1)
 
+    print(tmp.enemy_heroes[1])
 
     # tmp.choose_hero(20)
     # hero: Hero = tmp.currentHero
     # print(hero)
-
 
     # print(hero)
     # print("-------------------------")

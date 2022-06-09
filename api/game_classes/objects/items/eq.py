@@ -13,7 +13,7 @@ class Eq:
 
         :param className: Name of class of hero - 'a' for Archer, 'm' for Mage and 'w' for Warrior. Mainly used for checking whether an Item can be equipped
 
-        :param gold: Heroes gold
+        :param gold: heroes gold
         """
         self.hero_id = hero_id
         self.itemSlots: None or Item = [None] * 31  # indexes from 0 to 10 are Eq - the things that are equipped

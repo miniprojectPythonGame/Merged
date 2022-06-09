@@ -125,7 +125,7 @@ def ChooseCharacter(screen, mainClock, user):
                 if cs_characters.curr_main.rect.collidepoint(event.pos):
                     if cs_characters.curr_main.class_name == '':
                         if CreateCharacter(screen, mainClock, user):
-                            user.getHeroes()
+                            user.getheroes()
 
                         characters = getCharacters(user.heroes)
 
