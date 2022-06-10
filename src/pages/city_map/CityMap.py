@@ -131,12 +131,14 @@ def CityMap(screen, mainClock, user):
                     if navbar.bt_profile.rect.collidepoint(event.pos):
                         CharacterProfile(screen, mainClock, user)
                         hero.gen_eq()
+                        hero.get_gold()
                         break
 
                     # SETTINGS
                     if navbar.bt_settings.rect.collidepoint(event.pos):
                         Settings(screen, mainClock)
                         hero.gen_eq()
+                        hero.get_gold()
                         break
 
                     # SWAP HERO
@@ -149,6 +151,8 @@ def CityMap(screen, mainClock, user):
                     # LOGOUT
                     if navbar.bt_logout.rect.collidepoint(event.pos):
                         user.logout()
+                        user.heroes_min_info = {}
+                        user.enemy_heroes_min_info = {}
                         running = False
                         break
 
@@ -157,26 +161,31 @@ def CityMap(screen, mainClock, user):
                     if bt_armorShop.rect.collidepoint(event.pos):
                         ArmorShop(screen, mainClock, user)
                         hero.gen_eq()
+                        hero.get_gold()
                         break
 
                     if bt_magicShop.rect.collidepoint(event.pos):
                         MagicShop(screen, mainClock, user)
                         hero.gen_eq()
+                        hero.get_gold()
                         break
 
                     if bt_weaponShop.rect.collidepoint(event.pos):
                         WeaponShop(screen, mainClock, user)
                         hero.gen_eq()
+                        hero.get_gold()
                         break
 
                     if bt_tavern.rect.collidepoint(event.pos):
                         Tavern(screen, mainClock, user)
                         hero.gen_eq()
+                        hero.get_gold()
                         break
 
                     if bt_arena.rect.collidepoint(event.pos):
                         Arena(screen, mainClock, user)
                         hero.gen_eq()
+                        hero.get_gold()
                         break
 
         pygame.display.update()

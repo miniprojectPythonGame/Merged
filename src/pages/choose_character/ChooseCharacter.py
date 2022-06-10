@@ -127,9 +127,9 @@ def ChooseCharacter(screen, mainClock, user):
                 if cs_characters.curr_main.rect.collidepoint(event.pos):
                     if cs_characters.curr_main.class_name == '':
                         if CreateCharacter(screen, mainClock, user):
-                            user.getheroes()
+                            user.get_heroes_min_info()
 
-                        characters = getCharacters(user.heroes)
+                        characters = getCharacters(user.heroes_min_info)
 
                         cs_characters = CharacterSlider(characters + [CREATE_NEW_CHARACTER], screen)
 
