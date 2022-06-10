@@ -220,6 +220,14 @@ def resetActiveItem():
         "from": -1,
         "to": -1
     }
+def getFightClassName(name):
+    if name == 'w':
+        return 'Warrior'
+    if name == 'a':
+        return 'Archer'
+    if name == 'm':
+        return 'Mage'
+    return None
 
 def getQuality(item_quality):
     return str(item_quality)[8:].lower()

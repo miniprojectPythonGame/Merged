@@ -111,6 +111,26 @@ class Measurements:
         "path_gray": CATEGORY_ICONS['magic']['luckyitem']['path_gray'],
     }
 
+    # BUTTON: Show necklaces in offer
+    bt_showLuckyItems = {
+        "x": bt_showNecklaces['x'] + magic_shop_category_offset,
+        "y": margin,
+        "width": category_button_size,
+        "height": category_button_size,
+        "path_white": CATEGORY_ICONS['magic']['luckyitem']['path_white'],
+        "path_gray": CATEGORY_ICONS['magic']['luckyitem']['path_gray'],
+    }
+
+    # BUTTON: Show necklaces in offer
+    bt_showPotionPermanent = {
+        "x": bt_showLuckyItems['x'] + magic_shop_category_offset,
+        "y": margin,
+        "width": category_button_size,
+        "height": category_button_size,
+        "path_white": CATEGORY_ICONS['magic']['potionpermanent']['path_white'],
+        "path_gray": CATEGORY_ICONS['magic']['potionpermanent']['path_gray'],
+    }
+
     # SWITCH_CARDS: eq <-> statistics <-> backpack
     sc_eq_stat_bp = {
         "x": window_width - (ig_item_size * (ig_cols + 1) + ig_item_padding * ig_cols) - margin,

@@ -26,18 +26,20 @@ def ChooseCharacter(screen, mainClock, user):
         return 1, characters[1]['key']
 
     def getCharacters(heroes):
+        print(heroes)
         return [{
                     "key": key,
-                    "name": heroes[key].name,
-                    "spec": str(heroes[key].fight_class),
-                    "level": heroes[key].lvl,
+                    "name": heroes[key][1],
+                    "spec": str(getFightClassName(heroes[key][4])),
+                    "level": heroes[key][3],
                     "img": getRectAvatarPath(
-                        str(heroes[key].fight_class).lower(),
-                        str(heroes[key].avatar_id)
+                        str(getFightClassName(heroes[key][4])).lower(),
+                        str(heroes[key][2])
                     ),
                 } for key in heroes.keys()]
 
-    characters = getCharacters(user.heroes)
+    user.get_heroes_min_info()
+    characters = getCharacters(user.heroes_min_info)
     running = True
     # curr_index = 1
     # curr_key = characters[curr_index]['key']
@@ -133,7 +135,7 @@ def ChooseCharacter(screen, mainClock, user):
 
                         curr_index, curr_key = initiateCarousel(len(characters))
                     else:
-                        user.chooseHero(characters[curr_index]['key'])
+                        user.choose_hero(characters[curr_index]['key'])
                         running = CityMap(screen, mainClock, user)
 
         pygame.display.update()

@@ -115,20 +115,6 @@ def Tavern(screen, mainClock, user):
 
     sl_quests = ScrollableList(meas.sl_quests['x'], meas.sl_quests['y'], screen, list_elements,
                                meas.list_element_height, meas.list_element_padding)
-
-    # p_background = None
-    # lb_quest_title = None
-    # ml_quest_description = None
-    # lb_min_level_header = None
-    # lb_min_leevl_value = None
-    # lb_difficulty_header = None
-    # lb_difficulty_value = None
-    # lb_gold_header = None
-    # lb_gold_value = None
-    # lb_exp_header = None
-    # lb_exp_value = None
-    # lb_teasure_header = None
-    # lb_enemy_header = None
     bt_fight = None
 
     displayedContent = [

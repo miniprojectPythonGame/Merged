@@ -12,14 +12,18 @@ from src.components.ImageField import ImageField
 
 from .Measurements import Measurements as meas
 
-from src.globals.const_values import CLASS_ICONS, AVATARS, STATS_NAMES
+from src.globals.const_values import CLASS_ICONS,\
+    AVATARS,\
+    STATS_NAMES,\
+    getFightClassName
 
 
 def Arena(screen, mainClock, user):
     showHand = False
     running = True
     hero = user.currentHero
-    allHeros = user.getAllExistingheroes()
+    user.get_enemy_heroes_min_info()
+    allHeros = user.enemy_heroes_min_info
     activeHero = None
 
     def reloadStatistics(statistics):
@@ -87,14 +91,14 @@ def Arena(screen, mainClock, user):
 
     list_elements = []
     for key in allHeros.keys():
-        fight_class = str(allHeros[key].fight_class).lower()
+        fight_class = str(getFightClassName(allHeros[key][4])).lower()
         list_elements.append(ListElement(meas.le_general['x'],
                                          meas.le_general[
                                              'y'] + 0 * meas.list_element_padding + 0 * meas.list_element_height,
                                          meas.le_general['width'], meas.le_general['height'],
-                                         meas.le_general['colors'], screen, allHeros[key].name, 'No guild',
-                                         meas.le_general['property_name'], str(allHeros[key].lvl),
-                                         object=allHeros[key],
+                                         meas.le_general['colors'], screen, allHeros[key][1], 'No guild',
+                                         meas.le_general['property_name'], str(allHeros[key][3]),
+                                         object=key,
                                          img_path=CLASS_ICONS[fight_class]['white']))
 
     sl_heroes = ScrollableList(meas.sl_heroes['x'], meas.sl_heroes['y'], screen, list_elements,
@@ -178,7 +182,9 @@ def Arena(screen, mainClock, user):
 
                     for heroLine in sl_heroes.list:
                         if heroLine.rect.collidepoint(event.pos):
-                            activeHero = heroLine.object
+                            user.choose_enemy_hero(heroLine.object)
+                            activeHero = user.enemy_heroes[heroLine.object]
+
                             img_hero, lb_name, lb_stats_names, bt_fight = reloadPreview(activeHero)
                             break
 
